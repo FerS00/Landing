@@ -1,0 +1,367 @@
+---
+import es from '../../i18n/es.json';
+import en from '../../i18n/en.json';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
+---
+
+<section class="hero wrap" id="top">
+  <div class="hero-copy">
+    <div class="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      {t('hero.status')}
+    </div>
+    <p class="hello">
+      {t('hero.helloBefore')}
+      <strong>{t('hero.name')}</strong>
+      {t('hero.helloAfter')}
+    </p>
+    <h1>
+      <span class="line">
+        <span class="rise">{t('hero.line1')}</span>
+      </span>
+      <span class="line">
+        <span class="rise rotator" aria-hidden="true" data-words={JSON.stringify(words)}>
+          {words.map((word) => (
+            <span class="ghost" aria-hidden="true">
+              {word}
+            </span>
+          ))}
+          <span class="live" aria-hidden="true">
+            {words[0]}
+          </span>
+        </span>
+        <span class="sr-only">{words.join(', ')}</span>
+      </span>
+    </h1>
+    <p class="lede fade">{t('hero.lede')}</p>
+    <div class="cta-row fade">
+      <a
+        class="btn btn-primary magnetic"
+        href="#work"
+        data-track="cta_click"
+        data-track-location="hero"
+      >
+        {t('hero.ctaProjects')}
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </a>
+      <a
+        class="btn btn-ghost magnetic"
+        href="#contact"
+        data-track="cta_click"
+        data-track-location="hero"
+      >
+        {t('hero.ctaContact')}
+      </a>
+    </div>
+  </div>
+  <slot />
+</section>
+
+<script>
+  import { onVisibilityResume, prefersReducedMotion } from '../../scripts/motion';
+
+  const headline = document.querySelector<HTMLElement>('.hero h1');
+  const line = headline?.querySelector<HTMLElement>('.line:last-child');
+  const rotator = headline?.querySelector<HTMLElement>('.rotator');
+
+  if (headline && line && rotator) {
+    const words = JSON.parse(rotator.dataset.words ?? '[]') as string[];
+    const reduce = prefersReducedMotion();
+    let index = 0;
+    let timer = 0;
+    let fitQueued = false;
+
+    const fitHeadline = () => {
+      headline.style.fontSize = '';
+      const probe = document.createElement('span');
+      probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
+      headline.append(probe);
+      let widest = 0;
+      for (const word of [headline.querySelector('.rise')?.textContent ?? '', ...words]) {
+        probe.textContent = word;
+        widest = Math.max(widest, probe.getBoundingClientRect().width);
+      }
+      probe.remove();
+      const available = line.clientWidth;
+      const baseSize = Number.parseFloat(getComputedStyle(headline).fontSize);
+      if (widest > available && available > 0) {
+        headline.style.fontSize = `${baseSize * (available / widest) * 0.97}px`;
+      }
+    };
+
+    const fitAfterEntrance = () => {
+      if (fitQueued) return;
+      fitQueued = true;
+      requestAnimationFrame(async () => {
+        const animations = headline
+          .getAnimations()
+          .filter((animation) => animation.playState === 'running');
+        if (animations.length)
+          await Promise.allSettled(animations.map((animation) => animation.finished));
+        fitHeadline();
+        fitQueued = false;
+      });
+    };
+
+    const rotate = () => {
+      if (reduce || words.length < 2) return;
+      timer = window.setInterval(() => {
+        index = (index + 1) % words.length;
+        const live = rotator.querySelector<HTMLElement>('.live');
+        if (!live) return;
+        live.textContent = words[index] ?? words[0] ?? '';
+        live.animate(
+          [
+            { transform: 'translateY(0.25em)', opacity: 0 },
+            { transform: 'translateY(0)', opacity: 1 },
+          ],
+          { duration: 350, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+        );
+      }, 2800);
+    };
+
+    const stopRotation = () => window.clearInterval(timer);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopRotation();
+    });
+    onVisibilityResume(rotate);
+    fitAfterEntrance();
+    void document.fonts?.ready.then(fitAfterEntrance);
+    window.addEventListener('resize', fitAfterEntrance, { passive: true });
+
+    const magneticQuery = window.matchMedia('(hover: hover)');
+    if (!reduce && magneticQuery.matches) {
+      document.querySelectorAll<HTMLElement>('.hero .magnetic').forEach((button) => {
+        button.addEventListener('pointermove', (event) => {
+          const rect = button.getBoundingClientRect();
+          const x = (event.clientX - rect.left - rect.width / 2) * 0.25;
+          const y = (event.clientY - rect.top - rect.height / 2) * 0.35;
+          button.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        button.addEventListener('pointerleave', () => {
+          button.style.transform = '';
+        });
+      });
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    align-items: center;
+    gap: var(--space-12);
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  .hero > * {
+    min-width: 0;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-8);
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-green) 10%, transparent);
+    color: var(--color-green);
+    font: 500 0.8rem var(--font-mono);
+  }
+
+  .status-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    border-radius: 50%;
+    background: var(--color-green);
+  }
+
+  .status-dot::after {
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--color-green);
+    border-radius: inherit;
+    animation: status-ping 2s var(--ease-out) infinite;
+    content: '';
+  }
+
+  @keyframes status-ping {
+    to {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  .hello {
+    margin-bottom: var(--space-3);
+    animation: fade 900ms var(--ease-out) both;
+    color: var(--color-muted-fg);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 600;
+  }
+
+  .hello strong {
+    color: var(--color-fg);
+  }
+
+  h1 {
+    max-width: 100%;
+    min-height: clamp(5.13rem, 13.68vw, 11.4rem);
+    font-size: clamp(2.7rem, 7.2vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+  }
+
+  .rise {
+    display: inline-block;
+    animation: rise 1.1s var(--ease-out) both;
+  }
+
+  .line:nth-child(2) .rise {
+    animation-delay: 120ms;
+  }
+
+  @keyframes rise {
+    from {
+      transform: translateY(105%);
+    }
+  }
+
+  .rotator {
+    position: relative;
+    display: inline-grid;
+    vertical-align: top;
+  }
+
+  .ghost {
+    grid-area: 1 / 1;
+    visibility: hidden;
+  }
+
+  .live {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .lede {
+    max-width: 56ch;
+    margin-top: var(--space-8);
+    color: var(--color-muted-fg);
+    font-size: 1.12rem;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .fade {
+    animation: fade 1s 500ms var(--ease-out) both;
+  }
+
+  .cta-row.fade {
+    animation-delay: 650ms;
+  }
+
+  @keyframes fade {
+    from {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+  }
+
+  .btn {
+    position: relative;
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding-inline: 26px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    font: 700 0.98rem var(--font-body);
+    isolation: isolate;
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out);
+  }
+
+  .btn-primary {
+    background: var(--color-green);
+    color: var(--color-on-accent);
+  }
+
+  .btn-primary::after {
+    position: absolute;
+    z-index: -1;
+    inset: -4px;
+    border-radius: inherit;
+    background: var(--color-green);
+    filter: blur(16px);
+    opacity: 0;
+    transition: opacity 300ms;
+    content: '';
+  }
+
+  .btn-primary:hover::after {
+    opacity: 0.55;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--color-border-strong);
+    color: var(--color-fg);
+  }
+
+  .btn-ghost:hover {
+    box-shadow: inset 0 0 0 1px var(--color-green);
+    color: var(--color-green);
+  }
+
+  .btn svg {
+    transition: transform 250ms var(--ease-out);
+  }
+
+  .btn:hover svg {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 859px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-8);
+      padding-block: var(--space-12) var(--space-16);
+    }
+  }
+</style>

@@ -1,0 +1,13 @@
+{
+  "order": 6,
+  "name": "VENTAS_DPP",
+  "url": "https://github.com/FerS00/portfolio/blob/main/projects/ventas-dpp/README.md",
+  "kind": "priv",
+  "wide": true,
+  "tags": ["Angular 20", "Spring Boot", "Flyway", "MariaDB"],
+  "tech": ["Java", "Spring Boot", "Angular", "MySQL", "Docker"],
+  "description": {
+    "es": "Tienda web y back office con permisos para un revendedor de software: catálogo, ofertas y exportaciones XLSX/PDF.",
+    "en": "Web storefront and permission-based back office for a software reseller: catalog, offers and XLSX/PDF exports."
+  }
+}

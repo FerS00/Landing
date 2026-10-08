@@ -1,0 +1,91 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+---
+
+<button
+  class="icon-btn"
+  type="button"
+  data-theme-toggle
+  data-track="theme_switch"
+  aria-label={t('theme.toLight')}
+  data-to-light={t('theme.toLight')}
+  data-to-dark={t('theme.toDark')}
+>
+  <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7" />
+    <path
+      d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+    />
+  </svg>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+
+  if (button) {
+    const root = document.documentElement;
+    const prefersLight = () => window.matchMedia('(prefers-color-scheme: light)').matches;
+    const currentTheme = () => root.dataset.theme ?? (prefersLight() ? 'light' : 'dark');
+    const updateLabel = () => {
+      button.setAttribute(
+        'aria-label',
+        currentTheme() === 'dark' ? button.dataset.toLight! : button.dataset.toDark!,
+      );
+    };
+
+    updateLabel();
+
+    button.addEventListener('click', () => {
+      const next = currentTheme() === 'dark' ? 'light' : 'dark';
+      const apply = () => {
+        root.dataset.theme = next;
+        updateLabel();
+        try {
+          localStorage.setItem('theme', next);
+        } catch {
+          // Theme storage can be unavailable in restricted browsing contexts.
+        }
+      };
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!document.startViewTransition || reducedMotion) {
+        apply();
+        return;
+      }
+
+      const rect = button.getBoundingClientRect();
+      root.style.setProperty('--theme-x', `${rect.left + rect.width / 2}px`);
+      root.style.setProperty('--theme-y', `${rect.top + rect.height / 2}px`);
+      document.startViewTransition(apply);
+    });
+  }
+</script>
+
+<style>
+  .icon-btn {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-muted-fg);
+    cursor: pointer;
+    transition:
+      transform 500ms var(--ease-out),
+      color 200ms;
+  }
+
+  .icon-btn:hover {
+    transform: rotate(90deg);
+    color: var(--color-green);
+  }
+</style>

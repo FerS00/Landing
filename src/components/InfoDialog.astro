@@ -1,0 +1,359 @@
+---
+import { getCollection, render } from 'astro:content';
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+const { lang, pathname } = Astro.props as { lang: Lang; pathname: string };
+const t = useTranslations(lang);
+const faq = (await getCollection('faq')).find((entry) => entry.id === lang);
+const legalEntries = await getCollection('legal');
+const privacy = legalEntries.find((entry) => entry.id === `privacy${lang}`);
+if (!faq || !privacy) {
+  throw new Error(`Missing FAQ or privacy content for ${lang}`);
+}
+const { Content: PrivacyContent } = await render(privacy);
+const contactHref =
+  pathname.startsWith('/en/') || pathname === '/en' ? '/en/#contact' : '/#contact';
+const buildDate = new Date().toISOString().slice(0, 10);
+---
+
+<dialog class="win" data-info-dialog="faq" aria-labelledby="faq-title">
+  <div class="win-head">
+    <h2 id="faq-title">{t('dialog.faqTitle')}</h2>
+    <button class="icon-btn" type="button" data-dialog-close aria-label={t('dialog.close')}>
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="win-body faq">
+    {faq.data.items.map((item) => (
+      <details>
+        <summary>{item.q}</summary>
+        <p>
+          {item.a}
+          {item.link === 'privacy' && (
+            <>
+              {' '}
+              {t('dialog.privacyMore')}{' '}
+              <button class="inline-link" type="button" data-open-dialog="privacy">
+                {t('dialog.privacyLink')}
+              </button>
+              .
+            </>
+          )}
+        </p>
+      </details>
+    ))}
+    <div class="faq-cta">
+      <a class="btn btn-primary" href={contactHref} data-dialog-contact>
+        {faq.data.cta}
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="win" data-info-dialog="privacy" aria-labelledby="privacy-title">
+  <div class="win-head">
+    <h2 id="privacy-title">{t('dialog.privacyTitle')}</h2>
+    <button class="icon-btn" type="button" data-dialog-close aria-label={t('dialog.close')}>
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="win-body legal">
+    <p class="privacy-updated">
+      {t('dialog.lastUpdated')} {buildDate}
+    </p>
+    <PrivacyContent />
+    <div class="actions">
+      <button class="chip" type="button" data-consent="denied">
+        {t('dialog.rejectAnalytics')}
+      </button>
+      <button class="chip" type="button" data-consent="granted">
+        {t('dialog.acceptAnalytics')}
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { emit, on } from '../scripts/motion';
+
+  const dialogs = [...document.querySelectorAll<HTMLDialogElement>('[data-info-dialog]')];
+  let opener: HTMLElement | null = null;
+  let closingForContact = false;
+  let switchingDialog = false;
+
+  function closeOthers(current?: HTMLDialogElement): void {
+    dialogs.forEach((dialog) => {
+      if (dialog !== current && dialog.open) dialog.close();
+    });
+  }
+
+  function openDialog(id: string, source: HTMLElement | null): void {
+    const dialog = dialogs.find((candidate) => candidate.dataset.infoDialog === id);
+    if (!dialog) return;
+    const sourceDialog = source?.closest<HTMLDialogElement>('[data-info-dialog]');
+    const switchingFromSource = Boolean(sourceDialog?.open && sourceDialog !== dialog);
+    if (!switchingFromSource) {
+      opener =
+        source ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+    }
+    switchingDialog = dialogs.some((candidate) => candidate !== dialog && candidate.open);
+    closeOthers(dialog);
+    const body = dialog.querySelector<HTMLElement>('.win-body');
+    if (body) body.scrollTop = 0;
+    if (!dialog.open) dialog.showModal();
+    dialog.querySelector<HTMLElement>('[data-dialog-close]')?.focus();
+  }
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const openerElement = event.target.closest<HTMLElement>('[data-open-dialog]');
+    if (openerElement) {
+      event.preventDefault();
+      openDialog(openerElement.dataset.openDialog ?? '', openerElement);
+      return;
+    }
+
+    const closeButton = event.target.closest<HTMLElement>('[data-dialog-close]');
+    const dialog = event.target.closest<HTMLDialogElement>('[data-info-dialog]');
+    if (closeButton && dialog) dialog.close();
+    if (event.target instanceof HTMLDialogElement && event.target.matches('[data-info-dialog]')) {
+      event.target.close();
+    }
+
+    if (event.target.closest('[data-dialog-contact]')) {
+      closingForContact = true;
+      dialog?.close();
+    }
+    if (event.target.closest('[data-open-consent]')) emit('fx:open-consent');
+    const consent = event.target.closest<HTMLElement>('[data-consent]');
+    if (consent) {
+      emit('fx:consent', { consent: consent.dataset.consent });
+      consent.closest<HTMLDialogElement>('[data-info-dialog]')?.close();
+    }
+  });
+
+  dialogs.forEach((dialog) => {
+    dialog.addEventListener('close', () => {
+      if (!switchingDialog && !closingForContact && opener?.isConnected)
+        opener.focus({ preventScroll: true });
+      if (!switchingDialog) opener = null;
+      switchingDialog = false;
+      closingForContact = false;
+    });
+  });
+
+  on<{ id: 'faq' | 'privacy' }>('fx:open-dialog', ({ id }) => openDialog(id, null));
+  document.documentElement.dataset.dialogsReady = 'true';
+</script>
+
+<style is:global>
+  dialog.win {
+    width: min(760px, calc(100vw - 32px));
+    max-height: min(86vh, 900px);
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    box-shadow: 0 40px 120px -30px color-mix(in srgb, var(--color-bg) 85%, transparent);
+  }
+  dialog.win[open] {
+    display: flex;
+    flex-direction: column;
+    animation: dialog-pop 450ms var(--ease-out);
+  }
+  dialog.win::backdrop {
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    backdrop-filter: blur(6px);
+  }
+  @keyframes dialog-pop {
+    from {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  .win-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .win-head h2 {
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  }
+  .win-head .icon-btn {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    place-items: center;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-fg);
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  .win-head .icon-btn:hover {
+    color: var(--color-green);
+  }
+  .win-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 24px 28px;
+    overscroll-behavior: contain;
+  }
+  .win-body h3 {
+    margin: 22px 0 6px;
+    color: var(--color-green);
+    font: 700 1.05rem var(--font-body);
+  }
+  .win-body p,
+  .win-body li {
+    max-width: 68ch;
+    color: var(--color-muted-fg);
+    font-size: 0.95rem;
+  }
+  .win-body p + p {
+    margin-top: 8px;
+  }
+  .win-body ul {
+    margin: 6px 0;
+    padding-left: 20px;
+  }
+  .win-body strong {
+    color: var(--color-fg);
+  }
+  .legal table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .win-body .tbl {
+    overflow-x: auto;
+  }
+  .legal th,
+  .legal td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    vertical-align: top;
+  }
+  .legal th {
+    color: var(--color-muted-fg);
+    font: 500 0.72rem var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .legal td code {
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+  }
+  .win-body.legal > p:first-child {
+    margin-top: 14px;
+    color: var(--color-muted-fg);
+    font: 400 0.78rem var(--font-mono);
+  }
+  .privacy-updated {
+    font: 400 0.78rem var(--font-mono) !important;
+  }
+  .win-body .inline-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-green);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .win-body .btn-primary {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-6);
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-green);
+    color: var(--color-on-accent);
+    cursor: pointer;
+    font: 700 0.9rem var(--font-body);
+    text-decoration: none;
+    transition: transform 250ms var(--ease-out);
+  }
+  .win-body .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+  .win-body .actions,
+  .faq-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: var(--space-6);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: 18px 0;
+    color: var(--color-fg);
+    cursor: pointer;
+    font: 700 1.02rem var(--font-body);
+    list-style: none;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    place-items: center;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    color: var(--color-green);
+    content: '+';
+    font: 500 1.1rem var(--font-mono);
+    transition: transform 300ms var(--ease-out);
+  }
+  .faq details[open] summary::after {
+    transform: rotate(45deg);
+  }
+  .faq summary:hover {
+    color: var(--color-green);
+  }
+  .faq details p {
+    padding-bottom: 18px;
+  }
+  .legal .astro-code {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  @media (max-width: 479px) {
+    .legal table {
+      font-size: 0.72rem;
+    }
+    .legal th,
+    .legal td {
+      padding: 5px 6px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    dialog.win[open] {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,92 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  padding-inline: var(--space-4);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: 400 1rem/1.65 var(--font-body);
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  overflow-wrap: break-word;
+  font-family: var(--font-display);
+  hyphens: auto;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  border-radius: 6px;
+  outline: 2px solid var(--color-ring);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.skip {
+  position: absolute;
+  z-index: 60;
+  top: var(--space-2);
+  left: -999px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-green);
+  color: var(--color-on-accent);
+}
+
+.skip:focus {
+  left: var(--space-4);
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1180px);
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

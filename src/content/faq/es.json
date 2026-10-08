@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "q": "¿Qué tipo de proyectos aceptas?",
+      "a": "Proyectos freelance y colaboraciones técnicas en backend (Java con Spring Boot, Python con FastAPI), aplicaciones web (Angular, React), utilidades para Windows (C++, C#) y automatización con IA."
+    },
+    {
+      "q": "¿Cómo empezamos?",
+      "a": "Escríbeme por el formulario, por email o por Telegram con una descripción breve de lo que necesitas. Hablamos del alcance y, si encaja, te envío una propuesta con fases y entregables."
+    },
+    {
+      "q": "¿Cuánto cuesta un proyecto?",
+      "a": "Depende del alcance. Después de la primera conversación preparo una propuesta con el detalle del trabajo y el presupuesto."
+    },
+    { "q": "¿En qué idiomas puedo escribirte?", "a": "En español o en inglés." },
+    {
+      "q": "¿Puedo ver el código de tus proyectos privados?",
+      "a": "Algunos proyectos contienen código propietario o integraciones de clientes, así que publico casos de estudio en su lugar. Puedo explicar su arquitectura, mi papel y las decisiones técnicas sin mostrar el código."
+    },
+    {
+      "q": "¿Usas IA en tu trabajo?",
+      "a": "Sí, como herramienta de desarrollo: para explorar código, implementar, probar y revisar. La arquitectura, las reglas de negocio, la seguridad y la verificación final las decido yo."
+    },
+    {
+      "q": "¿Qué hago con tus datos si me escribes?",
+      "a": "Solo los uso para responderte.",
+      "link": "privacy"
+    }
+  ],
+  "cta": "Escríbeme"
+}

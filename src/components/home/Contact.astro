@@ -1,0 +1,661 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+---
+
+<section id="contact" class="contact-section wrap" aria-labelledby="contact-title">
+  <div class="contact reveal">
+    <div>
+      <p class="eyebrow">{t('contact.eyebrow')}</p>
+      <h2 id="contact-title">
+        <span>{t('contact.titleFirst')}</span>
+        <br />
+        <span class="grad-text">{t('contact.titleSecond')}</span>
+      </h2>
+      <p class="intro">{t('contact.intro')}</p>
+      <div class="channels">
+        <div class="channel email-channel">
+          <div>
+            <span class="channel-label">Email</span>
+            <span class="channel-value">moralespenafernando@gmail.com</span>
+          </div>
+          <button class="chip copy-button" type="button" data-copy-email data-track="email_copy">
+            {t('contact.copy')}
+          </button>
+        </div>
+        <a
+          class="channel"
+          data-track="cta_click"
+          data-track-location="contact"
+          href="https://linkedin.com/in/fernando-trinidad-morales-pe%C3%B1a-3632b2391"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>
+            <span class="channel-label">LinkedIn</span>
+            <span class="channel-value">Fernando Morales Peña</span>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="channel"
+          data-track="cta_click"
+          data-track-location="contact"
+          href="https://github.com/FerS00"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>
+            <span class="channel-label">GitHub</span>
+            <span class="channel-value">@FerS00</span>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="channel"
+          data-track="cta_click"
+          data-track-location="contact"
+          href="https://t.me/FerS_00"
+          target="_blank"
+          rel="noopener"
+        >
+          <span>
+            <span class="channel-label">Telegram</span>
+            <span class="channel-value">@FerS_00</span>
+          </span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+    <form
+      data-contact-form
+      data-lang={lang}
+      data-turnstile-site-key={turnstileSiteKey}
+      data-contact-messages={JSON.stringify({
+        name: t('form.errorName'),
+        nameLength: t('form.errorNameLength'),
+        email: t('form.errorEmail'),
+        emailInvalid: t('form.errorEmailInvalid'),
+        emailLength: t('form.errorEmailLength'),
+        message: t('form.errorMessage'),
+        messageLength: t('form.errorMessageLength'),
+        inactive: t('form.inactive'),
+        success: t('form.success'),
+        captcha: t('form.captcha'),
+        sendFailed: t('form.sendFailed'),
+        network: t('form.network'),
+        invalid: t('form.invalid'),
+        sending: t('form.sending'),
+        copied: t('contact.copied'),
+        copyFailed: t('contact.copyFailed'),
+        copy: t('contact.copy'),
+      })}
+      novalidate
+    >
+      <div class="honeypot" aria-hidden="true">
+        <label for="contact-website">Website</label>
+        <input id="contact-website" name="website" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label for="contact-name">{t('form.name')}</label>
+        <input
+          id="contact-name"
+          name="name"
+          autocomplete="name"
+          required
+          placeholder={t('form.namePh')}
+          aria-describedby="error-name"
+        />
+        <p class="error-line" id="error-name" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="contact-email">{t('form.email')}</label>
+        <input
+          id="contact-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder={t('form.emailPh')}
+          aria-describedby="error-email"
+        />
+        <p class="error-line" id="error-email" aria-live="polite"></p>
+      </div>
+      <div class="field">
+        <label for="contact-type">{t('form.type')}</label>
+        <select id="contact-type" name="type">
+          <option value="freelance">{t('form.freelance')}</option>
+          <option value="collaboration">{t('form.collaboration')}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="contact-message">{t('form.message')}</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          required
+          placeholder={t('form.messagePh')}
+          aria-describedby="error-message"
+        ></textarea>
+        <p class="error-line" id="error-message" aria-live="polite"></p>
+      </div>
+      {turnstileSiteKey && <div class="turnstile-slot" data-turnstile-slot></div>}
+      <input type="hidden" name="turnstileToken" data-turnstile-token />
+      <button class="btn btn-primary" type="submit" disabled={!turnstileSiteKey}>
+        {t('form.send')} <span aria-hidden="true">→</span>
+      </button>
+      <p class="form-status" data-form-status role="status" aria-live="polite">
+        {!turnstileSiteKey && t('form.inactive')}
+      </p>
+      <p class="form-note">
+        {t('form.faq')}{' '}
+        <button type="button" class="inline-link" data-open-dialog="faq">
+          {t('form.faqLink')}
+        </button>
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import { validateContact } from '../../scripts/contact-core';
+  import { submitContact } from '../../scripts/contact-submit';
+  import { emit, prefersReducedMotion } from '../../scripts/motion';
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const messages = JSON.parse(form?.dataset.contactMessages ?? '{}') as {
+    name: string;
+    nameLength: string;
+    email: string;
+    emailInvalid: string;
+    emailLength: string;
+    message: string;
+    messageLength: string;
+    inactive: string;
+    copied: string;
+    copyFailed: string;
+    copy: string;
+    success: string;
+    captcha: string;
+    sendFailed: string;
+    network: string;
+    invalid: string;
+    sending: string;
+  };
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+  const controls = {
+    name: form?.elements.namedItem('name') as HTMLInputElement | null,
+    email: form?.elements.namedItem('email') as HTMLInputElement | null,
+    message: form?.elements.namedItem('message') as HTMLTextAreaElement | null,
+  };
+  const errorLines = {
+    name: document.getElementById('error-name'),
+    email: document.getElementById('error-email'),
+    message: document.getElementById('error-message'),
+  };
+
+  type TurnstileApi = {
+    render: (
+      container: HTMLElement,
+      options: {
+        sitekey: string;
+        theme: 'light' | 'dark';
+        language: string;
+        callback: (token: string) => void;
+        'expired-callback': () => void;
+        'error-callback': () => void;
+      },
+    ) => string;
+    reset: (widgetId?: string) => void;
+  };
+  const turnstileWindow = window as Window & { turnstile?: TurnstileApi };
+  const turnstileSlot = form?.querySelector<HTMLElement>('[data-turnstile-slot]');
+  const tokenInput = form?.querySelector<HTMLInputElement>('[data-turnstile-token]');
+  const siteKey = form?.dataset.turnstileSiteKey ?? '';
+  let widgetId: string | undefined;
+  let turnstileLoading: Promise<void> | undefined;
+
+  function loadTurnstile(): Promise<void> {
+    if (!siteKey || !turnstileSlot || !tokenInput) return Promise.resolve();
+    if (widgetId) return Promise.resolve();
+    if (turnstileLoading) return turnstileLoading;
+    turnstileLoading = new Promise((resolve, reject) => {
+      const render = () => {
+        if (!turnstileWindow.turnstile || !turnstileSlot || !tokenInput) {
+          reject(new Error('Turnstile unavailable'));
+          return;
+        }
+        widgetId = turnstileWindow.turnstile.render(turnstileSlot, {
+          sitekey: siteKey,
+          theme: document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
+          language: form?.dataset.lang === 'en' ? 'en' : 'es',
+          callback: (token) => {
+            tokenInput.value = token;
+            const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+            if (button) button.disabled = false;
+          },
+          'expired-callback': () => {
+            tokenInput.value = '';
+            const button = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+            if (button) button.disabled = true;
+          },
+          'error-callback': () => {
+            tokenInput.value = '';
+            if (status) status.textContent = messages.captcha;
+          },
+        });
+        resolve();
+      };
+      if (turnstileWindow.turnstile) {
+        render();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&hl=${form?.dataset.lang ?? 'es'}`;
+      script.async = true;
+      script.defer = true;
+      script.onload = render;
+      script.onerror = () => reject(new Error('Turnstile failed to load'));
+      document.head.append(script);
+    });
+    return turnstileLoading;
+  }
+
+  const handleTurnstileInteraction = () => {
+    void loadTurnstile().catch(() => {
+      if (status) status.textContent = messages.captcha;
+    });
+  };
+  form?.addEventListener('focusin', handleTurnstileInteraction, { once: true });
+  form?.addEventListener('pointerdown', handleTurnstileInteraction, { once: true });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!controls.name || !controls.email || !controls.message || !status) return;
+    status.textContent = '';
+    const data = {
+      name: controls.name.value,
+      email: controls.email.value,
+      type: String(new FormData(form).get('type') ?? 'freelance'),
+      message: controls.message.value,
+      lang: (form.dataset.lang === 'en' ? 'en' : 'es') as 'es' | 'en',
+    };
+    const errors = validateContact(data);
+    let firstError: HTMLElement | null = null;
+    for (const field of ['name', 'email', 'message'] as const) {
+      const control = controls[field];
+      const line = errorLines[field];
+      const error = errors[field];
+      if (!control) continue;
+      control.setAttribute('aria-invalid', String(Boolean(error)));
+      if (line)
+        line.textContent =
+          error === 'required'
+            ? messages[field]
+            : error === 'email'
+              ? messages.emailInvalid
+              : error === 'length'
+                ? field === 'name'
+                  ? messages.nameLength
+                  : field === 'email'
+                    ? messages.emailLength
+                    : messages.messageLength
+                : '';
+      if (error && !firstError) firstError = control;
+    }
+    if (firstError) {
+      emit('fx:contact-submit', { result: 'invalid' });
+      form.classList.remove('shake');
+      if (!prefersReducedMotion()) {
+        void form.offsetWidth;
+        form.classList.add('shake');
+      }
+      firstError.focus();
+      return;
+    }
+    if (!siteKey) {
+      status.textContent = messages.inactive;
+      return;
+    }
+    try {
+      await loadTurnstile();
+    } catch {
+      status.textContent = messages.captcha;
+      return;
+    }
+    if (!tokenInput?.value) {
+      status.textContent = messages.captcha;
+      return;
+    }
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const buttonLabel = button?.innerHTML ?? '';
+    if (button) {
+      button.disabled = true;
+      button.textContent = messages.sending;
+    }
+    const result = await submitContact({
+      ...data,
+      token: tokenInput.value,
+      website: String(new FormData(form).get('website') ?? ''),
+    });
+    if (button) {
+      button.innerHTML = buttonLabel;
+      button.disabled = !result.ok;
+    }
+    if (result.ok) {
+      form.reset();
+      tokenInput.value = '';
+      if (widgetId) turnstileWindow.turnstile?.reset(widgetId);
+      status.textContent = messages.success;
+      emit('fx:contact-submit', { result: 'ok' });
+      return;
+    }
+    emit('fx:contact-submit', { result: result.reason });
+    tokenInput.value = '';
+    if (widgetId) turnstileWindow.turnstile?.reset(widgetId);
+    status.textContent =
+      result.reason === 'not-configured'
+        ? messages.inactive
+        : result.reason === 'captcha'
+          ? messages.captcha
+          : result.reason === 'invalid'
+            ? messages.invalid
+            : result.reason === 'network'
+              ? messages.network
+              : messages.sendFailed;
+  });
+
+  document
+    .querySelector<HTMLButtonElement>('[data-copy-email]')
+    ?.addEventListener('click', async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      try {
+        if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+        await navigator.clipboard.writeText('moralespenafernando@gmail.com');
+        button.textContent = messages.copied;
+        for (let index = 0; index < 8; index += 1) {
+          const spark = document.createElement('span');
+          spark.className = 'copy-spark';
+          spark.setAttribute('aria-hidden', 'true');
+          const rect = button.getBoundingClientRect();
+          spark.style.left = `${rect.left + rect.width / 2}px`;
+          spark.style.top = `${rect.top + rect.height / 2}px`;
+          spark.style.setProperty('--spark-x', `${Math.cos((index * Math.PI) / 4) * 34}px`);
+          spark.style.setProperty('--spark-y', `${Math.sin((index * Math.PI) / 4) * 34}px`);
+          document.body.append(spark);
+          window.setTimeout(() => spark.remove(), 650);
+        }
+        window.setTimeout(() => {
+          button.textContent = button.dataset.label ?? '';
+        }, 1600);
+      } catch {
+        const email = document.querySelector<HTMLElement>('.email-channel .channel-value');
+        if (email) {
+          const range = document.createRange();
+          range.selectNodeContents(email);
+          const selection = window.getSelection();
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+        }
+      }
+    });
+
+  const copyButton = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  if (copyButton) copyButton.dataset.label = copyButton.textContent ?? '';
+</script>
+
+<style>
+  .contact-section {
+    padding-block: var(--space-8) var(--space-16);
+    scroll-margin-top: 88px;
+  }
+  .contact {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--space-12);
+    overflow: hidden;
+    padding: clamp(24px, 5vw, 64px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+  .contact::before {
+    position: absolute;
+    top: -280px;
+    right: -220px;
+    width: 640px;
+    height: 640px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--color-green),
+      var(--color-cyan),
+      var(--color-violet),
+      var(--color-green)
+    );
+    filter: blur(100px);
+    opacity: calc(var(--glow) * 0.5);
+    animation: contact-spin 20s linear infinite;
+    content: '';
+    pointer-events: none;
+  }
+  .contact > * {
+    position: relative;
+    min-width: 0;
+  }
+  .eyebrow {
+    margin-bottom: var(--space-3);
+    color: var(--color-green);
+    font: 500 0.75rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .contact h2 {
+    margin-top: var(--space-4);
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .grad-text {
+    padding-right: 0.08em;
+    background: var(--grad-loop);
+    background-clip: text;
+    color: transparent;
+  }
+  .intro {
+    max-width: 46ch;
+    margin-top: var(--space-6);
+    color: var(--color-muted-fg);
+  }
+  .channels {
+    display: grid;
+    gap: 10px;
+    margin-top: var(--space-8);
+  }
+  .channel {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 14px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--color-bg) 60%, transparent);
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out);
+  }
+  a.channel:hover {
+    transform: translateX(4px);
+    border-color: var(--color-green);
+  }
+  .email-channel > div,
+  .channel > span:first-child {
+    display: grid;
+    min-width: 0;
+  }
+  .channel-label {
+    color: var(--color-muted-fg);
+    font: 500 0.7rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .channel-value {
+    overflow-wrap: anywhere;
+    font-weight: 600;
+  }
+  .chip {
+    min-height: 44px;
+    padding-inline: 16px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-fg);
+    cursor: pointer;
+    font: 500 0.78rem var(--font-mono);
+  }
+  .copy-button {
+    width: 112px;
+    min-width: 112px;
+  }
+  form {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+  }
+  .honeypot {
+    display: none;
+  }
+  .turnstile-slot {
+    display: flex;
+    min-height: 65px;
+    align-items: center;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  input,
+  textarea,
+  select {
+    width: 100%;
+    min-height: 50px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    color: var(--color-fg);
+    font: inherit;
+  }
+  textarea {
+    height: 130px;
+    resize: vertical;
+  }
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-color: var(--color-ring);
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-ring) 35%, transparent);
+  }
+  [aria-invalid='true'] {
+    border-color: var(--color-danger);
+  }
+  .error-line {
+    min-height: 1.3em;
+    margin-top: 4px;
+    color: var(--color-danger);
+    font-size: 0.82rem;
+  }
+  .form-status {
+    height: 3.2em;
+    min-height: 3.2em;
+    overflow: hidden;
+    color: var(--color-green);
+    font-weight: 600;
+  }
+  .btn-primary {
+    display: inline-flex;
+    width: 220px;
+    min-height: 52px;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-6);
+    border: 0;
+    border-radius: 999px;
+    background: var(--color-green);
+    color: var(--color-on-accent);
+    cursor: pointer;
+    font: 700 0.9rem var(--font-body);
+    transition: transform 250ms var(--ease-out);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+  }
+  .btn-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .form-note {
+    color: var(--color-muted-fg);
+    font-size: 0.82rem;
+  }
+  .inline-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-green);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .shake {
+    animation: contact-shake 400ms;
+  }
+  .copy-spark {
+    position: fixed;
+    z-index: 70;
+    width: 6px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--color-green);
+    pointer-events: none;
+    animation: copy-spark 600ms ease-out both;
+  }
+  @keyframes contact-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes contact-shake {
+    25% {
+      transform: translateX(-6px);
+    }
+    75% {
+      transform: translateX(6px);
+    }
+  }
+  @keyframes copy-spark {
+    to {
+      opacity: 0;
+      transform: translate(var(--spark-x), var(--spark-y));
+    }
+  }
+  @media (max-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact::before {
+      animation: none;
+    }
+  }
+</style>

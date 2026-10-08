@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base lang="es" noindex>
+  <section class="not-found" aria-labelledby="not-found-title">
+    <p class="code">404</p>
+    <h1 id="not-found-title">Página no encontrada</h1>
+    <p>La dirección solicitada no existe.</p>
+    <nav aria-label="Idiomas">
+      <a href="/">Volver al inicio</a>
+      <a href="/en/">English</a>
+    </nav>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    display: grid;
+    min-height: 70vh;
+    align-content: center;
+    justify-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    text-align: center;
+  }
+
+  .code {
+    color: var(--color-green);
+    font: 700 clamp(4rem, 15vw, 8rem) var(--font-mono);
+    line-height: 1;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  a {
+    color: var(--color-green);
+  }
+</style>

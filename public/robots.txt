@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fextracode.com/sitemap-index.xml

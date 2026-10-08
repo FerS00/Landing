@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>fextracode · Open Graph</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        margin: 0;
+      }
+      body {
+        position: relative;
+        display: grid;
+        align-content: center;
+        overflow: hidden;
+        padding: 92px 104px;
+        background: #050806;
+        color: #eaf5ee;
+        font-family: var(--font-manrope), Arial, Helvetica, sans-serif;
+      }
+      body::before {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 82% 24%, rgb(61 245 140 / 15%), transparent 32%),
+          radial-gradient(circle at 12% 92%, rgb(61 245 140 / 9%), transparent 36%);
+        content: '';
+      }
+      .particle {
+        position: absolute;
+        z-index: 0;
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background: #3df58c;
+        box-shadow: 0 0 20px rgb(61 245 140 / 50%);
+        opacity: var(--opacity);
+      }
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+      .brand {
+        margin: 0 0 52px;
+        font-size: 38px;
+        font-weight: 700;
+        letter-spacing: -2px;
+      }
+      .brand strong {
+        color: #3df58c;
+      }
+      h1 {
+        margin: 0;
+        font-size: 64px;
+        font-family: var(--font-syne), sans-serif;
+        font-weight: 800;
+        letter-spacing: -3px;
+        line-height: 1;
+      }
+      .tagline {
+        margin: 27px 0 0;
+        color: #9db3a6;
+        font-size: 29px;
+        letter-spacing: 0.2px;
+      }
+      .rule {
+        width: 96px;
+        height: 5px;
+        margin-top: 42px;
+        border-radius: 99px;
+        background: #3df58c;
+      }
+    </style>
+  </head>
+  <body>
+    <i class="particle" style="--size: 5px; --opacity: 0.8; left: 73%; top: 19%"></i>
+    <i class="particle" style="--size: 3px; --opacity: 0.55; left: 89%; top: 43%"></i>
+    <i class="particle" style="--size: 6px; --opacity: 0.65; left: 79%; top: 76%"></i>
+    <i class="particle" style="--size: 3px; --opacity: 0.45; left: 95%; top: 67%"></i>
+    <i class="particle" style="--size: 4px; --opacity: 0.6; left: 63%; top: 84%"></i>
+    <main class="content">
+      <p class="brand">fextra<strong>code</strong></p>
+      <h1>Fernando Morales</h1>
+      <p class="tagline" id="tagline"></p>
+      <div class="rule"></div>
+    </main>
+    <script>
+      const language = document.documentElement.lang;
+      document.documentElement.lang = language;
+      document.querySelector('#tagline').textContent =
+        language === 'en'
+          ? 'I build backends · APIs · web apps'
+          : 'Desarrollo backends · APIs · apps web';
+    </script>
+  </body>
+</html>

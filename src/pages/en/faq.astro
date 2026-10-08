@@ -1,0 +1,64 @@
+---
+import { getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const faq = await getEntry('faq', 'en');
+if (!faq) throw new Error('Missing English FAQ content');
+---
+
+<Base lang="en">
+  <article class="content-page wrap">
+    <h1>Frequently asked questions</h1>
+    <div class="faq-page">
+      {faq.data.items.map((item) => (
+        <details>
+          <summary>{item.q}</summary>
+          <p>
+            {item.a}
+            {item.link === 'privacy' && (
+              <>
+                {' '}
+                More details in the <a href="/en/privacy/">privacy policy</a>.
+              </>
+            )}
+          </p>
+        </details>
+      ))}
+    </div>
+    <a class="faq-contact" href="/en/#contact">
+      {faq.data.cta}
+    </a>
+  </article>
+</Base>
+
+<style>
+  .content-page {
+    padding-block: var(--space-16);
+  }
+  h1 {
+    margin-bottom: var(--space-8);
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+  .faq-page {
+    max-width: 760px;
+  }
+  details {
+    border-bottom: 1px solid var(--color-border);
+  }
+  summary {
+    padding: 18px 0;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  details p {
+    padding-bottom: 18px;
+    color: var(--color-muted-fg);
+  }
+  a {
+    color: var(--color-green);
+  }
+  .faq-contact {
+    display: inline-block;
+    margin-top: var(--space-6);
+  }
+</style>

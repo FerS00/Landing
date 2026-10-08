@@ -1,0 +1,72 @@
+---
+import type { Lang } from '../../i18n/utils';
+import Approach from './Approach.astro';
+import Contact from './Contact.astro';
+import Hero from './Hero.astro';
+import LogoSprite from './LogoSprite.astro';
+import Marquee from './Marquee.astro';
+import Projects from './Projects.astro';
+import Stack from './Stack.astro';
+import Terminal from './Terminal.astro';
+
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<Hero lang={lang}>
+  <Terminal lang={lang} />
+</Hero>
+<Marquee />
+<Approach lang={lang} />
+<Projects lang={lang} />
+<Stack lang={lang} />
+<LogoSprite />
+<Contact lang={lang} />
+<div class="bigword" aria-hidden="true">
+  fextracode
+</div>
+
+<script>
+  import '../../scripts/reveal';
+</script>
+
+<style is:global>
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal.in {
+    animation: reveal-in 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes reveal-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal.in {
+      animation: none;
+    }
+  }
+  .anchor-section {
+    scroll-margin-top: 88px;
+  }
+  .bigword {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: var(--space-16) auto 0;
+    padding: 0.1em 0.12em;
+    background: var(--grad-loop);
+    background-clip: text;
+    color: transparent;
+    font: 800 clamp(2rem, 9vw, 9rem) / 0.9 var(--font-display);
+    letter-spacing: -0.045em;
+    user-select: none;
+    white-space: nowrap;
+  }
+</style>

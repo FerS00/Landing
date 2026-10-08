@@ -1,0 +1,377 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const orbit = [
+  [
+    { name: 'Spring Boot', logo: 'spring' },
+    { name: 'FastAPI', logo: 'fastapi' },
+    { name: 'Angular', logo: 'angular' },
+    { name: 'React', logo: 'react' },
+  ],
+  [
+    { name: 'Java', logo: 'java' },
+    { name: 'Python', logo: 'python' },
+    { name: 'C++', logo: 'cpp' },
+    { name: 'C#', logo: 'csharp' },
+  ],
+  [
+    { name: 'MySQL', logo: 'mysql' },
+    { name: 'Docker', logo: 'docker' },
+  ],
+];
+---
+
+<section id="stack" class="stack wrap" aria-labelledby="stack-title">
+  <div class="stack-wrap">
+    <div class="orbit reveal" aria-label={t('stack.title')}>
+      {orbit.map((ring, ringIndex) => (
+        <div class:list={['ring', ringIndex > 0 && `r${ringIndex + 1}`]}>
+          {ring.map((item) => (
+            <button type="button" data-tech={item.name} aria-label={item.name} aria-pressed="false">
+              <em>
+                <svg aria-hidden="true">
+                  <use href={`#i-${item.logo}`} />
+                </svg>
+                <b>{item.name}</b>
+              </em>
+            </button>
+          ))}
+        </div>
+      ))}
+      <span class="core" aria-hidden="true">
+        &lt;/&gt;
+      </span>
+    </div>
+
+    <div class="stack-content">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">{t('stack.eyebrow')}</p>
+          <h2 id="stack-title">{t('stack.title')}</h2>
+        </div>
+      </div>
+      <p class="stack-hint">{t('stack.hint')}</p>
+      <div class="stack-list">
+        <div class="stack-row">
+          <h3>{t('stack.backend')}</h3>
+          <div>
+            <button type="button" data-tech="Java" aria-pressed="false">
+              Java
+            </button>
+            <button type="button" data-tech="Spring Boot" aria-pressed="false">
+              Spring Boot
+            </button>
+            <button type="button" data-tech="Python" aria-pressed="false">
+              Python
+            </button>
+            <button type="button" data-tech="FastAPI" aria-pressed="false">
+              FastAPI
+            </button>
+            <button type="button" data-tech="C#" aria-pressed="false">
+              C# / .NET
+            </button>
+          </div>
+        </div>
+        <div class="stack-row">
+          <h3>{t('stack.frontend')}</h3>
+          <div>
+            <button type="button" data-tech="Angular" aria-pressed="false">
+              Angular
+            </button>
+            <button type="button" data-tech="React" aria-pressed="false">
+              React
+            </button>
+            <span class="plain">TypeScript</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <h3>{t('stack.data')}</h3>
+          <div>
+            <button type="button" data-tech="MySQL" aria-pressed="false">
+              MySQL / MariaDB
+            </button>
+            <span class="plain">SQLAlchemy</span>
+            <span class="plain">Flyway</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <h3>{t('stack.windows')}</h3>
+          <div>
+            <button type="button" data-tech="C++" aria-pressed="false">
+              C++
+            </button>
+            <button type="button" data-tech="Win32" aria-pressed="false">
+              Win32 API
+            </button>
+            <span class="plain">Windows CNG</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <h3>{t('stack.ai')}</h3>
+          <div>
+            <button type="button" data-tech="LangGraph" aria-pressed="false">
+              LangGraph
+            </button>
+            <span class="plain">LLM tool calling</span>
+          </div>
+        </div>
+        <div class="stack-row">
+          <h3>{t('stack.infra')}</h3>
+          <div>
+            <button type="button" data-tech="Docker" aria-pressed="false">
+              Docker
+            </button>
+            <span class="plain">SSE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { emit, on } from '../../scripts/motion';
+
+  document.querySelectorAll<HTMLButtonElement>('.stack [data-tech]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextTech =
+        button.getAttribute('aria-pressed') === 'true' ? null : (button.dataset.tech ?? null);
+      emit('fx:filter-tech', { tech: nextTech });
+    });
+  });
+
+  on<{ tech: string | null }>('fx:filter-tech', ({ tech }) => {
+    document.querySelectorAll<HTMLButtonElement>('[data-tech]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.tech === tech));
+    });
+  });
+</script>
+
+<style>
+  .stack {
+    padding-block: var(--space-16);
+  }
+  .stack-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-12);
+    align-items: center;
+  }
+  .stack-wrap > * {
+    min-width: 0;
+  }
+  .orbit {
+    position: relative;
+    width: min(460px, calc(100% - 100px));
+    aspect-ratio: 1;
+    margin: 56px auto;
+  }
+  .ring {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: 50%;
+    animation: orbit-spin 46s linear infinite;
+  }
+  .ring.r2 {
+    inset: 17%;
+    animation-duration: 32s;
+    animation-direction: reverse;
+  }
+  .ring.r3 {
+    inset: 34%;
+    animation-duration: 24s;
+  }
+  .ring button {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-logo-bg);
+    cursor: pointer;
+  }
+  .ring button:nth-child(2) {
+    top: 100%;
+  }
+  .ring button:nth-child(3) {
+    top: 50%;
+    left: 0;
+  }
+  .ring button:nth-child(4) {
+    top: 50%;
+    left: 100%;
+  }
+  .ring button:hover,
+  .ring button[aria-pressed='true'] {
+    border-color: var(--color-green);
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--color-green) 30%, transparent),
+      0 0 28px color-mix(in srgb, var(--color-green) 45%, transparent);
+  }
+  .ring button:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+  }
+  .ring button em {
+    position: relative;
+    display: grid;
+    place-items: center;
+    font-style: normal;
+    animation: orbit-counter 46s linear infinite;
+  }
+  .ring.r2 button em {
+    animation-duration: 32s;
+    animation-direction: normal;
+  }
+  .ring.r3 button em {
+    animation-duration: 24s;
+  }
+  .ring button svg {
+    width: 34px;
+    height: 34px;
+  }
+  .ring button b {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    padding: 4px 9px;
+    transform: translateX(-50%);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+    font: 500 0.7rem var(--font-mono);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .ring button:hover b,
+  .ring button:focus-visible b,
+  .ring button[aria-pressed='true'] b {
+    opacity: 1;
+  }
+  .orbit:hover .ring,
+  .orbit:hover .ring em,
+  .orbit:focus-within .ring,
+  .orbit:focus-within .ring em {
+    animation-play-state: paused;
+  }
+  .core {
+    position: absolute;
+    inset: 41%;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-green);
+    color: var(--color-on-accent);
+    font: 800 1.1rem var(--font-display);
+    box-shadow: 0 0 70px color-mix(in srgb, var(--color-green) 45%, transparent);
+  }
+  .section-head {
+    margin-bottom: 16px;
+  }
+  .eyebrow {
+    margin-bottom: var(--space-3);
+    color: var(--color-green);
+    font: 500 0.75rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-size: clamp(2.3rem, 5vw, 4rem);
+    letter-spacing: -0.045em;
+  }
+  .stack-hint {
+    margin-bottom: var(--space-4);
+    color: var(--color-muted-fg);
+    font: 400 0.8rem var(--font-mono);
+  }
+  .stack-row {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: baseline;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .stack-row h3 {
+    color: var(--color-green);
+    font: 500 0.75rem/1.6 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stack-row div {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .stack-row button,
+  .plain {
+    min-height: 32px;
+    padding: 4px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-fg);
+    font: 500 0.87rem var(--font-body);
+  }
+  .stack-row button {
+    cursor: pointer;
+  }
+  .stack-row button:hover,
+  .stack-row button[aria-pressed='true'] {
+    background: var(--color-surface-2);
+    color: var(--color-green);
+  }
+  .plain {
+    color: var(--color-muted-fg);
+  }
+  @keyframes orbit-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes orbit-counter {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  @media (max-width: 900px) {
+    .stack-wrap {
+      grid-template-columns: 1fr;
+    }
+    .orbit {
+      width: min(460px, calc(100% - 80px));
+    }
+  }
+  @media (max-width: 620px) {
+    .ring button {
+      width: 46px;
+      height: 46px;
+    }
+    .ring button svg {
+      width: 26px;
+      height: 26px;
+    }
+    .stack-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ring,
+    .ring button em {
+      animation: none;
+    }
+  }
+</style>

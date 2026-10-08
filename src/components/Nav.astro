@@ -1,0 +1,195 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+import LangSwitch from './LangSwitch.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const isHome = Astro.url.pathname === (lang === 'es' ? '/' : '/en/');
+const homePath = lang === 'es' ? '/' : '/en/';
+const sectionHref = (section: string) => (isHome ? `#${section}` : `${homePath}#${section}`);
+---
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href={lang === 'es' ? '/' : '/en/'} aria-label="fextracode">
+      <i aria-hidden="true"></i>
+      <span>
+        fextra<b>code</b>
+      </span>
+    </a>
+    <nav class="nav-links" aria-label={t('nav.aria')}>
+      <span class="nav-ind" aria-hidden="true"></span>
+      <a href={sectionHref('approach')}>{t('nav.approach')}</a>
+      <a href={sectionHref('work')}>{t('nav.work')}</a>
+      <a href={sectionHref('stack')}>{t('nav.stack')}</a>
+      <a href={sectionHref('contact')}>{t('nav.contact')}</a>
+      <button class="faq-link" type="button" data-faq>
+        {t('nav.faq')}
+      </button>
+    </nav>
+    <div class="tools">
+      <LangSwitch lang={lang} />
+      <ThemeToggle lang={lang} />
+    </div>
+  </div>
+</header>
+
+<script>
+  import { emit } from '../scripts/motion';
+
+  document.querySelector<HTMLButtonElement>('[data-faq]')?.addEventListener('click', () => {
+    emit('fx:open-dialog', { id: 'faq' });
+  });
+
+  const nav = document.querySelector<HTMLElement>('.nav-links');
+  const indicator = nav?.querySelector<HTMLElement>('.nav-ind');
+  const links = [...(nav?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]') ?? [])];
+  const sections = ['top', 'approach', 'work', 'stack', 'contact']
+    .map((id) => document.getElementById(id))
+    .filter((section): section is HTMLElement => section !== null);
+
+  function updateIndicator(sectionId: string): void {
+    if (!nav || !indicator) return;
+    const activeLink = links.find((link) => link.hash === `#${sectionId}`);
+    links.forEach((link) => {
+      if (link === activeLink) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+    if (!activeLink) {
+      indicator.style.opacity = '0';
+      return;
+    }
+    indicator.style.width = `${activeLink.offsetWidth}px`;
+    indicator.style.transform = `translateX(${activeLink.offsetLeft}px)`;
+    indicator.style.opacity = '1';
+  }
+
+  if (sections.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        const current = visible.at(-1)?.target;
+        if (current instanceof HTMLElement) updateIndicator(current.id);
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    z-index: 30;
+    top: env(safe-area-inset-top, 0px);
+    margin-inline: calc(-1 * var(--space-4));
+    padding: 12px var(--space-4);
+  }
+
+  .nav-in {
+    display: flex;
+    max-width: 1180px;
+    min-height: 56px;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline: auto;
+    padding: 6px 8px 6px 18px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    backdrop-filter: blur(14px);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font: 700 1.1rem var(--font-display);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .brand b {
+    color: var(--color-green);
+    font-weight: 700;
+  }
+
+  .brand i {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--color-green);
+    box-shadow: 0 0 12px var(--color-green);
+  }
+
+  .nav-links {
+    position: relative;
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+  }
+
+  .nav-ind {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    box-shadow: inset 0 -2px 0 var(--color-green);
+    opacity: 0;
+    transition:
+      transform 450ms var(--ease-out),
+      opacity 300ms;
+    pointer-events: none;
+  }
+
+  .nav-links a {
+    position: relative;
+    z-index: 1;
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--color-muted-fg);
+    font: 500 0.9rem var(--font-body);
+    text-decoration: none;
+  }
+
+  .faq-link {
+    position: relative;
+    z-index: 1;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-muted-fg);
+    cursor: pointer;
+    font: 500 0.9rem var(--font-body);
+  }
+
+  .faq-link:hover {
+    color: var(--color-fg);
+  }
+
+  .nav-links a:hover {
+    color: var(--color-fg);
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .nav-links {
+      display: none;
+    }
+
+    .tools {
+      margin-left: auto;
+    }
+  }
+</style>

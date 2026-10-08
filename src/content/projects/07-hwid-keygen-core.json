@@ -1,0 +1,13 @@
+{
+  "order": 7,
+  "name": "Hwid-Keygen-Core",
+  "url": "https://github.com/FerS00/portfolio/blob/main/projects/hwid-keygen-core/README.md",
+  "kind": "priv",
+  "wide": true,
+  "tags": ["C++17", "Win32", "CNG"],
+  "tech": ["C++", "Win32"],
+  "description": {
+    "es": "Capa de activación offline para un ejecutable protegido del que no se tiene el código fuente.",
+    "en": "Offline activation layer for a protected executable whose source code is not available."
+  }
+}

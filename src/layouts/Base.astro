@@ -1,0 +1,144 @@
+---
+import { Font } from 'astro:assets';
+import { getAlternatePath, useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+import { serializeStructuredData } from '../config/seo';
+import Footer from '../components/Footer.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import InfoDialog from '../components/InfoDialog.astro';
+import Nav from '../components/Nav.astro';
+import SignalField from '../components/fx/SignalField.astro';
+import '../styles/global.css';
+import { hasAnalyticsConfig } from '../lib/analytics';
+
+interface Props {
+  lang: Lang;
+  noindex?: boolean;
+}
+
+const { lang, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const site = Astro.site ?? new URL('https://fextracode.com');
+const canonical = new URL(Astro.url.pathname, site);
+const esUrl = new URL(getAlternatePath(Astro.url.pathname, 'es'), site);
+const enUrl = new URL(getAlternatePath(Astro.url.pathname, 'en'), site);
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
+const ogImage = new URL(`/og/og-${lang}.png`, site);
+const ogImageAlt =
+  lang === 'es'
+    ? 'Fernando Morales · fextracode: desarrollo backends, APIs y apps web'
+    : 'Fernando Morales · fextracode: I build backends, APIs and web apps';
+const structuredData = isHome ? serializeStructuredData(lang) : undefined;
+const gaId = import.meta.env.PUBLIC_GA_ID ?? '';
+const clarityId = import.meta.env.PUBLIC_CLARITY_ID ?? '';
+const showConsent = hasAnalyticsConfig(gaId, clarityId);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t('meta.title')}</title>
+    <meta name="description" content={t('meta.description')} />
+    {noindex ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={canonical.href} />
+        <link rel="alternate" hreflang="es" href={esUrl.href} />
+        <link rel="alternate" hreflang="en" href={enUrl.href} />
+        <link rel="alternate" hreflang="x-default" href={esUrl.href} />
+      </>
+    )}
+    <meta name="color-scheme" content="dark light" />
+    <meta property="og:title" content={t('meta.title')} />
+    <meta property="og:description" content={t('meta.description')} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage.href} />
+    {structuredData && <script type="application/ld+json" set:html={structuredData} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch {
+        // Theme storage can be unavailable in restricted browsing contexts.
+      }
+    </script>
+    <script is:inline>
+      document.addEventListener(
+        'click',
+        (event) => {
+          const button =
+            event.target instanceof Element ? event.target.closest('[data-theme-toggle]') : null;
+          if (!button) return;
+
+          const rect = button.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+          const radius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y),
+          );
+          const root = document.documentElement;
+          root.style.setProperty('--theme-x', `${x}px`);
+          root.style.setProperty('--theme-y', `${y}px`);
+          root.style.setProperty('--theme-radius', `${radius}px`);
+        },
+        true,
+      );
+    </script>
+    <Font cssVariable="--font-syne" preload />
+    <Font cssVariable="--font-manrope" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
+  </head>
+  <body>
+    <SignalField />
+    <a class="skip" href="#main">
+      {t('skip')}
+    </a>
+    <Nav lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <InfoDialog lang={lang} pathname={Astro.url.pathname} />
+    {showConsent && <ConsentBanner lang={lang} gaId={gaId} clarityId={clarityId} />}
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    view-transition-name: root;
+  }
+
+  ::view-transition-new(root) {
+    animation: theme-reveal 600ms var(--ease-out) both;
+  }
+
+  ::view-transition-old(root) {
+    animation: none;
+  }
+
+  @keyframes theme-reveal {
+    from {
+      clip-path: circle(0 at var(--theme-x) var(--theme-y));
+      opacity: 0.8;
+    }
+
+    to {
+      clip-path: circle(var(--theme-radius) at var(--theme-x) var(--theme-y));
+      opacity: 1;
+    }
+  }
+</style>

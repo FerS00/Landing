@@ -1,0 +1,10 @@
+dist/
+.astro/
+node_modules/
+package-lock.json
+design-system/
+docs/
+playwright-report/
+test-results/
+.lighthouseci/
+.wrangler/
