@@ -32,3 +32,7 @@ Archivos permitidos: `src/styles/global.css`, `src/components/ConsentBanner.astr
 ## Efectos autorizados
 
 El usuario autorizó las correcciones, su publicación en main y la eliminación de las demás ramas. La entrega usa las protecciones existentes de main y conserva los cambios locales previos de documentación. No implica cambiar secretos ni configuraciones de Cloudflare.
+
+## Resultado de cierre
+
+Criterios 1–7 aprobados por auditoría independiente `71ce546432604e51b93da271c828e6b3`. Criterio 8 completado: PR #4 fusionado en `2f19d01`, controles de main y despliegue aprobados; otras ramas eliminadas tras verificar el respaldo de los commits de Dependabot. Producción revisada en las doce combinaciones de idioma, tema y ancho. Evidencia compacta en `docs/CIERRE_PROYECTO.md`.

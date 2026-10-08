@@ -7,13 +7,17 @@ Landing bilingüe (ES/EN) de Fernando Morales en [https://fextracode.com](https:
 [![Security](https://github.com/FerS00/Landing/actions/workflows/security.yml/badge.svg)](https://github.com/FerS00/Landing/actions/workflows/security.yml)
 [![Deploy](https://github.com/FerS00/Landing/actions/workflows/deploy.yml/badge.svg)](https://github.com/FerS00/Landing/actions/workflows/deploy.yml)
 
+## Estado del proyecto
+
+Cerrado por el momento al 2026-10-08. La corrección visual se entregó mediante el [PR #4](https://github.com/FerS00/Landing/pull/4), con producción verificada en `2f19d01`. No hay desarrollo activo. El [checkpoint](docs/ESTADO_TRABAJO.md) registra las comprobaciones y observaciones de cierre.
+
 ## Stack
 
 Astro 7 y TypeScript, sin framework de UI. El sitio se publica en Cloudflare Pages e incluye una Pages Function para el formulario de contacto. Las fuentes se sirven desde el propio sitio.
 
 ## Requisitos y comandos
 
-Node.js 22.12 o posterior. `.nvmrc` especifica la versión usada en CI.
+CI usa Node.js 24, según `.nvmrc`; `package.json` declara compatibilidad desde Node.js 22.12. La verificación de cierre se realizó con la versión configurada para el proyecto.
 
 ```sh
 npm ci
@@ -85,6 +89,9 @@ GA4 y Clarity solo se cargan tras el consentimiento; sin IDs configurados no se 
 
 ## Documentación
 
+- [Estado y reanudación](docs/ESTADO_TRABAJO.md)
+- [Cierre y evidencias](docs/CIERRE_PROYECTO.md)
+- [Mapa del repositorio](docs/GRAFOS.md)
 - [Plan del proyecto](docs/PLAN_PROYECTO.md)
 - [Runbook de Cloudflare Pages](docs/RUNBOOK.md)
 - [Dirección de diseño](design-system/fers00-landing/DESIGN.md)
