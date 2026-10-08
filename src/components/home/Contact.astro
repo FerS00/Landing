@@ -37,7 +37,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
         >
           <span>
             <span class="channel-label">LinkedIn</span>
-            <span class="channel-value">Fernando Morales Peña</span>
+            <span class="channel-value">{t('hero.name')}</span>
           </span>
           <span aria-hidden="true">↗</span>
         </a>
@@ -410,7 +410,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 <style>
   .contact-section {
-    padding-block: var(--space-8) var(--space-16);
+    padding-block: var(--space-24) 0;
     scroll-margin-top: 88px;
   }
   .contact {
@@ -434,6 +434,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     background: conic-gradient(
       var(--color-green),
       var(--color-cyan),
+      var(--color-green),
       var(--color-violet),
       var(--color-green)
     );
@@ -448,10 +449,13 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     min-width: 0;
   }
   .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: var(--space-3);
     color: var(--color-green);
-    font: 500 0.75rem var(--font-mono);
-    letter-spacing: 0.12em;
+    font: 500 0.78rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
   .contact h2 {
@@ -460,12 +464,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 0.95;
-  }
-  .grad-text {
-    padding-right: 0.08em;
-    background: var(--grad-loop);
-    background-clip: text;
-    color: transparent;
   }
   .intro {
     max-width: 46ch;
@@ -520,8 +518,8 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     font: 500 0.78rem var(--font-mono);
   }
   .copy-button {
-    width: 112px;
-    min-width: 112px;
+    width: 104px;
+    min-width: 104px;
   }
   form {
     display: grid;
@@ -556,7 +554,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
   }
   textarea {
     height: 130px;
-    resize: vertical;
+    resize: none;
   }
   input:focus-visible,
   textarea:focus-visible,
@@ -583,9 +581,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
   }
   .btn-primary {
     display: inline-flex;
-    width: 220px;
+    width: 100%;
     min-height: 52px;
     align-items: center;
+    justify-content: center;
     gap: var(--space-3);
     padding: 0 var(--space-6);
     border: 0;
@@ -593,7 +592,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     background: var(--color-green);
     color: var(--color-on-accent);
     cursor: pointer;
-    font: 700 0.9rem var(--font-body);
+    font: 700 0.98rem var(--font-body);
     transition: transform 250ms var(--ease-out);
   }
   .btn-primary:hover {

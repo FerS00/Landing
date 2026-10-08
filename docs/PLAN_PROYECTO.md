@@ -1,8 +1,8 @@
 # PLAN_PROYECTO — Landing personal FerS00
 
-> Plan canónico. Repositorio destino: `github.com/FerS00/Landing` (**público** desde 2026-10-07, rama `main`, hoy solo contiene `README.md`).
+> Plan canónico. Repositorio destino: `github.com/FerS00/Landing` (**público** desde 2026-10-07, rama `main` protegida).
 > Dominio: **fextracode.com** (DNS ya en Cloudflare: `*.ns.cloudflare.com`).
-> Fecha: 2026-10-08 (rev. 6). Estado: **Fases 0–8 implementadas y auditadas en local; Fase 9 (entrega) pendiente de autorización**.
+> Fecha: 2026-10-08 (rev. 7). Estado: **v1.0.0 entregada (main `a19171b`); dominio y formulario verificados en producción (ver `docs/ESTADO_TRABAJO.md`)**.
 
 ## 1. Objetivo
 
@@ -251,3 +251,7 @@ Cada fase termina en un estado funcional y verificable localmente y se audita an
 - `design-system/fers00-landing/DESIGN.md` — sistema fusionado (fuente de verdad).
 - `design-system/fers00-landing/prototype.html` — prototipo bilingüe v4; publicado como artifact privado: https://claude.ai/artifact/A9AJeffNmfvY6pBrD7JWR3
 - `design-system/fers00-landing/MASTER.md` — salida de ui-ux-pro-max (insumo, no fuente de verdad).
+
+## Corrección visual posterior a v1.0.0
+
+Petición autorizada el 2026-10-08: alinear la presentación con el prototipo original y usar Fernando Morales en contacto y copyright. Contrato en `docs/ESPECIFICACION_CORRECCION_VISUAL.md`. Codex implementa por autorización de trabajar sin Claude; Antigravity audita. Se conservan los contratos del formulario, analítica y consentimiento. La publicación en main y eliminación de otras ramas están autorizadas; los commits no integrados se conservan en un bundle local verificado.

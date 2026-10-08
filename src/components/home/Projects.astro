@@ -72,6 +72,17 @@ const fullLayoutSpans = projectColumnSpans(
         </div>
         <span class="more">
           {project.data.kind === 'pub' ? t('projects.repository') : t('projects.caseStudy')}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true"
+          >
+            <path d="M7 17 17 7M7 7h10v10" />
+          </svg>
         </span>
       </a>
     ))}
@@ -266,25 +277,30 @@ const fullLayoutSpans = projectColumnSpans(
 
 <style>
   .work {
-    padding-block: var(--space-16);
+    padding-block: var(--space-24) 0;
   }
   .section-head {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     gap: var(--space-6);
-    align-items: end;
-    margin-bottom: var(--space-8);
+    align-items: flex-end;
+    margin-bottom: var(--space-12);
   }
   .eyebrow {
-    margin-bottom: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--color-green);
-    font: 500 0.75rem var(--font-mono);
-    letter-spacing: 0.12em;
+    font: 500 0.78rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
   h2 {
-    font-size: clamp(2.3rem, 5vw, 4rem);
-    letter-spacing: -0.045em;
+    margin-top: var(--space-4);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
   }
   .filters {
     display: flex;
@@ -294,18 +310,22 @@ const fullLayoutSpans = projectColumnSpans(
   }
   .chip {
     min-height: 44px;
-    padding: 0 16px;
+    padding: 0 18px;
     border: 1px solid var(--color-border-strong);
     border-radius: 999px;
     background: transparent;
     color: var(--color-fg);
     cursor: pointer;
-    font: 500 0.78rem var(--font-mono);
+    font: 500 0.85rem var(--font-mono);
   }
-  .chip:hover,
-  .chip[aria-pressed='true'] {
+  .chip:hover {
     border-color: var(--color-green);
     color: var(--color-green);
+  }
+  .filters .chip[aria-pressed='true'] {
+    border-color: transparent;
+    background: var(--color-green);
+    color: var(--color-on-accent);
   }
   .tech-chip {
     color: var(--color-green);
@@ -329,15 +349,32 @@ const fullLayoutSpans = projectColumnSpans(
     padding: var(--space-6);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background:
-      radial-gradient(
-        340px circle at var(--mx, 50%) var(--my, 50%),
-        color-mix(in srgb, var(--color-green) 10%, transparent),
-        transparent 75%
-      ),
-      var(--color-surface);
+    background: var(--color-surface);
     text-decoration: none;
     transform-style: preserve-3d;
+    transition: transform 500ms var(--ease-out);
+  }
+  .project-card::before {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--color-green) 18%, transparent),
+      transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 300ms;
+    pointer-events: none;
+    content: '';
+  }
+  .project-card:hover::before {
+    opacity: 1;
+  }
+  .project-card:hover {
+    border-color: color-mix(in srgb, var(--color-green) 55%, transparent);
+  }
+  .project-card > * {
+    position: relative;
   }
   .project-card[hidden] {
     display: none;
@@ -352,7 +389,7 @@ const fullLayoutSpans = projectColumnSpans(
     font: 400 0.75rem var(--font-mono);
   }
   .badge {
-    padding: 4px 10px;
+    padding: 5px 10px;
     border-radius: 999px;
     font: 500 0.7rem var(--font-mono);
   }
@@ -365,12 +402,14 @@ const fullLayoutSpans = projectColumnSpans(
     color: var(--color-coral);
   }
   .project-card h3 {
-    font-size: 1.5rem;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
   }
   .description {
     flex: 1;
     color: var(--color-muted-fg);
-    font-size: 0.92rem;
+    font-size: 0.94rem;
   }
   .tags {
     display: flex;
@@ -381,7 +420,7 @@ const fullLayoutSpans = projectColumnSpans(
     padding: 4px 9px;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    font: 400 0.7rem var(--font-mono);
+    font: 400 0.72rem var(--font-mono);
     overflow-wrap: anywhere;
   }
   .tags span.hit {
@@ -389,8 +428,17 @@ const fullLayoutSpans = projectColumnSpans(
     color: var(--color-green);
   }
   .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     color: var(--color-green);
-    font: 500 0.8rem var(--font-mono);
+    font: 600 0.88rem var(--font-body);
+  }
+  .more svg {
+    transition: transform 300ms var(--ease-out);
+  }
+  .project-card:hover .more svg {
+    transform: translate(3px, -3px);
   }
   @media (max-width: 959.98px) {
     .project-card {
@@ -398,9 +446,6 @@ const fullLayoutSpans = projectColumnSpans(
     }
   }
   @media (max-width: 700px) {
-    .section-head {
-      grid-template-columns: 1fr;
-    }
     .filters {
       justify-content: flex-start;
     }

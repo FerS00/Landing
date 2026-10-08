@@ -6,9 +6,12 @@ const locales = [
 ];
 
 for (const locale of locales) {
-  test(`${locale.lang}: document and hero heights stay fixed for six seconds`, async ({ page }) => {
+  test(`${locale.lang}: document and hero heights stay fixed for eight seconds`, async ({
+    page,
+  }) => {
     await page.goto(locale.path);
     await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator('.hero h1')).toHaveAttribute('data-ready', 'true');
 
     const initial = await page.evaluate(() => ({
       document: document.documentElement.scrollHeight,
@@ -16,17 +19,17 @@ for (const locale of locales) {
     }));
     const samples = await page.evaluate(async () => {
       const values: { document: number; hero: number | undefined }[] = [];
-      for (let elapsed = 0; elapsed <= 6000; elapsed += 200) {
+      for (let elapsed = 0; elapsed <= 8000; elapsed += 200) {
         values.push({
           document: document.documentElement.scrollHeight,
           hero: document.querySelector('.hero')?.getBoundingClientRect().height,
         });
-        if (elapsed < 6000) await new Promise((resolve) => window.setTimeout(resolve, 200));
+        if (elapsed < 8000) await new Promise((resolve) => window.setTimeout(resolve, 200));
       }
       return values;
     });
 
-    expect(samples).toHaveLength(31);
+    expect(samples).toHaveLength(41);
     expect(samples.every((sample) => sample.document === initial.document)).toBe(true);
     expect(samples.every((sample) => sample.hero === initial.hero)).toBe(true);
   });

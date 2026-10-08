@@ -152,7 +152,7 @@ const orbit = [
 
 <style>
   .stack {
-    padding-block: var(--space-16);
+    padding-block: var(--space-24) 0;
   }
   .stack-wrap {
     display: grid;
@@ -165,7 +165,7 @@ const orbit = [
   }
   .orbit {
     position: relative;
-    width: min(460px, calc(100% - 100px));
+    width: min(460px, calc(100% - 150px));
     aspect-ratio: 1;
     margin: 56px auto;
   }
@@ -238,6 +238,10 @@ const orbit = [
   .ring button svg {
     width: 34px;
     height: 34px;
+    transition: transform 300ms var(--ease-out);
+  }
+  .ring button:hover svg {
+    transform: scale(1.15);
   }
   .ring button b {
     position: absolute;
@@ -275,25 +279,30 @@ const orbit = [
     color: var(--color-on-accent);
     font: 800 1.1rem var(--font-display);
     box-shadow: 0 0 70px color-mix(in srgb, var(--color-green) 45%, transparent);
+    animation: core-breathe 4s ease-in-out infinite;
   }
   .section-head {
     margin-bottom: 16px;
   }
   .eyebrow {
-    margin-bottom: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--color-green);
-    font: 500 0.75rem var(--font-mono);
-    letter-spacing: 0.12em;
+    font: 500 0.78rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
   h2 {
-    font-size: clamp(2.3rem, 5vw, 4rem);
-    letter-spacing: -0.045em;
+    margin-top: var(--space-4);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
   }
   .stack-hint {
     margin-bottom: var(--space-4);
     color: var(--color-muted-fg);
-    font: 400 0.8rem var(--font-mono);
+    font: 400 0.82rem var(--font-mono);
   }
   .stack-row {
     display: grid;
@@ -305,8 +314,8 @@ const orbit = [
   }
   .stack-row h3 {
     color: var(--color-green);
-    font: 500 0.75rem/1.6 var(--font-mono);
-    letter-spacing: 0.1em;
+    font: 500 0.78rem/1.6 var(--font-mono);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
   .stack-row div {
@@ -323,7 +332,7 @@ const orbit = [
     border-radius: 999px;
     background: transparent;
     color: var(--color-fg);
-    font: 500 0.87rem var(--font-body);
+    font: 500 0.9rem var(--font-body);
   }
   .stack-row button {
     cursor: pointer;
@@ -334,7 +343,12 @@ const orbit = [
     color: var(--color-green);
   }
   .plain {
-    color: var(--color-muted-fg);
+    color: var(--color-fg);
+  }
+  @keyframes core-breathe {
+    50% {
+      transform: scale(1.08);
+    }
   }
   @keyframes orbit-spin {
     to {
@@ -350,8 +364,9 @@ const orbit = [
     .stack-wrap {
       grid-template-columns: 1fr;
     }
-    .orbit {
-      width: min(460px, calc(100% - 80px));
+    .stack-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
     }
   }
   @media (max-width: 620px) {
@@ -362,10 +377,6 @@ const orbit = [
     .ring button svg {
       width: 26px;
       height: 26px;
-    }
-    .stack-row {
-      grid-template-columns: 1fr;
-      gap: 4px;
     }
   }
   @media (prefers-reduced-motion: reduce) {

@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  margin: 0;
+  margin: 8px;
   overflow-x: clip;
   padding-inline: var(--space-4);
   background: var(--color-bg);
@@ -37,6 +37,21 @@ h3 {
 
 p {
   margin: 0;
+}
+
+.grad-text {
+  padding-right: 0.08em;
+  background: var(--grad-loop);
+  background-size: 200% 100%;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow::before {
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  content: '';
 }
 
 :focus-visible {
