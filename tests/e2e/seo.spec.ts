@@ -43,3 +43,18 @@ test('SEO metadata and CSP work across localized routes and interactive controls
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
   expect(cspMessages).toEqual([]);
 });
+
+test('section navigation points to the localized home from secondary pages', async ({ page }) => {
+  await page.goto('/faq/');
+  await page.getByRole('link', { name: 'Proyectos' }).click();
+  await expect(page).toHaveURL('/#work');
+
+  await page.goto('/en/privacy/');
+  await page.getByRole('link', { name: 'Work' }).click();
+  await expect(page).toHaveURL('/en/#work');
+
+  await page.goto('/');
+  for (const section of ['approach', 'work', 'stack', 'contact']) {
+    await expect(page.locator(`.nav-links a[href="#${section}"]`)).toHaveCount(1);
+  }
+});

@@ -6,6 +6,9 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const { lang } = Astro.props as { lang: Lang };
 const t = useTranslations(lang);
+const isHome = Astro.url.pathname === (lang === 'es' ? '/' : '/en/');
+const homePath = lang === 'es' ? '/' : '/en/';
+const sectionHref = (section: string) => (isHome ? `#${section}` : `${homePath}#${section}`);
 ---
 
 <header class="nav">
@@ -18,10 +21,10 @@ const t = useTranslations(lang);
     </a>
     <nav class="nav-links" aria-label={t('nav.aria')}>
       <span class="nav-ind" aria-hidden="true"></span>
-      <a href="#approach">{t('nav.approach')}</a>
-      <a href="#work">{t('nav.work')}</a>
-      <a href="#stack">{t('nav.stack')}</a>
-      <a href="#contact">{t('nav.contact')}</a>
+      <a href={sectionHref('approach')}>{t('nav.approach')}</a>
+      <a href={sectionHref('work')}>{t('nav.work')}</a>
+      <a href={sectionHref('stack')}>{t('nav.stack')}</a>
+      <a href={sectionHref('contact')}>{t('nav.contact')}</a>
       <button class="faq-link" type="button" data-faq>
         {t('nav.faq')}
       </button>
