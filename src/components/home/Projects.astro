@@ -1,0 +1,416 @@
+---
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+import { projectColumnSpans } from '../../scripts/projects-core';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const fullLayoutSpans = projectColumnSpans(
+  projects.map(({ data }) => ({ kind: data.kind, tech: data.tech, wide: data.wide })),
+  true,
+);
+---
+
+<section id="work" class="work wrap" aria-labelledby="work-title">
+  <div class="section-head reveal">
+    <div>
+      <p class="eyebrow">{t('work.eyebrow')}</p>
+      <h2 id="work-title">{t('work.title')}</h2>
+    </div>
+    <div class="filters" role="group" aria-label={t('work.filtersLabel')}>
+      <button class="chip" type="button" data-project-filter="all" aria-pressed="true">
+        {t('filters.all')}
+      </button>
+      <button class="chip" type="button" data-project-filter="pub" aria-pressed="false">
+        {t('filters.public')}
+      </button>
+      <button class="chip" type="button" data-project-filter="priv" aria-pressed="false">
+        {t('filters.cases')}
+      </button>
+      <button
+        class="chip tech-chip"
+        type="button"
+        data-tech-chip
+        data-tech-label={t('projects.technology')}
+        data-clear-label={t('projects.clearTechnology')}
+        aria-label={t('projects.clearTechnology')}
+        hidden
+      ></button>
+    </div>
+  </div>
+
+  <div class="project-grid" data-project-grid data-layout="original">
+    {projects.map((project, index) => (
+      <a
+        class="project-card"
+        class:list={{ wide: project.data.wide }}
+        href={project.data.url}
+        target="_blank"
+        rel="noopener"
+        data-project-kind={project.data.kind}
+        data-track-project={project.data.name.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')}
+        data-project-wide={String(project.data.wide)}
+        data-project-tech={JSON.stringify(project.data.tech)}
+        data-project-order={project.data.order}
+        data-project-original-span={fullLayoutSpans[index]}
+        style={`--project-span: ${fullLayoutSpans[index]}`}
+      >
+        <div class="card-top">
+          <span class="index">{String(index + 1).padStart(2, '0')}</span>
+          <span class:list={['badge', project.data.kind]}>
+            {project.data.kind === 'pub' ? t('projects.publicBadge') : t('projects.caseBadge')}
+          </span>
+        </div>
+        <h3>{project.data.name}</h3>
+        <p class="description">{project.data.description[lang]}</p>
+        <div class="tags">
+          {project.data.tags.map((tag) => (
+            <span data-project-tag={tag}>{tag}</span>
+          ))}
+        </div>
+        <span class="more">
+          {project.data.kind === 'pub' ? t('projects.repository') : t('projects.caseStudy')}
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { emit, on, prefersReducedMotion } from '../../scripts/motion';
+  import {
+    filterProjects,
+    projectColumnSpans,
+    type ProjectKind,
+  } from '../../scripts/projects-core';
+
+  const grid = document.querySelector<HTMLElement>('[data-project-grid]');
+  const cards = [...(grid?.querySelectorAll<HTMLElement>('[data-project-kind]') ?? [])];
+  const filters = [...document.querySelectorAll<HTMLButtonElement>('[data-project-filter]')];
+  const chip = document.querySelector<HTMLButtonElement>('[data-tech-chip]');
+  const reduceMotion = prefersReducedMotion();
+  const projects = cards.map((card) => ({
+    element: card,
+    kind: card.dataset.projectKind as ProjectKind,
+    tech: JSON.parse(card.dataset.projectTech ?? '[]') as string[],
+    wide: card.dataset.projectWide === 'true',
+    originalSpan: Number(card.dataset.projectOriginalSpan ?? 3),
+  }));
+  let activeKind: ProjectKind | 'all' = 'all';
+  let activeTech: string | null = null;
+  let fullGridHeight = 0;
+  let resizeTimer = 0;
+  let resizeFrame = 0;
+  let observedWidth = grid?.getBoundingClientRect().width ?? 0;
+  let resizeObserver: ResizeObserver | null = null;
+
+  function render(animate: boolean): void {
+    if (!grid) return;
+    const originalLayout = activeKind === 'all' && activeTech === null;
+    grid.dataset.layout = originalLayout ? 'original' : 'filtered';
+    const visible = filterProjects(projects, { kind: activeKind, tech: activeTech });
+    const spans = projectColumnSpans(visible, originalLayout);
+    const visibleSet = new Set(visible);
+
+    projects.forEach((project) => {
+      const isVisible = visibleSet.has(project);
+      project.element.hidden = !isVisible;
+      project.element.classList.toggle('wide', originalLayout && project.wide);
+      project.element.style.setProperty(
+        '--project-span',
+        String(spans[visible.indexOf(project)] ?? 3),
+      );
+      project.element.querySelectorAll<HTMLElement>('[data-project-tag]').forEach((tag) => {
+        const value = tag.dataset.projectTag ?? '';
+        tag.classList.toggle('hit', Boolean(activeTech && value.startsWith(activeTech)));
+      });
+    });
+
+    filters.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.projectFilter === activeKind));
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-tech]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.tech === activeTech));
+    });
+
+    if (chip) {
+      chip.hidden = activeTech === null;
+      chip.textContent = activeTech ? `${chip.dataset.techLabel}: ${activeTech}  ✕` : '';
+      chip.setAttribute(
+        'aria-label',
+        activeTech
+          ? `${chip.dataset.clearLabel}: ${activeTech}`
+          : (chip.dataset.clearLabel ?? 'Clear technology filter'),
+      );
+    }
+
+    grid.style.minHeight = fullGridHeight > 0 ? `${fullGridHeight}px` : '';
+
+    if (animate && !reduceMotion) {
+      visible.forEach((project, index) => {
+        project.element.animate(
+          [
+            { opacity: 0, transform: 'translateY(18px)' },
+            { opacity: 1, transform: 'translateY(0)' },
+          ],
+          { duration: 480, delay: index * 55, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+        );
+      });
+    }
+  }
+
+  function measureFullGridHeight(): void {
+    if (!grid) return;
+    grid.style.minHeight = '';
+    grid.dataset.layout = 'original';
+    projects.forEach((project) => {
+      project.element.hidden = false;
+      project.element.classList.toggle('wide', project.wide);
+      project.element.style.setProperty('--project-span', String(project.originalSpan));
+    });
+    fullGridHeight = grid.getBoundingClientRect().height;
+    render(false);
+  }
+
+  function scheduleResizeMeasurement(): void {
+    window.clearTimeout(resizeTimer);
+    window.cancelAnimationFrame(resizeFrame);
+    resizeFrame = 0;
+    fullGridHeight = 0;
+    if (grid) grid.style.minHeight = '';
+    resizeTimer = window.setTimeout(() => {
+      if (!grid) return;
+      const previousVisibility = grid.style.visibility;
+      grid.style.visibility = 'hidden';
+      grid.style.minHeight = '';
+      grid.dataset.layout = 'original';
+      projects.forEach((project) => {
+        project.element.hidden = false;
+        project.element.classList.toggle('wide', project.wide);
+        project.element.style.setProperty('--project-span', String(project.originalSpan));
+      });
+
+      resizeFrame = window.requestAnimationFrame(() => {
+        if (!grid) return;
+        fullGridHeight = grid.getBoundingClientRect().height;
+        render(false);
+        grid.style.visibility = previousVisibility;
+        resizeFrame = 0;
+      });
+    }, 80);
+  }
+
+  filters.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeKind = (button.dataset.projectFilter ?? 'all') as ProjectKind | 'all';
+      render(true);
+    });
+  });
+
+  chip?.addEventListener('click', () => emit('fx:filter-tech', { tech: null }));
+  on<{ tech: string | null }>('fx:filter-tech', ({ tech }) => {
+    activeTech = tech;
+    if (tech) activeKind = 'all';
+    render(true);
+    if (tech)
+      document
+        .querySelector('#work')
+        ?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  if (grid) {
+    fullGridHeight = grid.getBoundingClientRect().height;
+    render(false);
+    void document.fonts.ready.then(measureFullGridHeight);
+    resizeObserver = new ResizeObserver(([entry]) => {
+      if (!grid.isConnected) {
+        resizeObserver?.disconnect();
+        resizeObserver = null;
+        return;
+      }
+      const width = entry?.contentRect.width ?? grid.getBoundingClientRect().width;
+      if (Math.abs(width - observedWidth) < 0.5) return;
+      observedWidth = width;
+      scheduleResizeMeasurement();
+    });
+    resizeObserver.observe(grid);
+    const removalObserver = new MutationObserver(() => {
+      if (grid.isConnected) return;
+      resizeObserver?.disconnect();
+      resizeObserver = null;
+      removalObserver.disconnect();
+      window.clearTimeout(resizeTimer);
+      window.cancelAnimationFrame(resizeFrame);
+    });
+    removalObserver.observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    cards.forEach((card) => {
+      card.addEventListener('pointermove', (event) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        const y = (event.clientY - rect.top) / rect.height;
+        card.style.setProperty('--mx', `${x * 100}%`);
+        card.style.setProperty('--my', `${y * 100}%`);
+        card.style.transform = `perspective(900px) rotateX(${(0.5 - y) * 5}deg) rotateY(${(x - 0.5) * 7}deg)`;
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+</script>
+
+<style>
+  .work {
+    padding-block: var(--space-16);
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-6);
+    align-items: end;
+    margin-bottom: var(--space-8);
+  }
+  .eyebrow {
+    margin-bottom: var(--space-3);
+    color: var(--color-green);
+    font: 500 0.75rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-size: clamp(2.3rem, 5vw, 4rem);
+    letter-spacing: -0.045em;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .chip {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-fg);
+    cursor: pointer;
+    font: 500 0.78rem var(--font-mono);
+  }
+  .chip:hover,
+  .chip[aria-pressed='true'] {
+    border-color: var(--color-green);
+    color: var(--color-green);
+  }
+  .tech-chip {
+    color: var(--color-green);
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--space-4);
+    align-content: start;
+    align-items: stretch;
+  }
+  .project-card {
+    --project-span: 3;
+    position: relative;
+    display: flex;
+    grid-column: span var(--project-span);
+    min-width: 0;
+    flex-direction: column;
+    gap: var(--space-3);
+    overflow: hidden;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background:
+      radial-gradient(
+        340px circle at var(--mx, 50%) var(--my, 50%),
+        color-mix(in srgb, var(--color-green) 10%, transparent),
+        transparent 75%
+      ),
+      var(--color-surface);
+    text-decoration: none;
+    transform-style: preserve-3d;
+  }
+  .project-card[hidden] {
+    display: none;
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .index {
+    color: var(--color-muted-fg);
+    font: 400 0.75rem var(--font-mono);
+  }
+  .badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font: 500 0.7rem var(--font-mono);
+  }
+  .badge.pub {
+    background: color-mix(in srgb, var(--color-green) 12%, transparent);
+    color: var(--color-green);
+  }
+  .badge.priv {
+    background: color-mix(in srgb, var(--color-coral) 12%, transparent);
+    color: var(--color-coral);
+  }
+  .project-card h3 {
+    font-size: 1.5rem;
+  }
+  .description {
+    flex: 1;
+    color: var(--color-muted-fg);
+    font-size: 0.92rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tags span {
+    padding: 4px 9px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font: 400 0.7rem var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+  .tags span.hit {
+    border-color: var(--color-green);
+    color: var(--color-green);
+  }
+  .more {
+    color: var(--color-green);
+    font: 500 0.8rem var(--font-mono);
+  }
+  @media (max-width: 959.98px) {
+    .project-card {
+      --project-span: 3 !important;
+    }
+  }
+  @media (max-width: 700px) {
+    .section-head {
+      grid-template-columns: 1fr;
+    }
+    .filters {
+      justify-content: flex-start;
+    }
+  }
+  @media (max-width: 619.98px) {
+    .project-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .project-card {
+      grid-column: auto !important;
+    }
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+const technologies = [
+  'Java',
+  'Spring Boot',
+  'Python',
+  'FastAPI',
+  'Angular',
+  'React',
+  'C++17',
+  'Win32',
+  'C# / .NET',
+  'MySQL',
+  'LangGraph',
+  'Docker',
+];
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {[0, 1].map(() => (
+      <div class="marquee-group">
+        {technologies.map((technology) => (
+          <span>{technology}</span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    margin-inline: calc(50% - 50vw);
+    padding-block: 18px;
+    border-block: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 55%, transparent);
+    mask: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-fg) 10%,
+      var(--color-fg) 90%,
+      transparent
+    );
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .marquee-group {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 48px;
+    padding-right: 48px;
+  }
+
+  .marquee-group span {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    color: var(--color-muted-fg);
+    font: 700 1.5rem var(--font-display);
+    white-space: nowrap;
+  }
+
+  .marquee-group span::after {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--color-green);
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  @keyframes marquee-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

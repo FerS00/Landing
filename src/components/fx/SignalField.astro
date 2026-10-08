@@ -1,0 +1,298 @@
+<canvas class="signal-field" aria-hidden="true"></canvas>
+<div class="cursor-glow" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<script>
+  import { on, onVisibilityResume, prefersReducedMotion } from '../../scripts/motion';
+
+  interface Particle {
+    x: number;
+    y: number;
+    color: number;
+    speed: number;
+  }
+
+  interface Wave {
+    x: number;
+    y: number;
+    radius: number;
+  }
+
+  const canvas = document.querySelector<HTMLCanvasElement>('.signal-field');
+  const context = canvas?.getContext('2d');
+  const glow = document.querySelector<HTMLElement>('.cursor-glow');
+  const progress = document.querySelector<HTMLElement>('.scroll-progress');
+
+  if (canvas && context && glow && progress) {
+    const reduce = prefersReducedMotion();
+    const hover = window.matchMedia('(hover: hover)');
+    let width = 0;
+    let height = 0;
+    let particles: Particle[] = [];
+    let waves: Wave[] = [];
+    let colors: string[] = [];
+    let background = '';
+    let green = '';
+    let matrixUntil = 0;
+    let drops: number[] = [];
+    let cursorX = window.innerWidth / 2;
+    let cursorY = window.innerHeight / 3;
+    let phase = 0;
+    let frameId = 0;
+    let running = false;
+    let ready = false;
+
+    const readColors = () => {
+      const style = getComputedStyle(document.documentElement);
+      const greenColor = style.getPropertyValue('--color-green').trim();
+      const cyanColor = style.getPropertyValue('--color-cyan').trim();
+      const violetColor = style.getPropertyValue('--color-violet').trim();
+      colors = [greenColor, greenColor, greenColor, greenColor, cyanColor, cyanColor, violetColor];
+      green = greenColor;
+      background = style.getPropertyValue('--color-bg').trim();
+    };
+
+    const drawStatic = () => {
+      if (!context) return;
+      context.clearRect(0, 0, width, height);
+      for (const particle of particles) {
+        context.globalAlpha = 0.6;
+        context.strokeStyle = colors[particle.color] ?? green;
+        context.lineWidth = 1;
+        context.beginPath();
+        context.moveTo(particle.x, particle.y);
+        context.lineTo(particle.x + 1.2, particle.y + 0.8);
+        context.stroke();
+      }
+      context.globalAlpha = 1;
+    };
+
+    const resize = () => {
+      if (!canvas || !context) return;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      const count = Math.min(900, Math.round((width * height) / 1800));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        color: Math.floor(Math.random() * 7),
+        speed: 0.4 + Math.random() * 1.1,
+      }));
+      drops = Array.from({ length: Math.ceil(width / 18) }, () => Math.random() * -height);
+      readColors();
+      if (reduce && ready) drawStatic();
+    };
+
+    const drawFrame = () => {
+      if (!context) return;
+      phase += 0.0018;
+      const now = performance.now();
+      context.globalAlpha = now < matrixUntil ? 0.12 : 0.09;
+      context.fillStyle = background;
+      context.fillRect(0, 0, width, height);
+      context.globalAlpha = 1;
+
+      if (now < matrixUntil) {
+        context.fillStyle = green;
+        context.font = '15px monospace';
+        drops.forEach((drop, index) => {
+          context.fillText(String.fromCharCode(0x30a0 + Math.random() * 96), index * 18, drop);
+          drops[index] = drop > height && Math.random() > 0.975 ? 0 : drop + 18;
+        });
+      } else {
+        for (const particle of particles) {
+          const angle =
+            Math.sin(particle.x * 0.0021 + phase * 2) * 2.2 +
+            Math.cos(particle.y * 0.0026 - phase) * 2.2;
+          let vx = Math.cos(angle) * particle.speed;
+          let vy = Math.sin(angle) * particle.speed;
+          const dx = particle.x - cursorX;
+          const dy = particle.y - cursorY;
+          const distanceSquared = dx * dx + dy * dy;
+
+          if (distanceSquared < 22000) {
+            const force = ((22000 - distanceSquared) / 22000) * 2.4;
+            const distance = Math.sqrt(distanceSquared + 1);
+            vx += (dx / distance) * force;
+            vy += (dy / distance) * force;
+          }
+
+          for (const wave of waves) {
+            const wx = particle.x - wave.x;
+            const wy = particle.y - wave.y;
+            const waveDistance = Math.sqrt(wx * wx + wy * wy) + 0.01;
+            if (Math.abs(waveDistance - wave.radius) < 40) {
+              vx += (wx / waveDistance) * 5;
+              vy += (wy / waveDistance) * 5;
+            }
+          }
+
+          const nextX = particle.x + vx;
+          const nextY = particle.y + vy;
+          context.strokeStyle = colors[particle.color] ?? green;
+          context.globalAlpha = 0.6;
+          context.lineWidth = 1;
+          context.beginPath();
+          context.moveTo(particle.x, particle.y);
+          context.lineTo(nextX, nextY);
+          context.stroke();
+          particle.x = nextX;
+          particle.y = nextY;
+
+          if (nextX < 0 || nextX > width || nextY < 0 || nextY > height) {
+            particle.x = Math.random() * width;
+            particle.y = Math.random() * height;
+          }
+        }
+
+        for (const wave of waves) {
+          context.globalAlpha = Math.max(0, 1 - wave.radius / 420) * 0.8;
+          context.strokeStyle = green;
+          context.lineWidth = 2;
+          context.beginPath();
+          context.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
+          context.stroke();
+          wave.radius += 7;
+        }
+        waves = waves.filter((wave) => wave.radius < 420);
+        context.globalAlpha = 1;
+      }
+    };
+
+    const animate = () => {
+      if (!context || document.hidden || reduce) {
+        running = false;
+        return;
+      }
+      drawFrame();
+      frameId = window.requestAnimationFrame(animate);
+    };
+
+    const start = () => {
+      if (reduce || running || document.hidden) return;
+      running = true;
+      frameId = window.requestAnimationFrame(animate);
+    };
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener(
+      'pointermove',
+      (event) => {
+        cursorX = event.clientX;
+        cursorY = event.clientY;
+        if (!reduce && hover.matches) {
+          glow.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+        }
+      },
+      { passive: true },
+    );
+    glow.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+
+    window.addEventListener('pointerdown', (event) => {
+      if (reduce || !(event.target instanceof Element)) return;
+      if (event.target.closest('a, button, input, textarea, select, label, [data-no-wave]')) return;
+      waves.push({ x: event.clientX, y: event.clientY, radius: 0 });
+    });
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (reduce) return;
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const scale = scrollable > 0 ? window.scrollY / scrollable : 0;
+        progress.style.transform = `scaleX(${scale})`;
+      },
+      { passive: true },
+    );
+
+    const themeObserver = new MutationObserver(readColors);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    const colorScheme = window.matchMedia('(prefers-color-scheme: light)');
+    colorScheme.addEventListener('change', readColors);
+    on<{ duration?: number }>('fx:matrix', (detail) => {
+      if (reduce) return;
+      matrixUntil = performance.now() + (detail?.duration ?? 6000);
+      start();
+    });
+    onVisibilityResume(start);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        window.cancelAnimationFrame(frameId);
+        running = false;
+      }
+    });
+
+    const activate = () => {
+      ready = true;
+      if (reduce) drawStatic();
+      else start();
+    };
+    const waitForIdle = () => {
+      const requestIdleCallback = (
+        window as Window & { requestIdleCallback?: (callback: () => void) => number }
+      ).requestIdleCallback;
+      if (requestIdleCallback) requestIdleCallback.call(window, activate);
+      else window.setTimeout(activate, 800);
+    };
+    if (document.readyState === 'complete') waitForIdle();
+    else window.addEventListener('load', waitForIdle, { once: true });
+  }
+</script>
+
+<style>
+  .signal-field {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .cursor-glow {
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-green) 20%, transparent),
+      transparent 60%
+    );
+    opacity: var(--glow);
+    pointer-events: none;
+    transform: translate3d(50vw, 33vh, 0);
+    translate: -50% -50%;
+  }
+
+  .scroll-progress {
+    position: fixed;
+    z-index: 45;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: var(--grad-loop);
+    pointer-events: none;
+  }
+
+  @media (hover: none) {
+    .cursor-glow {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "title": "Fernando Morales · fextracode",
+    "description": "Fernando Morales, software developer: Java and Python backends, Angular and React web apps, Windows tools and AI applications."
+  },
+  "skip": "Skip to content",
+  "nav": {
+    "aria": "Main",
+    "approach": "Approach",
+    "work": "Work",
+    "stack": "Stack",
+    "contact": "Contact",
+    "faq": "FAQ"
+  },
+  "lang": {
+    "aria": "Language",
+    "es": "Español",
+    "en": "English",
+    "esShort": "ES",
+    "enShort": "EN"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "footer": {
+    "copyright": "© 2026 Fernando Morales Peña · fextracode.com",
+    "aria": "Footer links",
+    "faq": "Frequently asked questions",
+    "privacy": "Privacy and cookies",
+    "preferences": "Cookie preferences"
+  },
+  "consent": {
+    "message": "Optional analytics. If you accept, I use Google Analytics and Microsoft Clarity to measure visits and interactions. Nothing loads until you decide.",
+    "more": "More information",
+    "reject": "Reject",
+    "accept": "Accept"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "titleFirst": "Have a project?",
+    "titleSecond": "Let's talk.",
+    "intro": "Available for freelance projects and technical collaborations in backend, automation and applied AI.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy error"
+  },
+  "form": {
+    "name": "Name",
+    "namePh": "Your name",
+    "email": "Email",
+    "emailPh": "you@example.com",
+    "type": "Proposal type",
+    "freelance": "Freelance project",
+    "collaboration": "Technical collaboration",
+    "message": "Message",
+    "messagePh": "Briefly tell me what you need",
+    "send": "Send message",
+    "faq": "Questions before writing?",
+    "faqLink": "Frequently asked questions",
+    "errorName": "Enter your name.",
+    "errorNameLength": "Your name must be 100 characters or fewer.",
+    "errorEmail": "Enter your email.",
+    "errorEmailInvalid": "Enter a valid email.",
+    "errorEmailLength": "Your email must be 254 characters or fewer.",
+    "errorMessage": "Enter a message.",
+    "errorMessageLength": "Your message must be between 10 and 5,000 characters.",
+    "inactive": "The form is not active yet. Please write to me by email.",
+    "success": "Thanks. I'll get back to you soon.",
+    "captcha": "Captcha verification failed. Please try again.",
+    "sendFailed": "The message could not be sent. Please try again later.",
+    "network": "Could not connect. Check your connection and try again.",
+    "invalid": "Check the form fields and try again.",
+    "sending": "Sending…"
+  },
+  "dialog": {
+    "faqTitle": "Frequently asked questions",
+    "privacyTitle": "Privacy and cookies",
+    "close": "Close dialog",
+    "privacyMore": "More details in the",
+    "privacyLink": "privacy policy",
+    "lastUpdated": "Last updated:",
+    "rejectAnalytics": "Reject analytics",
+    "acceptAnalytics": "Accept analytics"
+  },
+  "hero": {
+    "status": "Open to new projects",
+    "helloBefore": "Hi, I'm ",
+    "name": "Fernando Morales",
+    "helloAfter": ".",
+    "line1": "I build",
+    "words": ["backends", "APIs", "web apps", "AI agents", "offline licensing", "Win32 apps"],
+    "lede": "Systems Engineering student and software developer. I work with Java and Python on the backend, Angular and React on the web, and C++ and C# on Windows. My projects revolve around offline licensing, automation and AI applications.",
+    "ctaProjects": "See projects",
+    "ctaContact": "Let's talk"
+  },
+  "term": {
+    "title": "~/fextracode — zsh",
+    "label": "Type a command",
+    "placeholder": "help",
+    "try": "try:",
+    "suggestions": ["projects", "stack", "contact", "matrix"],
+    "intro": [
+      ["p", "$ "],
+      ["plain", "whoami\n"],
+      ["k", "fernando morales"],
+      ["m", " · software developer\n\n"],
+      ["p", "$ "],
+      ["plain", "cat stack.json\n"],
+      ["m", "{ "],
+      ["s", "\"backend\""],
+      ["m", ": [Java, Python, C#],\n  "],
+      ["s", "\"web\""],
+      ["m", ": [Angular, React],\n  "],
+      ["s", "\"native\""],
+      ["m", ": [C++, Win32] }\n\n"],
+      ["p", "$ "],
+      ["plain", "status\n"],
+      ["k", "● open to new projects\n\n"],
+      ["m", "Type 'help' to see commands.\n"]
+    ],
+    "help": "commands: whoami · projects · stack · contact · faq · privacy · lang es · theme · matrix · clear",
+    "whoami": "Fernando Morales — Systems Engineering student and software developer.",
+    "projects": "Overseer · OPERATIX · RelayForge · WLQuickGen (public source)\nLICENSE-SERVICE · VENTAS_DPP · Hwid-Keygen-Core (case studies)\n→ taking you to projects…",
+    "stack": "Java · Spring Boot · Python · FastAPI · C# · Angular · React · C++ · Win32 · MySQL · Docker",
+    "contact": "email: moralespenafernando@gmail.com · telegram: @FerS_00\n→ taking you to contact…",
+    "theme": "theme switched.",
+    "matrix": "waking up the matrix… (lasts a few seconds)",
+    "unknown": "command not found: ",
+    "language": "language set to "
+  },
+  "approach": {
+    "eyebrow": "How I work",
+    "titleFirst": "The model proposes.",
+    "titleSecond": "The code decides.",
+    "intro": "In my AI projects, the model suggests an operation and the application code checks it before writing anything. Try both cases."
+  },
+  "flow": {
+    "entryLabel": "01 · Input",
+    "entryTitle": "Natural-language request",
+    "modelLabel": "02 · LLM",
+    "modelTitle": "Proposes an operation",
+    "checkLabel": "03 · Validation",
+    "checkTitle": "The application checks",
+    "checkDescription": "Permissions, arguments, business rules and idempotency.",
+    "outputLabel": "04 · Output",
+    "outputTitle": "The operation is saved",
+    "outputDescription": "Excel, Google Sheets or MySQL, with confirmation through Telegram.",
+    "requestValidText": "Record 3 licenses for Acme at 40 USD.",
+    "requestInvalidText": "Record 3 licenses for Acme at -40 USD.",
+    "requestValid": "▶ Valid request",
+    "requestInvalid": "▶ Invalid request",
+    "accept": "✓ accepted · quantity and price valid",
+    "reject": "✗ rejected · price=-40 breaks the rules",
+    "clearTechnology": "Clear technology filter"
+  },
+  "run": {
+    "hint": "Illustrative example based on OPERATIX."
+  },
+  "themes": {
+    "offlineTitle": "Offline licensing",
+    "offlineDescription": "Software activation with asymmetric signatures, without relying on a server.",
+    "permissionsTitle": "Server-side permissions",
+    "permissionsDescription": "Access control is enforced in the backend; the interface only hides actions.",
+    "systemsTitle": "Existing systems",
+    "systemsDescription": "Small, incremental improvements to applications that remain in use."
+  },
+  "work": {
+    "eyebrow": "Work",
+    "title": "Projects",
+    "filtersLabel": "Filter projects"
+  },
+  "filters": {
+    "all": "All",
+    "public": "Public code",
+    "cases": "Case studies"
+  },
+  "projects": {
+    "publicBadge": "Public",
+    "caseBadge": "Case study",
+    "repository": "View repository ↗",
+    "caseStudy": "Read case study ↗",
+    "technology": "Technology",
+    "clearTechnology": "Clear technology filter"
+  },
+  "stack": {
+    "eyebrow": "Tools",
+    "title": "What I work with",
+    "hint": "Choose a technology to see the projects that use it.",
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "data": "Data",
+    "windows": "Windows",
+    "ai": "AI",
+    "infra": "Infra"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "order": 4,
+  "name": "WLQuickGen",
+  "url": "https://github.com/FerS00/WLQuickGen",
+  "kind": "pub",
+  "wide": false,
+  "tags": ["C++17", "Win32", "CMake"],
+  "tech": ["C++", "Win32"],
+  "description": {
+    "es": "Generador portable de licencias para software protegido con WinLicense, con interfaz en tres idiomas.",
+    "en": "Portable license generator for WinLicense-protected software, with a three-language interface."
+  }
+}

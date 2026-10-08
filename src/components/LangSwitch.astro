@@ -1,0 +1,80 @@
+---
+import { getAlternatePath, useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const t = useTranslations(lang);
+const esHref = getAlternatePath(Astro.url.pathname, 'es');
+const enHref = getAlternatePath(Astro.url.pathname, 'en');
+---
+
+<nav class="seg" aria-label={t('lang.aria')}>
+  <span class:list={['pill', { english: lang === 'en' }]} aria-hidden="true"></span>
+  <a
+    href={esHref}
+    data-track="lang_switch"
+    data-track-to="es"
+    hreflang="es"
+    lang="es"
+    aria-current={lang === 'es' ? 'page' : undefined}
+    class:list={[lang === 'es' && 'active']}
+  >
+    {t('lang.esShort')}
+    <span class="sr-only"> · {t('lang.es')}</span>
+  </a>
+  <a
+    href={enHref}
+    data-track="lang_switch"
+    data-track-to="en"
+    hreflang="en"
+    lang="en"
+    aria-current={lang === 'en' ? 'page' : undefined}
+    class:list={[lang === 'en' && 'active']}
+  >
+    {t('lang.enShort')}
+    <span class="sr-only"> · {t('lang.en')}</span>
+  </a>
+</nav>
+
+<style>
+  .seg {
+    position: relative;
+    display: flex;
+    padding: 2px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 999px;
+  }
+
+  .seg a {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 44px;
+    min-height: 40px;
+    place-items: center;
+    border-radius: 999px;
+    color: var(--color-muted-fg);
+    font: 500 0.78rem var(--font-mono);
+    text-decoration: none;
+    transition: color 250ms;
+  }
+
+  .seg a.active {
+    color: var(--color-on-accent);
+  }
+
+  .pill {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 2px;
+    width: 44px;
+    border-radius: 999px;
+    background: var(--color-green);
+    transition: transform 350ms var(--ease-out);
+  }
+
+  .pill.english {
+    transform: translateX(44px);
+  }
+</style>

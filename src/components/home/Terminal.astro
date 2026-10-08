@@ -1,0 +1,361 @@
+---
+import es from '../../i18n/es.json';
+import en from '../../i18n/en.json';
+import { getAlternatePath } from '../../i18n/utils';
+import type { Lang } from '../../i18n/utils';
+
+const { lang } = Astro.props as { lang: Lang };
+const content = lang === 'es' ? es.term : en.term;
+const config = {
+  ...content,
+  alternate: {
+    es: getAlternatePath(Astro.url.pathname, 'es'),
+    en: getAlternatePath(Astro.url.pathname, 'en'),
+  },
+};
+const safeClass = (value: string) => ['p', 'k', 's', 'm'].includes(value);
+---
+
+<div class="terminal-motion">
+  <div class="terminal" data-copy={JSON.stringify(config)}>
+    <div class="terminal-bar" aria-hidden="true">
+      <i></i>
+      <i></i>
+      <i></i>
+      <span>{content.title}</span>
+    </div>
+    <div class="terminal-body" data-terminal-body>
+      <pre class="terminal-output" data-terminal-output aria-live="polite">
+      {content.intro.map(([className = 'plain', text = '']) =>
+        safeClass(className) ? <span class={className}>{text}</span> : text,
+      )}
+    </pre>
+      <div class="terminal-input">
+        <span aria-hidden="true">$</span>
+        <label class="sr-only" for="terminal-command">
+          {content.label}
+        </label>
+        <input
+          id="terminal-command"
+          data-terminal-input
+          autocomplete="off"
+          spellcheck="false"
+          placeholder={content.placeholder}
+        />
+      </div>
+    </div>
+    <div class="terminal-hints">
+      <span>{content.try}</span>
+      {content.suggestions.map((command) => (
+        <button type="button" data-command={command}>
+          {command}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  import { emit, onVisibilityResume, prefersReducedMotion } from '../../scripts/motion';
+  import { interpretCommand, type TerminalMessages } from '../../scripts/terminal-core';
+
+  interface TerminalConfig extends TerminalMessages {
+    title: string;
+    label: string;
+    placeholder: string;
+    try: string;
+    suggestions: string[];
+    intro: [string, string][];
+    alternate: { es: string; en: string };
+  }
+
+  const root = document.querySelector<HTMLElement>('.terminal');
+  const body = root?.querySelector<HTMLElement>('[data-terminal-body]');
+  const output = root?.querySelector<HTMLElement>('[data-terminal-output]');
+  const input = root?.querySelector<HTMLInputElement>('[data-terminal-input]');
+
+  if (root && body && output && input) {
+    const copy = JSON.parse(root.dataset.copy ?? '{}') as TerminalConfig;
+    const reduce = prefersReducedMotion();
+    const allowedClasses = new Set(['p', 'k', 's', 'm']);
+    let introPosition = 0;
+    let introTimer = 0;
+    let introComplete = false;
+    let introReady = false;
+
+    const renderIntro = (characters: number) => {
+      let remaining = characters;
+      output.replaceChildren();
+      for (const [className, text] of copy.intro) {
+        const part = text.slice(0, Math.max(0, remaining));
+        remaining -= text.length;
+        if (part) {
+          if (allowedClasses.has(className)) {
+            const span = document.createElement('span');
+            span.className = className;
+            span.textContent = part;
+            output.append(span);
+          } else {
+            output.append(document.createTextNode(part));
+          }
+        }
+        if (remaining <= 0) break;
+      }
+      body.scrollTop = body.scrollHeight;
+    };
+
+    const totalIntroCharacters = copy.intro.reduce((total, [, text]) => total + text.length, 0);
+    const typeIntro = () => {
+      if (introComplete || reduce) return;
+      introPosition = Math.min(totalIntroCharacters, introPosition + 2);
+      renderIntro(introPosition);
+      if (introPosition >= totalIntroCharacters) {
+        introComplete = true;
+        return;
+      }
+      if (!document.hidden) introTimer = window.setTimeout(typeIntro, 24);
+    };
+    const finishIntro = () => {
+      window.clearTimeout(introTimer);
+      introPosition = totalIntroCharacters;
+      renderIntro(totalIntroCharacters);
+      introComplete = true;
+    };
+
+    const beginIntro = () => {
+      introReady = true;
+      if (!document.hidden) typeIntro();
+    };
+    const waitForIdle = () => {
+      const requestIdleCallback = (
+        window as Window & { requestIdleCallback?: (callback: () => void) => number }
+      ).requestIdleCallback;
+      if (requestIdleCallback) requestIdleCallback.call(window, beginIntro);
+      else window.setTimeout(beginIntro, 800);
+    };
+    const startIntroWhenIdle = () => {
+      if (document.readyState === 'complete') waitForIdle();
+      else window.addEventListener('load', waitForIdle, { once: true });
+    };
+
+    if (reduce) finishIntro();
+    else {
+      output.replaceChildren();
+      startIntroWhenIdle();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        window.clearTimeout(introTimer);
+        introTimer = 0;
+      }
+    });
+    onVisibilityResume(() => {
+      if (introReady && !introComplete && !reduce && !introTimer)
+        introTimer = window.setTimeout(typeIntro, 24);
+    });
+
+    const appendHtml = (html: string) => {
+      output.insertAdjacentHTML('beforeend', html);
+      body.scrollTop = body.scrollHeight;
+    };
+
+    const execute = (raw: string) => {
+      if (!introComplete) finishIntro();
+      else window.clearTimeout(introTimer);
+      const result = interpretCommand(raw, copy);
+      emit('fx:terminal-command', { command: result.command });
+      if (result.action?.type === 'clear') {
+        output.replaceChildren();
+        return;
+      }
+      appendHtml(result.echoHtml + result.outputHtml);
+
+      switch (result.action?.type) {
+        case 'scroll':
+          {
+            const target = result.action.target;
+            window.setTimeout(() => {
+              document.getElementById(target)?.scrollIntoView({
+                behavior: reduce ? 'auto' : 'smooth',
+              });
+            }, 250);
+          }
+          break;
+        case 'open-dialog':
+          {
+            const id = result.action.id;
+            window.requestAnimationFrame(() => {
+              window.setTimeout(() => emit('fx:open-dialog', { id }), 0);
+            });
+          }
+          break;
+        case 'language':
+          window.location.assign(copy.alternate[result.action.lang]);
+          break;
+        case 'theme':
+          document.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.click();
+          break;
+        case 'matrix':
+          emit('fx:matrix', { duration: 6000 });
+          break;
+      }
+    };
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      execute(input.value);
+      input.value = '';
+    });
+    body.addEventListener('click', () => input.focus({ preventScroll: true }));
+    root.querySelectorAll<HTMLButtonElement>('[data-command]').forEach((button) => {
+      button.addEventListener('click', () => execute(button.dataset.command ?? ''));
+    });
+    root.dataset.ready = 'true';
+  }
+</script>
+
+<style>
+  .terminal-motion {
+    animation: terminal-float 7s ease-in-out infinite;
+  }
+
+  .terminal {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+    box-shadow: 0 40px 90px -40px color-mix(in srgb, var(--color-green) 55%, transparent);
+    animation: terminal-fade 1s 400ms var(--ease-out) both;
+    backdrop-filter: blur(10px);
+  }
+
+  @keyframes terminal-float {
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes terminal-fade {
+    from {
+      transform: translateY(16px);
+      opacity: 0;
+    }
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-bar i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--color-surface-2);
+  }
+
+  .terminal-bar i:nth-child(3) {
+    background: var(--color-green);
+  }
+
+  .terminal-bar span {
+    margin-left: auto;
+    color: var(--color-muted-fg);
+    font: 400 0.72rem var(--font-mono);
+  }
+
+  .terminal-body {
+    height: 320px;
+    overflow-y: auto;
+    padding: 16px 18px;
+    cursor: text;
+    font: 400 0.82rem/1.75 var(--font-mono);
+    scrollbar-width: thin;
+  }
+
+  .terminal-output {
+    overflow-wrap: anywhere;
+    margin: 0;
+    white-space: pre-wrap;
+    font: inherit;
+  }
+
+  .terminal :global(.p) {
+    color: var(--color-green);
+  }
+
+  .terminal :global(.k) {
+    color: var(--color-cyan);
+  }
+
+  .terminal :global(.s) {
+    color: var(--color-violet);
+  }
+
+  .terminal :global(.m) {
+    color: var(--color-muted-fg);
+  }
+
+  .terminal :global(.e) {
+    color: var(--color-danger);
+  }
+
+  .terminal-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .terminal-input > span {
+    color: var(--color-green);
+  }
+
+  .terminal-input input {
+    min-width: 0;
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--color-fg);
+    caret-color: var(--color-green);
+    font: inherit;
+  }
+
+  .terminal-hints {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted-fg);
+    font: 400 0.72rem var(--font-mono);
+  }
+
+  .terminal-hints button {
+    display: inline-grid;
+    min-height: 26px;
+    place-items: center;
+    padding: 2px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .terminal-hints button:hover {
+    border-color: var(--color-green);
+    color: var(--color-green);
+  }
+
+  .terminal-hints button:focus-visible {
+    outline: 2px solid var(--color-ring);
+  }
+</style>

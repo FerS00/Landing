@@ -1,0 +1,48 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const privacy = await getEntry('legal', 'privacyes');
+if (!privacy) throw new Error('Missing Spanish privacy content');
+const { Content } = await render(privacy);
+const buildDate = new Date().toISOString().slice(0, 10);
+---
+
+<Base lang="es">
+  <article class="content-page wrap legal legal-page">
+    <h1>Privacidad y cookies</h1>
+    <p class="privacy-updated">Última actualización: {buildDate}</p>
+    <Content />
+  </article>
+</Base>
+
+<style>
+  .content-page {
+    padding-block: var(--space-16);
+  }
+  h1 {
+    margin-bottom: var(--space-4);
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+  h3 {
+    margin-block: var(--space-8) var(--space-3);
+    font-size: 1.3rem;
+  }
+  p,
+  li {
+    max-width: 75ch;
+    color: var(--color-muted-fg);
+  }
+  .legal-page > p:first-of-type {
+    margin-bottom: var(--space-8);
+    font: 0.8rem var(--font-mono);
+  }
+  .privacy-updated {
+    font: 0.8rem var(--font-mono);
+  }
+  ul {
+    display: grid;
+    gap: var(--space-3);
+    padding-left: 1.5rem;
+  }
+</style>

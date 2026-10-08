@@ -1,0 +1,13 @@
+{
+  "order": 5,
+  "name": "LICENSE-SERVICE",
+  "url": "https://github.com/FerS00/portfolio/blob/main/projects/license-service/README.md",
+  "kind": "priv",
+  "wide": false,
+  "tags": ["C#", ".NET 10", "ECDSA", "AES-GCM"],
+  "tech": ["C#", "Docker"],
+  "description": {
+    "es": "Licenciamiento offline ligado al hardware para aplicaciones .NET de escritorio.",
+    "en": "Offline, hardware-bound licensing for .NET desktop applications."
+  }
+}

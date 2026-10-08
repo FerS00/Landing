@@ -1,0 +1,13 @@
+{
+  "order": 2,
+  "name": "OPERATIX",
+  "url": "https://github.com/FerS00/OPERATIX",
+  "kind": "pub",
+  "wide": true,
+  "tags": ["Python", "FastAPI", "LangGraph", "React"],
+  "tech": ["Python", "FastAPI", "LangGraph", "React", "MySQL", "Docker"],
+  "description": {
+    "es": "Asistente de ventas que convierte peticiones en lenguaje natural en operaciones sobre Excel, Google Sheets o MySQL.",
+    "en": "Sales assistant that turns natural-language requests into operations on Excel, Google Sheets or MySQL."
+  }
+}

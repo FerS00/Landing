@@ -1,0 +1,121 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  gaId: string;
+  clarityId: string;
+}
+const { lang, gaId, clarityId } = Astro.props as Props;
+const t = useTranslations(lang);
+---
+
+<div
+  class="consent-banner"
+  data-consent-banner
+  data-ga-id={gaId || undefined}
+  data-clarity-id={clarityId || undefined}
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="consent-title"
+  hidden
+>
+  <p id="consent-title" class="consent-copy">
+    {t('consent.message')}
+  </p>
+  <button class="consent-more" type="button" data-open-dialog="privacy">
+    {t('consent.more')}
+  </button>
+  <div class="consent-actions">
+    <button class="consent-choice" type="button" data-banner-consent="denied">
+      {t('consent.reject')}
+    </button>
+    <button class="consent-choice" type="button" data-banner-consent="granted">
+      {t('consent.accept')}
+    </button>
+  </div>
+</div>
+
+<script>
+  import '../lib/analytics';
+</script>
+
+<style is:global>
+  .consent-banner {
+    position: fixed;
+    z-index: 60;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: min(520px, calc(100vw - 32px));
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    box-shadow: 0 24px 80px color-mix(in srgb, var(--color-bg) 65%, transparent);
+    animation: consent-enter 320ms var(--ease-out) both;
+  }
+
+  .consent-banner[hidden] {
+    display: none;
+  }
+
+  .consent-copy {
+    margin: 0;
+    color: var(--color-muted-fg);
+    font-size: 0.92rem;
+  }
+
+  .consent-more {
+    margin-top: var(--space-2);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-green);
+    cursor: pointer;
+    font: 500 0.86rem var(--font-body);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .consent-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .consent-choice {
+    min-height: 46px;
+    padding-inline: var(--space-4);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 999px;
+    background: var(--color-surface-2);
+    color: var(--color-fg);
+    cursor: pointer;
+    font: 600 0.84rem var(--font-body);
+  }
+
+  .consent-choice:hover {
+    border-color: var(--color-green);
+  }
+
+  .consent-banner :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+  }
+
+  @keyframes consent-enter {
+    from {
+      transform: translateY(12px);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .consent-banner {
+      animation: none;
+    }
+  }
+</style>

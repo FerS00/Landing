@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.dev.vars*
+.wrangler/
+!.env.example
+playwright-report/
+test-results/
+blob-report/
+.lighthouseci/
+graphify-out/
+.DS_Store
+Thumbs.db
+*.log
+design-system/**/_test.html

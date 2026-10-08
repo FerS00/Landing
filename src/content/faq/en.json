@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "q": "What kind of projects do you take?",
+      "a": "Freelance projects and technical collaborations in backend (Java with Spring Boot, Python with FastAPI), web applications (Angular, React), Windows utilities (C++, C#) and AI automation."
+    },
+    {
+      "q": "How do we start?",
+      "a": "Write to me through the form, by email or on Telegram with a short description of what you need. We talk about the scope and, if it fits, I send you a proposal with phases and deliverables."
+    },
+    {
+      "q": "How much does a project cost?",
+      "a": "It depends on the scope. After the first conversation I prepare a proposal with the work breakdown and the budget."
+    },
+    { "q": "Which languages can I write in?", "a": "Spanish or English." },
+    {
+      "q": "Can I see the code of your private projects?",
+      "a": "Some projects contain proprietary code or client integrations, so I publish case studies instead. I can explain their architecture, my role and the technical decisions without showing the code."
+    },
+    {
+      "q": "Do you use AI in your work?",
+      "a": "Yes, as a development tool: to explore code, implement, test and review. I make the calls on architecture, business rules, security and final verification."
+    },
+    {
+      "q": "What do you do with my data if I write to you?",
+      "a": "I only use it to reply.",
+      "link": "privacy"
+    }
+  ],
+  "cta": "Write to me"
+}

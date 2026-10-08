@@ -1,0 +1,13 @@
+{
+  "order": 3,
+  "name": "RelayForge",
+  "url": "https://github.com/FerS00/RelayForge",
+  "kind": "pub",
+  "wide": false,
+  "tags": ["Python", "React", "SQLite", "Tailscale"],
+  "tech": ["Python", "FastAPI", "React", "Docker"],
+  "description": {
+    "es": "Consola autoalojada para coordinar agentes de código en Windows, con worktrees de Git y aprobaciones manuales. En desarrollo.",
+    "en": "Self-hosted console for coordinating coding agents on Windows, with Git worktrees and manual approvals. In development."
+  }
+}

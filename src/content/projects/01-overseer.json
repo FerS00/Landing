@@ -1,0 +1,13 @@
+{
+  "order": 1,
+  "name": "Overseer",
+  "url": "https://github.com/FerS00/Overseer",
+  "kind": "pub",
+  "wide": true,
+  "tags": ["Java 21", "Spring Boot", "Angular", "SSE"],
+  "tech": ["Java", "Spring Boot", "Angular", "Docker"],
+  "description": {
+    "es": "Monitor local y de solo lectura en tiempo real para Claude Code y Codex, con una mascota animada por agente.",
+    "en": "Local, read-only real-time monitor for Claude Code and Codex, with an animated mascot per agent."
+  }
+}
