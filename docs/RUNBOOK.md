@@ -1,5 +1,9 @@
 # Despliegue en Cloudflare Pages
 
+## Estado operativo de referencia
+
+Cierre temporal del 2026-10-08: producción verificada en `2f19d01`, Deploy exitoso y smoke del dominio aprobado. El [cierre](CIERRE_PROYECTO.md) reúne evidencias y observaciones; el [checkpoint](ESTADO_TRABAJO.md) indica cómo reanudar. Estas instrucciones son procedimientos de operación y no acreditan que se haya ejecutado cada acción de un panel externo.
+
 ## Requisitos
 
 En GitHub, configura los secretos `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID`. El token debe tener el permiso **Cloudflare Pages: Edit** en la cuenta correcta. Los IDs públicos `PUBLIC_GA_ID`, `PUBLIC_CLARITY_ID` y `PUBLIC_TURNSTILE_SITE_KEY` pueden configurarse como secretos o variables de repositorio; el workflow prefiere el secreto y usa la variable como respaldo. GA y Clarity solo se inyectan en el build de producción; Turnstile también se inyecta en previews. `PRODUCTION_URL` es opcional y puede ser un secreto o una variable; si está configurada, el pipeline también prueba esa URL.
@@ -47,6 +51,10 @@ En el proyecto Pages `fextracode`, añade `fextracode.com` y `www.fextracode.com
 ## Cabeceras y CSP
 
 `public/_headers` define las cabeceras de Cloudflare Pages. La meta CSP y los hashes de scripts y estilos se generan desde `security.csp` en `astro.config.mjs`. Los orígenes de analítica están en `src/config/csp.ts`; `script-src` y `style-src-elem` permanecen sin `unsafe-inline`. `style-src-attr 'unsafe-inline'` se limita a atributos `style` existentes.
+
+### Script de detección inyectado por Cloudflare
+
+En la comprobación de producción se observó un script inline añadido por Cloudflare con `__CF$cv$params`, bloqueado por la CSP. Los scripts propios cargaron y la navegación comprobada funcionó. No se determinó si esa observación existía antes de la corrección. Para investigarla, distinguir el HTML generado por Astro del HTML servido por Cloudflare y revisar la configuración de la zona con autorización propia. No habilitar `unsafe-inline` para silenciar la consola.
 
 ## Analítica
 

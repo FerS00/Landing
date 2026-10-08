@@ -2,7 +2,7 @@
 
 > Plan canónico. Repositorio destino: `github.com/FerS00/Landing` (**público** desde 2026-10-07, rama `main` protegida).
 > Dominio: **fextracode.com** (DNS ya en Cloudflare: `*.ns.cloudflare.com`).
-> Fecha: 2026-10-08 (rev. 7). Estado: **v1.0.0 entregada (main `a19171b`); dominio y formulario verificados en producción (ver `docs/ESTADO_TRABAJO.md`)**.
+> Fecha: 2026-10-08 (rev. 8). Estado: **cerrado por el momento; v1.0.0 entregada y corrección visual publicada en main `2f19d01` (PR #4). Evidencias en `docs/CIERRE_PROYECTO.md`**.
 
 ## 1. Objetivo
 
@@ -50,18 +50,18 @@ Blog, CMS, más idiomas, panel de administración, pruebas A/B.
 | D-21 | Formulario con **Resend** (API REST desde Pages Function) + Turnstile | Decisión del autor (2026-10-08). Se implementó primero con Cloudflare Email Service (Pages Functions no admite el binding `send_email`, así que era vía REST); el autor cambió a Resend por coste |
 | D-18 | La página no menciona herramientas de construcción o despliegue (GitHub Actions, Astro, Cloudflare) salvo en la política de privacidad | Petición del autor |
 
-## 3. Decisiones abiertas (requieren respuesta antes de su fase)
+## 3. Estado de las decisiones iniciales
 
-| ID | Pregunta | Recomendación | Bloquea |
-|---|---|---|---|
-| A-03 | ¿Formulario de contacto real o solo canales directos? | Empezar sin formulario (email, LinkedIn, GitHub, Telegram); añadirlo en Fase 7. Tipos de propuesta: Proyecto freelance y Colaboración técnica | Fase 7 |
-| A-04 | ¿Proveedor de email para el formulario? | Resend (API simple, plan gratuito) | Fase 7 |
-| A-05 | ¿Foto personal? | No en v1; el hero usa la terminal. Opcional más adelante | Fase 3 |
-| A-10 | ID de medición de GA4 (`G-XXXXXXXXXX`) e ID de proyecto de Clarity | **Acción del usuario**: crearlos y guardarlos como variables de repositorio `PUBLIC_GA_ID` y `PUBLIC_CLARITY_ID` (no son secretos). Pasos en `ESTADO_TRABAJO.md` | Fase 7 |
-| A-11 | Validar el texto de la FAQ y de la política de privacidad | Borradores en el prototipo; revisar antes de la Fase 7 | Fase 7 |
-| A-06 | ¿CV descargable (PDF) en ambos idiomas? | Sí, si existe un CV actualizado | Fase 3 |
-| A-07 | ¿Instalar la CLI `cf` (beta) de Cloudflare? | Opcional; el proyecto usa Wrangler en CI, así que no es necesaria | — |
-| A-08 | ¿Configurar también el MCP de Cloudflare en Codex? | Solo si Codex debe consultar la cuenta de Cloudflare; para implementar no hace falta | Fase 5 |
+No quedan decisiones que bloqueen la entrega actual. Las ampliaciones requieren una nueva petición.
+
+| ID | Resolución o estado de cierre |
+|---|---|
+| A-03 / A-04 | Formulario real implementado con Turnstile y Resend; un envío de producción fue confirmado por el usuario |
+| A-05 | Presentación mediante terminal; sin foto personal en v1 |
+| A-06 | CV descargable fuera de la entrega actual; no se incorpora un PDF no proporcionado |
+| A-07 / A-08 | CLI cf y MCP de Cloudflare no son requisitos del pipeline con Wrangler |
+| A-10 | El workflow consume los IDs configurados; sus valores permanecen fuera de la documentación |
+| A-11 | FAQ y privacidad publicadas en ambos idiomas; no implica una revisión jurídica externa |
 
 ## 4. Arquitectura
 
@@ -76,9 +76,11 @@ Landing/
 │  └─ pull_request_template.md
 ├─ src/
 │  ├─ i18n/{es,en}.json, utils.ts
-│  ├─ content/projects/*.json   # name, url, kind (public|case), tags, description.{es,en}
-│  ├─ components/               # Nav, LangSwitch, ThemeToggle, SignalField, KineticHero, Terminal, Marquee, TrustBoundaryDemo, ProjectGrid, StackOrbit, Contact, ConsentBanner, InfoDialog, Footer
-│  ├─ content/faq/{es,en}.md, content/legal/privacy.{es,en}.md
+│  ├─ content/projects/*.json   # name, url, kind (pub|case), tags, description.{es,en}
+│  ├─ components/               # Nav, LangSwitch, ThemeToggle, ConsentBanner, InfoDialog, Footer
+│  │  ├─ home/                  # Home, Hero, Terminal, Marquee, Approach, Projects, Stack, Contact, LogoSprite
+│  │  └─ fx/SignalField.astro    # partículas
+│  ├─ content/faq/{es,en}.json, content/legal/privacy.{es,en}.md
 │  ├─ assets/logos/*.svg        # Devicon (MIT), sprite generado en build
 │  ├─ lib/analytics.ts          # consentimiento + carga diferida de gtag + eventos
 │  ├─ layouts/Base.astro        # <html lang>, hreflang, meta, OG, JSON-LD Person
@@ -86,7 +88,7 @@ Landing/
 │  ├─ pages/en/index.astro      # en
 │  ├─ pages/privacidad.astro, pages/faq.astro, pages/en/privacy.astro, pages/en/faq.astro
 │  └─ styles/tokens.css         # tokens del DESIGN.md, sin hex fuera de aquí
-├─ public/_headers              # CSP, HSTS, X-Content-Type-Options, Referrer-Policy
+├─ public/_headers              # HSTS, X-Content-Type-Options, Referrer-Policy; CSP generada por Astro
 ├─ tests/unit/                  # Vitest: paridad de claves i18n, esquema de proyectos
 ├─ tests/e2e/                   # Playwright + @axe-core/playwright
 ├─ lighthouserc.json
@@ -102,22 +104,19 @@ JS en cliente limitado a islas pequeñas en `<script>` de Astro, sin framework: 
 
 ```mermaid
 flowchart LR
-  A[Rama feature] --> B[Pull request]
-  B --> C{ci.yml}
-  C --> C1[lint + format]
-  C --> C2[astro check]
-  C --> C3[vitest]
-  C --> C4[build]
-  C4 --> C5[Playwright + axe]
-  C4 --> C6[Lighthouse CI]
-  B --> S[security.yml: gitleaks + OSV]
-  C4 --> P[deploy.yml: preview en Cloudflare Pages]
-  P --> R[Comentario con URL de preview]
-  C1 & C2 & C3 & C5 & C6 & S --> M{Checks verdes + revisión}
-  M --> N[Merge a main]
-  N --> Q[deploy.yml: producción]
-  Q --> T[Smoke test sobre la URL de producción]
-  T --> U[Tag + release notes]
+  PR[Pull request] --> CI[CI: ci]
+  CI --> E2E[e2e]
+  CI --> LH[lighthouse]
+  CI --> LINKS[links]
+  PR --> SEC[Security]
+  PR --> CQL[CodeQL]
+  PR --> PREVIEW[Deploy: preview]
+  PREVIEW --> PSMOKE[Smoke del preview]
+  PSMOKE --> COMMENT[Comentario con URL]
+  COMMENT -. revisión y merge .-> MAIN[Merge en main]
+  MAIN --> CIMAIN[CI en main]
+  CIMAIN -->|workflow_run exitoso| PROD[Deploy: production]
+  PROD --> SMOKE[Smoke del despliegue]
 ```
 
 | Workflow | Disparador | Trabajos | Falla si |
@@ -139,6 +138,8 @@ Reglas del pipeline:
 - Rollback: Cloudflare Pages conserva despliegues; procedimiento en `docs/RUNBOOK.md` (rollback desde el panel o redeploy del tag anterior con `workflow_dispatch`).
 
 ## 6. Fases
+
+Estado de cierre: implementación y entrega de las fases 0–9 completadas; corrección visual posterior completada en el PR #4. Los apartados siguientes conservan el alcance planificado. Las comprobaciones de paneles externos sin evidencia quedan como No ejecutado en el cierre y no se dan por aprobadas.
 
 Cada fase termina en un estado funcional y verificable localmente y se audita antes de pasar a la siguiente; la entrega a GitHub es única al final (D-19). Roles por fase: Claude especifica y valida contra este plan; Codex implementa solo los archivos indicados; Antigravity audita en solo lectura y ejecuta las comprobaciones autorizadas.
 
@@ -255,3 +256,7 @@ Cada fase termina en un estado funcional y verificable localmente y se audita an
 ## Corrección visual posterior a v1.0.0
 
 Petición autorizada el 2026-10-08: alinear la presentación con el prototipo original y usar Fernando Morales en contacto y copyright. Contrato en `docs/ESPECIFICACION_CORRECCION_VISUAL.md`. Codex implementa por autorización de trabajar sin Claude; Antigravity audita. Se conservan los contratos del formulario, analítica y consentimiento. La publicación en main y eliminación de otras ramas están autorizadas; los commits no integrados se conservan en un bundle local verificado.
+
+## Cierre temporal — 2026-10-08
+
+La corrección visual quedó fusionada en `2f19d01` y desplegada correctamente. Solo queda main local/remota. El PR #2 de Dependabot se cerró y su rama se eliminó después de verificar un bundle de recuperación local; Node continúa en 24. No hay trabajo de producto activo. El cierre documental incluye el checkpoint y los tres artefactos públicos del grafo; se excluyen cachés, rutas locales y respaldos. Observaciones y mejoras opcionales en `docs/CIERRE_PROYECTO.md`.
