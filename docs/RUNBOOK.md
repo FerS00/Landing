@@ -2,7 +2,7 @@
 
 ## Requisitos
 
-En GitHub, configura los secretos `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID`. El token debe tener el permiso **Cloudflare Pages: Edit** en la cuenta correcta. Las variables `PUBLIC_GA_ID` y `PUBLIC_CLARITY_ID` se inyectan solo en el build de producción. `PRODUCTION_URL` es opcional; al configurarla, el pipeline también prueba esa URL.
+En GitHub, configura los secretos `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID`. El token debe tener el permiso **Cloudflare Pages: Edit** en la cuenta correcta. Los IDs públicos `PUBLIC_GA_ID`, `PUBLIC_CLARITY_ID` y `PUBLIC_TURNSTILE_SITE_KEY` pueden configurarse como secretos o variables de repositorio; el workflow prefiere el secreto y usa la variable como respaldo. GA y Clarity solo se inyectan en el build de producción; Turnstile también se inyecta en previews. `PRODUCTION_URL` es opcional y puede ser un secreto o una variable; si está configurada, el pipeline también prueba esa URL.
 
 ## Crear el proyecto una vez
 
@@ -42,7 +42,7 @@ Revisa la URL de despliegue y el log del paso fallido. Si la publicación es rec
 
 ## Dominio
 
-En el proyecto Pages `fextracode`, añade `fextracode.com` y `www.fextracode.com` como dominios personalizados. En Cloudflare crea una redirección permanente (301) de `www.fextracode.com/*` al mismo path y query string en `https://fextracode.com`. Activa **Always Use HTTPS** para forzar HTTPS. Configura la variable de repositorio `PRODUCTION_URL` con `https://fextracode.com`.
+En el proyecto Pages `fextracode`, añade `fextracode.com` y `www.fextracode.com` como dominios personalizados. Configura una redirección permanente (301) de `www.fextracode.com` a `fextracode.com`, conservando el path y la query string. Limita la regla con la expresión `http.host eq "www.fextracode.com"`; una regla con expresión `true` también redirige el apex y provoca un bucle. Activa **Always Use HTTPS** para forzar HTTPS. Configura `PRODUCTION_URL` con `https://fextracode.com` como secreto o variable de repositorio.
 
 ## Cabeceras y CSP
 
@@ -80,10 +80,10 @@ La función `POST /api/contact` verifica el token de Turnstile y entrega el mens
 
 1. En Resend, verifica el dominio `fextracode.com` y confirma que `contacto@fextracode.com` puede usarse como remitente.
 2. Crea una API Key de Resend y guárdala como secreto `RESEND_API_KEY` en **Workers & Pages > fextracode > Settings > Variables and Secrets** para producción.
-3. En Pages, configura las variables de producción `CONTACT_TO=moralespenafernando@gmail.com` y `CONTACT_FROM=contacto@fextracode.com`.
-4. Guarda también `TURNSTILE_SECRET_KEY` como secreto de producción en Pages. Crea un widget de Turnstile con los hostnames `fextracode.com` y `fextracode.pages.dev`; guarda su Site Key pública como variable de repositorio `PUBLIC_TURNSTILE_SITE_KEY` para los builds.
+3. `CONTACT_TO=moralespenafernando@gmail.com` y `CONTACT_FROM=contacto@fextracode.com` se definen en `[vars]` de `wrangler.toml`. Mientras ese archivo incluya `pages_build_output_dir`, es la fuente de verdad y el panel de Pages no edita esos valores.
+4. Guarda `TURNSTILE_SECRET_KEY` y `RESEND_API_KEY` como secretos de producción en Pages. Crea un widget de Turnstile con los hostnames `fextracode.com` y `fextracode.pages.dev`; guarda su Site Key pública como secreto o variable de repositorio `PUBLIC_TURNSTILE_SITE_KEY` para los builds.
 
-Las previews no reciben secretos. En ellas la función responde HTTP `503` con `error: "not-configured"`, comportamiento esperado hasta que se decida configurar credenciales para ese entorno. `CONTACT_TO` y `CONTACT_FROM` se configuran como variables de texto plano.
+Las previews no reciben secretos. En ellas la función responde HTTP `503` con `error: "not-configured"`, comportamiento esperado hasta que se decida configurar credenciales para ese entorno. `CONTACT_TO` y `CONTACT_FROM` proceden de `wrangler.toml`.
 
 ### Pruebas locales
 

@@ -1,3 +1,7 @@
 name = "fextracode"
 pages_build_output_dir = "./dist"
 compatibility_date = "2026-09-01"
+
+[vars]
+CONTACT_TO = "moralespenafernando@gmail.com"
+CONTACT_FROM = "contacto@fextracode.com"

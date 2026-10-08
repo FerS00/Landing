@@ -50,7 +50,7 @@ jobs:
         run: npm ci
       - name: Build preview
         env:
-          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY || vars.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
       - name: Deploy preview
         id: deploy
@@ -115,9 +115,9 @@ jobs:
         run: echo "DEPLOY_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Build production site
         env:
-          PUBLIC_GA_ID: ${{ vars.PUBLIC_GA_ID }}
-          PUBLIC_CLARITY_ID: ${{ vars.PUBLIC_CLARITY_ID }}
-          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+          PUBLIC_GA_ID: ${{ secrets.PUBLIC_GA_ID || vars.PUBLIC_GA_ID }}
+          PUBLIC_CLARITY_ID: ${{ secrets.PUBLIC_CLARITY_ID || vars.PUBLIC_CLARITY_ID }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY || vars.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
       - name: Deploy production
         id: deploy
@@ -132,7 +132,11 @@ jobs:
           SMOKE_URL: ${{ steps.deploy.outputs.deployment-url }}
         run: npm run smoke
       - name: Smoke test production domain
-        if: vars.PRODUCTION_URL != ''
         env:
-          SMOKE_URL: ${{ vars.PRODUCTION_URL }}
-        run: npm run smoke
+          PRODUCTION_URL: ${{ secrets.PRODUCTION_URL || vars.PRODUCTION_URL }}
+        run: |
+          if [[ -z "$PRODUCTION_URL" ]]; then
+            echo 'PRODUCTION_URL no está configurada; se omite el smoke test del dominio.'
+            exit 0
+          fi
+          npm run smoke -- "$PRODUCTION_URL"
