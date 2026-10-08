@@ -21,7 +21,7 @@ const { lang } = Astro.props as { lang: Lang };
 <Stack lang={lang} />
 <LogoSprite />
 <Contact lang={lang} />
-<div class="bigword" aria-hidden="true">
+<div class="bigword grad-text" aria-hidden="true">
   fextracode
 </div>
 
@@ -60,10 +60,7 @@ const { lang } = Astro.props as { lang: Lang };
     width: fit-content;
     max-width: 100%;
     margin: var(--space-16) auto 0;
-    padding: 0.1em 0.12em;
-    background: var(--grad-loop);
-    background-clip: text;
-    color: transparent;
+    padding: 0 0.12em 0.1em;
     font: 800 clamp(2rem, 9vw, 9rem) / 0.9 var(--font-display);
     letter-spacing: -0.045em;
     user-select: none;

@@ -21,9 +21,12 @@ const symbols = Object.entries(logos)
     if (!viewBox) return '';
     const fill = attributes.match(/\bfill="([^"]+)"/i)?.[1];
     const symbolId = `i-${name}`;
+    const ids = new Set([...inner.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]));
     const body = inner
       .replace(/\bid="([^"]+)"/g, (_match, id: string) => `id="${symbolId}-${id}"`)
-      .replace(/([#])surface1\b/g, `#${symbolId}-surface1`);
+      .replace(/#([\w:.-]+)/g, (reference, id: string) =>
+        ids.has(id) ? `#${symbolId}-${id}` : reference,
+      );
     return `<symbol id="${symbolId}" viewBox="${viewBox}"${fill ? ` fill="${fill}"` : ''}>${body}</symbol>`;
   })
   .join('');

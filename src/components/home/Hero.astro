@@ -25,7 +25,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
         <span class="rise">{t('hero.line1')}</span>
       </span>
       <span class="line">
-        <span class="rise rotator" aria-hidden="true" data-words={JSON.stringify(words)}>
+        <span class="rise rotator grad-text" aria-hidden="true" data-words={JSON.stringify(words)}>
           {words.map((word) => (
             <span class="ghost" aria-hidden="true">
               {word}
@@ -85,6 +85,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
     const reduce = prefersReducedMotion();
     let index = 0;
     let timer = 0;
+    let scrambleFrame = 0;
     let fitQueued = false;
 
     const fitHeadline = () => {
@@ -93,7 +94,10 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
       probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
       headline.append(probe);
       let widest = 0;
-      for (const word of [headline.querySelector('.rise')?.textContent ?? '', ...words]) {
+      const tokens = [headline.querySelector('.rise')?.textContent ?? '', ...words]
+        .join(' ')
+        .split(/\s+/);
+      for (const word of tokens) {
         probe.textContent = word;
         widest = Math.max(widest, probe.getBoundingClientRect().width);
       }
@@ -103,6 +107,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
       if (widest > available && available > 0) {
         headline.style.fontSize = `${baseSize * (available / widest) * 0.97}px`;
       }
+      headline.dataset.ready = 'true';
     };
 
     const fitAfterEntrance = () => {
@@ -121,22 +126,38 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
 
     const rotate = () => {
       if (reduce || words.length < 2) return;
+      window.clearInterval(timer);
       timer = window.setInterval(() => {
         index = (index + 1) % words.length;
         const live = rotator.querySelector<HTMLElement>('.live');
         if (!live) return;
-        live.textContent = words[index] ?? words[0] ?? '';
-        live.animate(
-          [
-            { transform: 'translateY(0.25em)', opacity: 0 },
-            { transform: 'translateY(0)', opacity: 1 },
-          ],
-          { duration: 350, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
-        );
+        const text = words[index] ?? words[0] ?? '';
+        const from = live.textContent ?? '';
+        const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}';
+        let frame = 0;
+        window.cancelAnimationFrame(scrambleFrame);
+        const tick = () => {
+          live.textContent = [...text]
+            .map((char, position) => {
+              if (char === ' ' || frame >= 12 + position) return char;
+              if (frame < position / 2) return from[position] ?? '';
+              return glyphs[Math.floor(Math.random() * glyphs.length)];
+            })
+            .join('');
+          frame += 1;
+          if (frame < 12 + text.length) scrambleFrame = requestAnimationFrame(tick);
+          else live.textContent = text;
+        };
+        tick();
       }, 2800);
     };
 
-    const stopRotation = () => window.clearInterval(timer);
+    const stopRotation = () => {
+      window.clearInterval(timer);
+      window.cancelAnimationFrame(scrambleFrame);
+      const live = rotator.querySelector<HTMLElement>('.live');
+      if (live) live.textContent = words[index] ?? '';
+    };
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) stopRotation();
     });
@@ -216,8 +237,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
     margin-bottom: var(--space-3);
     animation: fade 900ms var(--ease-out) both;
     color: var(--color-muted-fg);
-    font-size: clamp(1.1rem, 2vw, 1.35rem);
-    font-weight: 600;
+    font: 600 clamp(1.1rem, 2vw, 1.35rem) var(--font-body);
   }
 
   .hello strong {
@@ -226,7 +246,6 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
 
   h1 {
     max-width: 100%;
-    min-height: clamp(5.13rem, 13.68vw, 11.4rem);
     font-size: clamp(2.7rem, 7.2vw, 6rem);
     font-weight: 800;
     letter-spacing: -0.04em;
@@ -257,6 +276,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
   .rotator {
     position: relative;
     display: inline-grid;
+    max-width: 100%;
     vertical-align: top;
   }
 
@@ -269,6 +289,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
   }
 
   .lede {
@@ -357,10 +378,10 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
     transform: translateX(4px);
   }
 
-  @media (max-width: 859px) {
+  @media (max-width: 900px) {
     .hero {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-8);
+      gap: var(--space-12);
       padding-block: var(--space-12) var(--space-16);
     }
   }

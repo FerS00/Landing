@@ -13,7 +13,7 @@ const t = useTranslations(lang);
       <h2 id="approach-title">
         {t('approach.titleFirst')}
         <br />
-        <span class="gradient-text">{t('approach.titleSecond')}</span>
+        <span class="grad-text">{t('approach.titleSecond')}</span>
       </h2>
     </div>
     <p class="intro">{t('approach.intro')}</p>
@@ -34,7 +34,7 @@ const t = useTranslations(lang);
       <article class="node">
         <p class="node-label">{t('flow.entryLabel')}</p>
         <h3>{t('flow.entryTitle')}</h3>
-        <p id="flow-request"></p>
+        <p id="flow-request">{t('flow.requestValidText')}</p>
       </article>
       <article class="node">
         <p class="node-label">{t('flow.modelLabel')}</p>
@@ -204,38 +204,38 @@ const t = useTranslations(lang);
 
 <style>
   .approach {
-    padding-block: var(--space-16);
+    padding-block: var(--space-24) 0;
   }
   .section-head {
-    display: grid;
-    grid-template-columns: 1fr minmax(260px, 0.7fr);
-    gap: var(--space-8);
-    align-items: end;
-    margin-bottom: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-6);
+    align-items: flex-end;
+    margin-bottom: var(--space-12);
   }
   .eyebrow {
-    margin-bottom: var(--space-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     color: var(--color-green);
-    font: 500 0.75rem var(--font-mono);
-    letter-spacing: 0.12em;
+    font: 500 0.78rem/1 var(--font-mono);
+    letter-spacing: 0.14em;
     text-transform: uppercase;
   }
   h2 {
-    font-size: clamp(2.3rem, 5vw, 4rem);
-    letter-spacing: -0.045em;
-  }
-  .gradient-text {
-    background: var(--grad-loop);
-    background-clip: text;
-    color: transparent;
+    margin-top: var(--space-4);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
   }
   .intro {
-    max-width: 50ch;
+    max-width: 46ch;
     color: var(--color-muted-fg);
   }
   .flow-scroll {
     overflow: visible;
-    padding: 8px 4px 12px;
+    padding: 0;
     scrollbar-color: var(--color-border-strong) transparent;
   }
   .flow {
@@ -268,19 +268,20 @@ const t = useTranslations(lang);
   }
   .node h3 {
     margin-block: 10px 8px;
-    font-size: 1.12rem;
+    font-size: 1.2rem;
     line-height: 1.15;
   }
   .node > p:not(.node-label):not(.verdict) {
     color: var(--color-muted-fg);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
   }
   .node .code {
     color: var(--color-cyan) !important;
-    font: 400 0.76rem var(--font-mono);
+    font: 400 0.8rem var(--font-mono);
     overflow-wrap: anywhere;
   }
   .node.gate {
+    border-width: 1.5px;
     border-color: transparent;
     background:
       linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
@@ -304,7 +305,7 @@ const t = useTranslations(lang);
   .wire {
     position: absolute;
     z-index: 0;
-    top: 42px;
+    top: 50%;
     right: 3%;
     left: 3%;
     height: 2px;
@@ -317,7 +318,8 @@ const t = useTranslations(lang);
   .packet {
     position: absolute;
     z-index: 2;
-    top: 35px;
+    top: 50%;
+    margin-top: -7px;
     left: 0;
     width: 14px;
     height: 14px;
@@ -336,7 +338,7 @@ const t = useTranslations(lang);
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
-    margin-top: var(--space-4);
+    margin-top: var(--space-6);
   }
   .chip {
     min-height: 44px;
@@ -346,7 +348,7 @@ const t = useTranslations(lang);
     background: transparent;
     color: var(--color-fg);
     cursor: pointer;
-    font: 500 0.84rem var(--font-mono);
+    font: 500 0.85rem var(--font-mono);
   }
   .chip:hover {
     border-color: var(--color-green);
@@ -359,7 +361,7 @@ const t = useTranslations(lang);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
-    margin-top: var(--space-8);
+    margin-top: var(--space-6);
   }
   .theme-card {
     min-width: 0;
@@ -376,16 +378,16 @@ const t = useTranslations(lang);
   }
   .theme-card h3 {
     margin-bottom: var(--space-2);
-    font-size: 1.18rem;
+    font-size: 1.15rem;
+    line-height: 1.2;
   }
   .theme-card p {
     color: var(--color-muted-fg);
-    font-size: 0.9rem;
+    font-size: 0.93rem;
   }
   @media (max-width: 900px) {
-    .section-head {
+    .themes {
       grid-template-columns: 1fr;
-      gap: var(--space-4);
     }
     .flow {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -397,11 +399,6 @@ const t = useTranslations(lang);
   }
   @media (max-width: 480px) {
     .flow {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 700px) {
-    .themes {
       grid-template-columns: 1fr;
     }
   }

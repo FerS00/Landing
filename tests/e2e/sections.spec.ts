@@ -1,5 +1,61 @@
 import { expect, test } from '@playwright/test';
 
+test('the orbit sprite keeps every local gradient reference and all ten logos', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.locator('.orbit use')).toHaveCount(10);
+  const references = await page.locator('.logo-sprite').evaluate((sprite) => {
+    const missing: string[] = [];
+    for (const element of sprite.querySelectorAll('[fill], [stroke], [filter], [clip-path]')) {
+      for (const attribute of element.attributes) {
+        for (const match of attribute.value.matchAll(/url\(#([^)]*)\)/g)) {
+          const id = match[1];
+          if (id && !document.getElementById(id)) missing.push(id);
+        }
+      }
+    }
+    return { missing, python: sprite.querySelectorAll('#i-python path[fill^="url("]').length };
+  });
+  expect(references.missing).toEqual([]);
+  expect(references.python).toBeGreaterThan(0);
+});
+
+for (const path of ['/', '/en/']) {
+  test(`${path}: prototype presentation and short display name`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(path);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator('.hero h1')).toHaveAttribute('data-ready', 'true');
+    const metrics = await page.evaluate(() => {
+      const headline = document.querySelector('.hero h1')!;
+      const gradient = document.querySelector('.hero .rotator')!;
+      const contact = document.querySelector('#contact form')!;
+      const submit = contact.querySelector('button[type="submit"]')!;
+      const banner = document.querySelector('[data-consent-banner]')!;
+      const activeFilter = document.querySelector('[data-project-filter="all"]')!;
+      return {
+        fontSize: Number.parseFloat(getComputedStyle(headline).fontSize),
+        gradient: getComputedStyle(gradient).backgroundImage,
+        buttonWidth: submit.getBoundingClientRect().width,
+        formWidth: contact.getBoundingClientRect().width,
+        bannerLeft: banner.getBoundingClientRect().left,
+        bannerWidth: banner.getBoundingClientRect().width,
+        filterBackground: getComputedStyle(activeFilter).backgroundColor,
+      };
+    });
+    expect(metrics.fontSize).toBeGreaterThan(70);
+    expect(metrics.gradient).toContain('linear-gradient');
+    expect(Math.abs(metrics.buttonWidth - metrics.formWidth)).toBeLessThan(1);
+    expect(metrics.bannerLeft).toBe(16);
+    expect(metrics.bannerWidth).toBe(380);
+    expect(metrics.filterBackground).not.toBe('rgba(0, 0, 0, 0)');
+    await expect(page.locator('#contact .channel-value').nth(1)).toHaveText('Fernando Morales');
+    await expect(page.locator('footer')).not.toContainText('Peña');
+  });
+}
+
 test('all projects use the prototype rows at 1280px', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto('/');
@@ -79,6 +135,7 @@ test('project kind filters keep document height stable', async ({ page }) => {
 test('Java filters projects and the technology chip clears the filter', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
+  await page.locator('[data-consent-banner]').getByRole('button', { name: 'Rechazar' }).click();
   await page.locator('.orbit').hover();
   await page.locator('.orbit [data-tech="Java"]').click();
 
