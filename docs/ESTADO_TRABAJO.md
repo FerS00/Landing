@@ -94,11 +94,14 @@ Actualizado: 2026-10-07 (rev. 4)
 - Informativo: sin rate limiting por IP (Turnstile mitiga; regla opcional de Cloudflare en la entrega).
 - **Cambio de proveedor (2026-10-08):** el autor pasó a **Resend** (Cloudflare Email Service tenía coste). Función adaptada (`POST https://api.resend.com/emails`), tests 62, e2e 50, prueba con `wrangler pages dev` y clave falsa → 502. Secretos de Pages en producción configurados por el autor: `RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`; el coordinador añadió `CONTACT_TO` y `CONTACT_FROM` (texto plano). Las previews no tienen secretos → `not-configured`.
 
-## Fase 9 — Entrega · parte local lista, pendiente de autorización
+## Fase 9 — Entrega (2026-10-08)
 
-- Codex: `README.md` final (insignias, pipeline con diagrama y tabla de jobs) y `CHANGELOG.md` (1.0.0). Sin auditoría de Antigravity (solo documentación).
-- Verificación final del coordinador (2026-10-08): `npm ci` OK, lint OK, format:check OK, check 0/0, test **61**, build OK, test:e2e **50 passed**, `npm audit` 0, actionlint 0, Lighthouse perf 0.97 · a11y 1 · BP 1 · SEO 1, gitleaks sobre los archivos a versionar: sin hallazgos (3 falsos positivos solo en `graphify-out/`, ignorado).
-- 129 archivos sin versionar listos; `dist/`, `.astro/`, `.lighthouseci/`, `test-results/`, `playwright-report/`, `.wrangler/`, `graphify-out/` y `.claude/` ignorados.
+- PR #1 (`feat/landing-v1`): CI completo en GitHub. Falló `links` por un defecto real (enlaces de la barra fuera de la home) y por la resolución de directorios de lychee; corregido en `6f2500f` (auditado). Todos los checks en verde; squash merge `b9d2d9f` en `main`; rama borrada (remota y local).
+- Ruleset `main-protection` (id 24707360): PR obligatorio, sin force-push ni borrado, checks requeridos `ci`, `e2e`, `lighthouse`, `links`, `Analyze`, `gitleaks`, `npm audit` (estrictos).
+- Despliegue a producción tras CI en `main`: OK, smoke OK en `https://fextracode.pages.dev`. Vista previa del PR verificada (`pr-1.fextracode.pages.dev`), cabeceras de seguridad reales correctas.
+- Defectos detectados en producción y corregidos en `fix/production-config` (auditado): los IDs públicos estaban como **secretos** de GitHub y el workflow leía `vars` (build sin GA/Clarity/Turnstile); `CONTACT_TO`/`CONTACT_FROM` del panel de Pages se ignoraban porque `wrangler.toml` es la fuente de verdad (ahora en `[vars]`).
+- **Bloqueado (acción del usuario):** la regla de redirección de la zona "Redirect from root to WWW [Template]" usa la expresión `true` y genera un bucle 301 en `fextracode.com` y `www`. Modificarla requiere permiso del usuario (el modo automático bloquea cambios de DNS/dominio). Corrección: limitarla a `http.host eq "www.fextracode.com"` con destino `https://fextracode.com/${1}` (ver RUNBOOK › Dominio).
+- Pendiente: tag `v1.0.0` y release tras desplegar la corrección y resolver el dominio.
 
 ## Pendiente del usuario
 
