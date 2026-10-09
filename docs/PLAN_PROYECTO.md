@@ -260,3 +260,7 @@ Petición autorizada el 2026-10-08: alinear la presentación con el prototipo or
 ## Cierre temporal — 2026-10-08
 
 La corrección visual quedó fusionada en `2f19d01` y desplegada correctamente. Solo queda main local/remota. El PR #2 de Dependabot se cerró y su rama se eliminó después de verificar un bundle de recuperación local; Node continúa en 24. No hay trabajo de producto activo. El cierre documental incluye el checkpoint y los tres artefactos públicos del grafo; se excluyen cachés, rutas locales y respaldos. Observaciones y mejoras opcionales en `docs/CIERRE_PROYECTO.md`.
+
+## Logo de marca y favicon — 2026-10-09
+
+Petición del usuario: añadir su logo (F angular con pista de circuito y punto verde), usarlo como icono del navegador y animarlo acorde con la web. Alcance mínimo en la rama `feat/brand-logo`: logo inline de 28 px en la navegación con entrada, encendido del punto y halo de señal (solo `transform`/`opacity`, quieto con movimiento reducido); tres tokens de color de marca constantes entre temas; `favicon.svg` (halo animado donde el navegador lo admite), `favicon.ico` 16/32/48 y `apple-touch-icon.png` 180×180, enlazados con `?v=2` para invalidar la caché. Claude especificó, Codex implementó (una corrección para la alternativa ICO tras observar que el icono no aparecía) y Antigravity aprobó en el ciclo 2; el ciclo 1 quedó Bloqueado por timeout del auditor sin veredicto. No abre una fase nueva del plan.

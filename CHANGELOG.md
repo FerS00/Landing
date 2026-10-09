@@ -4,6 +4,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Añadido
+
+- Logo de marca (F con pista de circuito y punto verde) en la navegación, con entrada, encendido del punto y halo de señal; quieto con movimiento reducido.
+- Favicon SVG con el logo, alternativa ICO (16/32/48) y icono para pantalla de inicio de iOS.
+
 ### Corregido
 
 - Paridad visual con el prototipo: titular, gradientes, espacios, secciones, tarjetas, órbita y consentimiento (PR #4, publicado en producción el 2026-10-08).

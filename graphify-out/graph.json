@@ -402,18 +402,6 @@
       "source_location": "L24"
     },
     {
-      "id": "src_lib_analytics_hasanalyticsconfig",
-      "label": "hasAnalyticsConfig()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Base.astro",
-      "file_type": "code",
-      "norm_label": "hasanalyticsconfig()",
-      "source_file": "src/lib/analytics.ts",
-      "source_location": "L9"
-    },
-    {
       "id": "src_scripts_motion_emit",
       "label": "emit()",
       "_callable": true,
@@ -846,6 +834,18 @@
       "source_location": "L94"
     },
     {
+      "id": "src_lib_analytics_hasanalyticsconfig",
+      "label": "hasAnalyticsConfig()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "analytics.ts",
+      "file_type": "code",
+      "norm_label": "hasanalyticsconfig()",
+      "source_file": "src/lib/analytics.ts",
+      "source_location": "L9"
+    },
+    {
       "id": "src_lib_analytics_loadclarity",
       "label": "loadClarity()",
       "_callable": true,
@@ -999,17 +999,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_components_footer",
-      "label": "Footer.astro",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Base.astro",
-      "file_type": "code",
-      "norm_label": "footer.astro",
-      "source_file": "src/components/Footer.astro",
-      "source_location": "L1"
-    },
-    {
       "id": "src_components_fx_signalfield",
       "label": "SignalField.astro",
       "_origin": "ast",
@@ -1029,17 +1018,6 @@
       "file_type": "code",
       "norm_label": "approach.astro",
       "source_file": "src/components/home/Approach.astro",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_home_contact",
-      "label": "Contact.astro",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Base.astro",
-      "file_type": "code",
-      "norm_label": "contact.astro",
-      "source_file": "src/components/home/Contact.astro",
       "source_location": "L1"
     },
     {
@@ -1106,17 +1084,6 @@
       "file_type": "code",
       "norm_label": "marquee.astro",
       "source_file": "src/components/home/Marquee.astro",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_home_projects",
-      "label": "Projects.astro",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Base.astro",
-      "file_type": "code",
-      "norm_label": "projects.astro",
-      "source_file": "src/components/home/Projects.astro",
       "source_location": "L1"
     },
     {
@@ -1872,7 +1839,7 @@
       "label": "CIERRE_PROYECTO.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "cierre_proyecto.md",
@@ -1884,7 +1851,7 @@
       "label": "Cierre temporal del proyecto",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "cierre temporal del proyecto",
@@ -1896,7 +1863,7 @@
       "label": "Entrega publicada",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "entrega publicada",
@@ -1908,7 +1875,7 @@
       "label": "Evidencias de verificaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "evidencias de verificacion",
@@ -1920,7 +1887,7 @@
       "label": "Git y recuperaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "git y recuperacion",
@@ -1932,7 +1899,7 @@
       "label": "Observaciones conservadas",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "observaciones conservadas",
@@ -1944,7 +1911,7 @@
       "label": "Reanudaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "reanudacion",
@@ -1956,7 +1923,7 @@
       "label": "ESTADO_TRABAJO.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "estado_trabajo.md",
@@ -1964,179 +1931,11 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_estado_trabajo_archivos_relevantes",
-      "label": "Archivos relevantes",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "archivos relevantes",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L39"
-    },
-    {
-      "id": "docs_estado_trabajo_autorizaciones_pendientes",
-      "label": "Autorizaciones pendientes",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "autorizaciones pendientes",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L62"
-    },
-    {
-      "id": "docs_estado_trabajo_completado_y_verificado",
-      "label": "Completado y verificado",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "completado y verificado",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L21"
-    },
-    {
-      "id": "docs_estado_trabajo_decisiones_duraderas",
-      "label": "Decisiones duraderas",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "decisiones duraderas",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L58"
-    },
-    {
-      "id": "docs_estado_trabajo_en_curso",
-      "label": "En curso",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "en curso",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L31"
-    },
-    {
-      "id": "docs_estado_trabajo_estado_de_trabajo",
-      "label": "Estado de trabajo",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "estado de trabajo",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_estado_trabajo_estado_global",
-      "label": "Estado global",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "estado global",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L17"
-    },
-    {
-      "id": "docs_estado_trabajo_hallazgos_riesgos_y_bloqueos",
-      "label": "Hallazgos, riesgos y bloqueos",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "hallazgos, riesgos y bloqueos",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L54"
-    },
-    {
-      "id": "docs_estado_trabajo_identidad",
-      "label": "Identidad",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "identidad",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L3"
-    },
-    {
-      "id": "docs_estado_trabajo_instrucci\u00f3n_de_reanudaci\u00f3n",
-      "label": "Instrucci\u00f3n de reanudaci\u00f3n",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "instruccion de reanudacion",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L70"
-    },
-    {
-      "id": "docs_estado_trabajo_objetivo_activo",
-      "label": "Objetivo activo",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "objetivo activo",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L13"
-    },
-    {
-      "id": "docs_estado_trabajo_pendiente_priorizado",
-      "label": "Pendiente priorizado",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "pendiente priorizado",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L35"
-    },
-    {
-      "id": "docs_estado_trabajo_pruebas_y_comprobaciones",
-      "label": "Pruebas y comprobaciones",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "pruebas y comprobaciones",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L50"
-    },
-    {
-      "id": "docs_estado_trabajo_siguiente_acci\u00f3n_exacta",
-      "label": "Siguiente acci\u00f3n exacta",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "Estado de trabajo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "siguiente accion exacta",
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L66"
-    },
-    {
       "id": "docs_grafos",
       "label": "GRAFOS.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "grafos.md",
@@ -2148,7 +1947,7 @@
       "label": "Actualizaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "actualizacion",
@@ -2160,7 +1959,7 @@
       "label": "Grafos del repositorio",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "grafos del repositorio",
@@ -2172,7 +1971,7 @@
       "label": "L\u00edmites de interpretaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "limites de interpretacion",
@@ -2184,7 +1983,7 @@
       "label": "PLAN_PROYECTO.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "plan_proyecto.md",
@@ -2196,7 +1995,7 @@
       "label": "RUNBOOK.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "runbook.md",
@@ -2208,7 +2007,7 @@
       "label": "README.md",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "readme.md",
@@ -2220,7 +2019,7 @@
       "label": "Documentaci\u00f3n",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "documentacion",
@@ -2232,7 +2031,7 @@
       "label": "Estado del proyecto",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "estado del proyecto",
@@ -2244,7 +2043,7 @@
       "label": "Estructura",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "estructura",
@@ -2256,7 +2055,7 @@
       "label": "fextracode",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fextracode",
@@ -2268,7 +2067,7 @@
       "label": "Pipeline CI/CD",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "pipeline ci/cd",
@@ -2280,7 +2079,7 @@
       "label": "Requisitos y comandos",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "requisitos y comandos",
@@ -2292,7 +2091,7 @@
       "label": "Stack",
       "_origin": "ast",
       "community": 11,
-      "community_name": "Estado de trabajo",
+      "community_name": "README.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "stack",
@@ -2863,7 +2662,7 @@
       "label": "CHANGELOG.md",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "changelog.md",
@@ -2875,31 +2674,43 @@
       "label": "[1.0.0] - 2026-10-08",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "[1.0.0] - 2026-10-08",
       "source_file": "CHANGELOG.md",
-      "source_location": "L17"
+      "source_location": "L22"
     },
     {
       "id": "changelog_a\u00f1adido",
       "label": "A\u00f1adido",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "anadido",
       "source_file": "CHANGELOG.md",
-      "source_location": "L19"
+      "source_location": "L7"
+    },
+    {
+      "id": "changelog_a\u00f1adido_24",
+      "label": "A\u00f1adido",
+      "_origin": "ast",
+      "community": 19,
+      "community_name": "[Unreleased]",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "anadido",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L24"
     },
     {
       "id": "changelog_changelog",
       "label": "Changelog",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "changelog",
@@ -2911,43 +2722,43 @@
       "label": "Corregido",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "corregido",
       "source_file": "CHANGELOG.md",
-      "source_location": "L7"
+      "source_location": "L12"
     },
     {
-      "id": "changelog_corregido_31",
+      "id": "changelog_corregido_36",
       "label": "Corregido",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "corregido",
       "source_file": "CHANGELOG.md",
-      "source_location": "L31"
+      "source_location": "L36"
     },
     {
       "id": "changelog_documentaci\u00f3n",
       "label": "Documentaci\u00f3n",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "documentacion",
       "source_file": "CHANGELOG.md",
-      "source_location": "L13"
+      "source_location": "L18"
     },
     {
       "id": "changelog_unreleased",
       "label": "[Unreleased]",
       "_origin": "ast",
       "community": 19,
-      "community_name": "[1.0.0] - 2026-10-08",
+      "community_name": "[Unreleased]",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "[unreleased]",
@@ -2963,6 +2774,17 @@
       "file_type": "code",
       "norm_label": "contact.ts",
       "source_file": "functions/api/contact.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_home_contact",
+      "label": "Contact.astro",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "contact.ts",
+      "file_type": "code",
+      "norm_label": "contact.astro",
+      "source_file": "src/components/home/Contact.astro",
       "source_location": "L1"
     },
     {
@@ -3461,7 +3283,7 @@
       "node_kind": "heading",
       "norm_label": "accesibilidad",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L128"
+      "source_location": "L130"
     },
     {
       "id": "design_system_fers00_landing_design_color",
@@ -3485,7 +3307,7 @@
       "node_kind": "heading",
       "norm_label": "contenido y tono",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L107"
+      "source_location": "L109"
     },
     {
       "id": "design_system_fers00_landing_design_desviaciones",
@@ -3497,7 +3319,7 @@
       "node_kind": "heading",
       "norm_label": "desviaciones",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L132"
+      "source_location": "L134"
     },
     {
       "id": "design_system_fers00_landing_design_do_don_t",
@@ -3509,7 +3331,7 @@
       "node_kind": "heading",
       "norm_label": "do / don't",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L141"
+      "source_location": "L143"
     },
     {
       "id": "design_system_fers00_landing_design_estabilidad_del_layout_obligatorio_en_la_implementaci\u00f3n",
@@ -3581,7 +3403,7 @@
       "node_kind": "heading",
       "norm_label": "patron de pagina",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L114"
+      "source_location": "L116"
     },
     {
       "id": "design_system_fers00_landing_design_principios",
@@ -3617,7 +3439,7 @@
       "node_kind": "heading",
       "norm_label": "ventana de faq (borrador, a validar por el autor)",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L120"
+      "source_location": "L122"
     },
     {
       "id": "design_system_fers00_landing_design_ventana_de_privacidad_y_cookies_borrador_revisar_antes_de_producci\u00f3n_no_es_asesor\u00eda_legal",
@@ -3629,7 +3451,7 @@
       "node_kind": "heading",
       "norm_label": "ventana de privacidad y cookies (borrador, revisar antes de produccion; no es asesoria legal)",
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L124"
+      "source_location": "L126"
     },
     {
       "id": "tests_e2e_home_spec",
@@ -3718,6 +3540,174 @@
       "norm_label": "vitest.config.ts",
       "source_file": "vitest.config.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "docs_estado_trabajo_archivos_relevantes",
+      "label": "Archivos relevantes",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "archivos relevantes",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L38"
+    },
+    {
+      "id": "docs_estado_trabajo_autorizaciones_pendientes",
+      "label": "Autorizaciones pendientes",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "autorizaciones pendientes",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L61"
+    },
+    {
+      "id": "docs_estado_trabajo_completado_y_verificado",
+      "label": "Completado y verificado",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "completado y verificado",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L21"
+    },
+    {
+      "id": "docs_estado_trabajo_decisiones_duraderas",
+      "label": "Decisiones duraderas",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "decisiones duraderas",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L57"
+    },
+    {
+      "id": "docs_estado_trabajo_en_curso",
+      "label": "En curso",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "en curso",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "docs_estado_trabajo_estado_de_trabajo",
+      "label": "Estado de trabajo",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "estado de trabajo",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_estado_trabajo_estado_global",
+      "label": "Estado global",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "estado global",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L17"
+    },
+    {
+      "id": "docs_estado_trabajo_hallazgos_riesgos_y_bloqueos",
+      "label": "Hallazgos, riesgos y bloqueos",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "hallazgos, riesgos y bloqueos",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L53"
+    },
+    {
+      "id": "docs_estado_trabajo_identidad",
+      "label": "Identidad",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "identidad",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "docs_estado_trabajo_instrucci\u00f3n_de_reanudaci\u00f3n",
+      "label": "Instrucci\u00f3n de reanudaci\u00f3n",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "instruccion de reanudacion",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L69"
+    },
+    {
+      "id": "docs_estado_trabajo_objetivo_activo",
+      "label": "Objetivo activo",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "objetivo activo",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "docs_estado_trabajo_pendiente_priorizado",
+      "label": "Pendiente priorizado",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "pendiente priorizado",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L33"
+    },
+    {
+      "id": "docs_estado_trabajo_pruebas_y_comprobaciones",
+      "label": "Pruebas y comprobaciones",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "pruebas y comprobaciones",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L49"
+    },
+    {
+      "id": "docs_estado_trabajo_siguiente_acci\u00f3n_exacta",
+      "label": "Siguiente acci\u00f3n exacta",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "Estado de trabajo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "siguiente accion exacta",
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L65"
     },
     {
       "id": "package",
@@ -3988,7 +3978,7 @@
       "label": "1. Objetivo",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. objetivo",
@@ -4000,7 +3990,7 @@
       "label": "2. Decisiones tomadas",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. decisiones tomadas",
@@ -4012,7 +4002,7 @@
       "label": "3. Estado de las decisiones iniciales",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. estado de las decisiones iniciales",
@@ -4024,7 +4014,7 @@
       "label": "4. Arquitectura",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. arquitectura",
@@ -4036,7 +4026,7 @@
       "label": "5. Pipeline CI/CD",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. pipeline ci/cd",
@@ -4048,7 +4038,7 @@
       "label": "6. Fases",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "6. fases",
@@ -4060,7 +4050,7 @@
       "label": "7. Riesgos",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "7. riesgos",
@@ -4072,7 +4062,7 @@
       "label": "8. Entregables de dise\u00f1o ya disponibles",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "8. entregables de diseno ya disponibles",
@@ -4084,7 +4074,7 @@
       "label": "Cierre temporal \u2014 2026-10-08",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "cierre temporal \u2014 2026-10-08",
@@ -4096,7 +4086,7 @@
       "label": "Correcci\u00f3n visual posterior a v1.0.0",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "correccion visual posterior a v1.0.0",
@@ -4108,7 +4098,7 @@
       "label": "Criterios de \u00e9xito",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "criterios de exito",
@@ -4120,7 +4110,7 @@
       "label": "Fase 0 \u2014 Repositorio y andamiaje",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 0 \u2014 repositorio y andamiaje",
@@ -4132,7 +4122,7 @@
       "label": "Fase 1 \u2014 CI m\u00ednimo (primer pipeline)",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 1 \u2014 ci minimo (primer pipeline)",
@@ -4144,7 +4134,7 @@
       "label": "Fase 2 \u2014 Sistema de dise\u00f1o, layout e i18n",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 2 \u2014 sistema de diseno, layout e i18n",
@@ -4156,7 +4146,7 @@
       "label": "Fase 3 \u2014 Contenido y secciones",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 3 \u2014 contenido y secciones",
@@ -4168,7 +4158,7 @@
       "label": "Fase 4 \u2014 Puertas de calidad en CI",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 4 \u2014 puertas de calidad en ci",
@@ -4180,7 +4170,7 @@
       "label": "Fase 5 \u2014 Despliegue continuo (Cloudflare Pages)",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 5 \u2014 despliegue continuo (cloudflare pages)",
@@ -4192,7 +4182,7 @@
       "label": "Fase 6 \u2014 Dominio, SEO y endurecimiento",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 6 \u2014 dominio, seo y endurecimiento",
@@ -4204,7 +4194,7 @@
       "label": "Fase 7 \u2014 Anal\u00edtica y consentimiento (D-13)",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 7 \u2014 analitica y consentimiento (d-13)",
@@ -4216,7 +4206,7 @@
       "label": "Fase 8 \u2014 Formulario de contacto (opcional, A-03/A-04)",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 8 \u2014 formulario de contacto (opcional, a-03/a-04)",
@@ -4228,7 +4218,7 @@
       "label": "Fase 9 \u2014 Entrega y release v1.0",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fase 9 \u2014 entrega y release v1.0",
@@ -4240,7 +4230,7 @@
       "label": "Fuera de alcance (v1)",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "fuera de alcance (v1)",
@@ -4248,15 +4238,38 @@
       "source_location": "L23"
     },
     {
+      "id": "docs_plan_proyecto_logo_de_marca_y_favicon_2026_10_09",
+      "label": "Logo de marca y favicon \u2014 2026-10-09",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "logo de marca y favicon \u2014 2026-10-09",
+      "source_file": "docs/PLAN_PROYECTO.md",
+      "source_location": "L264"
+    },
+    {
       "id": "docs_plan_proyecto_plan_proyecto_landing_personal_fers00",
       "label": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "_origin": "ast",
       "community": 5,
-      "community_name": "6. Fases",
+      "community_name": "PLAN_PROYECTO \u2014 Landing personal FerS00",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "plan_proyecto \u2014 landing personal fers00",
       "source_file": "docs/PLAN_PROYECTO.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_footer",
+      "label": "Footer.astro",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "analytics.ts",
+      "file_type": "code",
+      "norm_label": "footer.astro",
+      "source_file": "src/components/Footer.astro",
       "source_location": "L1"
     },
     {
@@ -4565,6 +4578,17 @@
       "norm_label": "ver los datos",
       "source_file": "docs/RUNBOOK.md",
       "source_location": "L61"
+    },
+    {
+      "id": "src_components_home_projects",
+      "label": "Projects.astro",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "projects.test.ts",
+      "file_type": "code",
+      "norm_label": "projects.astro",
+      "source_file": "src/components/home/Projects.astro",
+      "source_location": "L1"
     },
     {
       "id": "src_content_config",
@@ -6712,24 +6736,24 @@
     },
     {
       "source": "changelog_1_0_0_2026_10_08",
-      "target": "changelog_a\u00f1adido",
+      "target": "changelog_a\u00f1adido_24",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L19",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
       "source": "changelog_1_0_0_2026_10_08",
-      "target": "changelog_corregido_31",
+      "target": "changelog_corregido_36",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L31",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -6740,7 +6764,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L17",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -6756,18 +6780,29 @@
     },
     {
       "source": "changelog_unreleased",
+      "target": "changelog_corregido",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_unreleased",
       "target": "changelog_documentaci\u00f3n",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L13",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
       "source": "changelog_unreleased",
-      "target": "changelog_corregido",
+      "target": "changelog_a\u00f1adido",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -6795,7 +6830,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L107",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -6806,7 +6841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L114",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -6817,7 +6852,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L128",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -6828,7 +6863,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L132",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -6850,7 +6885,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L141",
+      "source_location": "L143",
       "weight": 1.0
     },
     {
@@ -6927,7 +6962,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L120",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -6938,7 +6973,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "design-system/fers00-landing/DESIGN.md",
-      "source_location": "L124",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -7295,6 +7330,17 @@
     },
     {
       "source": "docs_estado_trabajo_estado_de_trabajo",
+      "target": "docs_estado_trabajo_en_curso",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ESTADO_TRABAJO.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_estado_trabajo_estado_de_trabajo",
       "target": "docs_estado_trabajo_identidad",
       "relation": "contains",
       "_origin": "ast",
@@ -7306,24 +7352,13 @@
     },
     {
       "source": "docs_estado_trabajo_estado_de_trabajo",
-      "target": "docs_estado_trabajo_en_curso",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L31",
-      "weight": 1.0
-    },
-    {
-      "source": "docs_estado_trabajo_estado_de_trabajo",
       "target": "docs_estado_trabajo_pendiente_priorizado",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L35",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -7334,7 +7369,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L39",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -7345,7 +7380,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L50",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -7356,7 +7391,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L54",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -7367,7 +7402,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L58",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -7378,7 +7413,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L62",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -7389,7 +7424,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L66",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -7400,7 +7435,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ESTADO_TRABAJO.md",
-      "source_location": "L70",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -7643,6 +7678,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/PLAN_PROYECTO.md",
       "source_location": "L260",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_plan_proyecto_plan_proyecto_landing_personal_fers00",
+      "target": "docs_plan_proyecto_logo_de_marca_y_favicon_2026_10_09",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/PLAN_PROYECTO.md",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -10511,5 +10557,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2f19d013c2d20b86295f1fd451b9487480051812"
+  "built_at_commit": "32922b1a8cae20268ad60b6b6cf454a476c7bd4c"
 }
