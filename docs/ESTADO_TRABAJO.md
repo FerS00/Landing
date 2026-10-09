@@ -4,69 +4,68 @@
 
 - Proyecto: fextracode (`FerS00/Landing`, público)
 - Ruta canónica: C:\Users\moral\OneDrive\Documents\LandingPage
-- Actualizado: 2026-10-08
-- Sesión de origen: Codex; sesión autorizada sin Claude
-- Rama de continuidad: `main`, protegida; la documentación de cierre se entrega mediante PR
+- Actualizado: 2026-10-09
+- Sesión de origen: Claude (Codex implementa, Antigravity audita)
+- Rama de continuidad: `feat/brand-logo` → PR a `main` (protegida)
 - Commit de producto verificado: `2f19d01` (PR #4). El commit documental posterior se identifica con `git log -1`
 - Estado previo a esta entrega documental: main local/remota sincronizadas y árbol limpio
 
 ## Objetivo activo
 
-Ninguno de producto. Proyecto cerrado por el momento a petición del usuario; este checkpoint acompaña la entrega documental de cierre.
+Logo de marca y favicon (petición del 2026-10-09). Implementado, auditado y pendiente de PR; detalle en la sección «Logo de marca y favicon» del plan.
 
 ## Estado global
 
-Listo para continuar. Verificación: Aprobado con observaciones.
+Listo para entrega por PR. Verificación: Aprobado (Antigravity, ciclo 2).
 
 ## Completado y verificado
 
-- Implementación y entrega v1.0.0; corrección visual posterior publicada en main y en el dominio.
-- Nombre visible Fernando Morales; identificación legal completa conservada.
-- PR #4 fusionado en `2f19d01`, CI/Security/CodeQL y Deploy aprobados.
-- 62 unitarias y 54 e2e; lint, formato, tipos y build aprobados. Formulario simulado en las pruebas; un envío real previo confirmado por el usuario.
-- Revisión de producción ES/EN, oscuro/claro, 375/768/1280: sin overflow horizontal.
-- Otras ramas de producto eliminadas; PR #2 cerrado tras respaldo bundle verificado. Node permanece en 24.
-- Documentación reconciliada con la entrega; grafo estructural actualizado y publicado sin cachés ni respaldos.
+- Logo inline de 28 px en la navegación con entrada scale/rotate, encendido del punto y halo de señal cada 2.8 s; solo transform/opacity; quieto con movimiento reducido.
+- Tokens `--color-logo-tile`, `--color-logo-fg`, `--color-logo-dot` constantes entre temas.
+- `public/favicon.svg`, `public/favicon.ico` (16/32/48) y `public/apple-touch-icon.png` (180×180), enlazados con `?v=2`.
+- Comprobaciones: lint, format:check, check (0/0/0), 62 unitarias y build (Codex y runner de Antigravity); 54 e2e (Claude, fuera del sandbox); revisión visual local en tema oscuro y claro.
+- Entrega anterior: v1.0.0 y corrección visual (PR #4, `2f19d01`) en producción.
 
 ## En curso
 
-Ningún desarrollo activo. Consultar el PR del cierre documental para confirmar su publicación; no iniciar otra fase automáticamente.
+Entrega por PR de `feat/brand-logo` mediante git-delivery, autorizada por el usuario el 2026-10-09.
 
 ## Pendiente priorizado
 
-No hay tareas de producto autorizadas. Observaciones y mantenimiento opcional en `docs/CIERRE_PROYECTO.md`.
+1. Tras el despliegue, comprobar el favicon en producción (Chrome, Firefox, Safari). Los navegadores con el icono anterior en caché lo renuevan gracias a `?v=2`.
+2. Observaciones previas y mantenimiento opcional en `docs/CIERRE_PROYECTO.md`.
 
 ## Archivos relevantes
 
 | Ruta | Motivo |
 |---|---|
-| docs/PLAN_PROYECTO.md | Plan canónico y cierre de alcance |
-| docs/CIERRE_PROYECTO.md | Entrega, evidencias y límites |
-| docs/RUNBOOK.md | Operación y rollback |
-| docs/GRAFOS.md | Reproducción y límites del mapa |
-| graphify-out/{graph.json,graph.html,GRAPH_REPORT.md} | Grafo publicado por petición del usuario |
-| design-system/fers00-landing/prototype.html | Referencia original conservada |
+| docs/PLAN_PROYECTO.md | Plan canónico; sección «Logo de marca y favicon» |
+| src/components/Nav.astro | Logo inline y animaciones |
+| src/layouts/Base.astro | Enlaces de iconos |
+| public/{favicon.svg,favicon.ico,apple-touch-icon.png} | Iconos |
+| docs/CIERRE_PROYECTO.md | Entrega v1.0.0, evidencias y límites |
+| graphify-out/{graph.json,graph.html,GRAPH_REPORT.md} | Grafo actualizado con este cambio |
 
 ## Pruebas y comprobaciones
 
-Resultados de producto en `2f19d01`: Aprobado con observaciones. Evidencias, workflows y comprobaciones No ejecutadas en el documento de cierre. Los cambios de esta entrega son documentales; no atribuirles una nueva ejecución local de las suites de producto.
+Aprobado. No ejecutado: favicon animado en Firefox y aspecto del icono en Safari/iOS reales; el `<style>` interno del SVG podría no aplicarse en algunos contextos (se ve estático, sin pérdida de forma).
 
 ## Hallazgos, riesgos y bloqueos
 
-Script de Cloudflare bloqueado por CSP y limpieza local rechazada por política automática; detalles y límites en el cierre. Paneles externos no revisados en este cierre. Grafo de apoyo con extracción Astro parcial, no prueba de corrección del código.
+Ciclo 1 de Antigravity Bloqueado por timeout de 240 s sin veredicto; repetido con 600 s y aprobado. Sin hallazgos abiertos.
 
 ## Decisiones duraderas
 
-Cierre temporal solicitado el 2026-10-08. Sin nueva fase, release ni cambios de infraestructura. Los tres artefactos públicos del grafo se versionan por petición expresa; cachés y recuperación permanecen locales.
+El logo usa colores de marca fijos (loseta oscura también en tema claro). Los iconos se generaron una vez con sharp; no hay script de generación en el repositorio.
 
 ## Autorizaciones pendientes
 
-Ninguna para publicar este cierre documental mediante PR. Nuevas funciones o cambios de infraestructura requieren una nueva petición con alcance.
+Commit, push y PR autorizados por el usuario el 2026-10-09. El merge y el despliegue no están autorizados explícitamente.
 
 ## Siguiente acción exacta
 
-Esperar una nueva petición. Antes de trabajar, verificar el estado real de main y el último despliegue.
+Revisar el CI del PR de `feat/brand-logo` y esperar la decisión del usuario sobre el merge.
 
 ## Instrucción de reanudación
 
-Invoca `$session-resume`. Lee este checkpoint, el plan y el cierre; ejecuta `git status`, `git log -3`, `gh pr list` y `gh run list --branch main`. Contrasta la entrega documental con el PR que contiene este checkpoint y consulta el grafo después de comprobar su vigencia.
+Invoca `$session-resume`. Lee este checkpoint y el plan; ejecuta `git status`, `git log -3`, `gh pr list` y `gh run list`.

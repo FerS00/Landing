@@ -1,6 +1,6 @@
 # Grafos del repositorio
 
-El cierre incluye los artefactos de Graphify actualizados a partir de la base de producto `2f19d01` y de la documentación de esta entrega. Se versionan por petición expresa del usuario. El mapa de cierre contiene 422 nodos, 501 relaciones y 37 comunidades; conserva etiquetas EXTRACTED e INFERRED, que deben distinguirse al interpretar los vínculos.
+Los artefactos de Graphify se actualizaron el 2026-10-09 sobre la rama `feat/brand-logo` (logo de marca y favicon), con base `32922b1`. Se versionan por petición expresa del usuario. El mapa contiene 424 nodos, 503 relaciones y 38 comunidades; conserva etiquetas EXTRACTED e INFERRED, que deben distinguirse al interpretar los vínculos.
 
 - [Grafo JSON](../graphify-out/graph.json): nodos y relaciones para consultas.
 - [Vista HTML](../graphify-out/graph.html): descargar y abrir en un navegador para explorar el mapa.
@@ -21,4 +21,4 @@ El update refresca la estructura sin requerir un LLM. Se conservan solo los tres
 
 El mapa sirve para orientación; el código, configuración, Git y comprobaciones reales son las fuentes de verdad. La extracción advierte errores de sintaxis en 22 archivos Astro y puede omitir símbolos de esos componentes. `src/styles/tokens.css` fue omitido por una heurística de nombres sensibles; sigue siendo la fuente de colores y debe inspeccionarse directamente cuando corresponda.
 
-No se realizó una nueva síntesis semántica con LLM ni se usa Graphiti. El campo `built_at_commit` identifica la base Git durante la generación, no el commit futuro que publica estos mismos artefactos. Los cambios documentales sin commit de esta entrega también estaban presentes al regenerar el mapa.
+No se realizó una nueva síntesis semántica con LLM ni se usa Graphiti. El campo `built_at_commit` identifica la base Git durante la generación, no el commit futuro que publica estos mismos artefactos. Los cambios sin commit del logo y su documentación estaban presentes al regenerar el mapa. Siete comunidades se renombraron por su nodo central; no se relanzó el etiquetado con LLM.

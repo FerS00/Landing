@@ -14,7 +14,20 @@ const sectionHref = (section: string) => (isHome ? `#${section}` : `${homePath}#
 <header class="nav">
   <div class="nav-in">
     <a class="brand" href={lang === 'es' ? '/' : '/en/'} aria-label="fextracode">
-      <i aria-hidden="true"></i>
+      <svg class="brand-mark" viewBox="24 24 1206 1206" aria-hidden="true" focusable="false">
+        <rect class="bm-tile" x="24" y="24" width="1206" height="1206" rx="260" />
+        <path
+          class="bm-f"
+          d="M322 397 473 251H1021L771 498H529L475 552V594H890L780 703H506V865L322 1036Z"
+        />
+        <path
+          class="bm-cut"
+          d="M960 358H508L452 416 476 440 527 390H960ZM383 450H420V720L383 758Z"
+        />
+        <circle class="bm-cut" cx="437" cy="467" r="57" />
+        <circle class="bm-halo" cx="437" cy="467" r="29" />
+        <circle class="bm-dot" cx="437" cy="467" r="29" />
+      </svg>
       <span>
         fextra<b>code</b>
       </span>
@@ -116,12 +129,82 @@ const sectionHref = (section: string) => (isHome ? `#${section}` : `${homePath}#
     font-weight: 700;
   }
 
-  .brand i {
-    width: 9px;
-    height: 9px;
-    border-radius: 2px;
-    background: var(--color-green);
-    box-shadow: 0 0 12px var(--color-green);
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    flex: none;
+    display: block;
+    filter: drop-shadow(
+      0 0 calc(10px * var(--glow)) color-mix(in srgb, var(--color-logo-dot) 45%, transparent)
+    );
+    transition: transform 300ms var(--ease-out);
+    animation: brand-mark-in 700ms var(--ease-out);
+  }
+
+  .bm-tile {
+    fill: var(--color-logo-tile);
+  }
+
+  .bm-f {
+    fill: var(--color-logo-fg);
+  }
+
+  .bm-cut {
+    fill: var(--color-logo-tile);
+  }
+
+  .bm-halo {
+    fill: var(--color-logo-dot);
+    opacity: 0;
+    transform-box: view-box;
+    transform-origin: 437px 467px;
+    animation: brand-signal 2.8s ease-out 1.2s infinite;
+  }
+
+  .bm-dot {
+    fill: var(--color-logo-dot);
+    animation: brand-dot-in 450ms ease-out 1.15s both;
+  }
+
+  @keyframes brand-mark-in {
+    from {
+      opacity: 0;
+      transform: scale(0.82) rotate(-8deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes brand-dot-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes brand-signal {
+    from {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.4);
+    }
+  }
+
+  .brand:hover .brand-mark,
+  .brand:focus-visible .brand-mark {
+    transform: rotate(-6deg);
+  }
+
+  .brand:hover .bm-halo,
+  .brand:focus-visible .bm-halo {
+    animation-duration: 1.2s;
   }
 
   .nav-links {

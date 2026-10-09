@@ -15,6 +15,9 @@
   --color-danger: #ff9b9b;
   --color-ok: #3df58c;
   --color-logo-bg: #f2f7f3;
+  --color-logo-tile: #050806;
+  --color-logo-fg: #eaf5ee;
+  --color-logo-dot: #3df58c;
   --grad-loop: linear-gradient(
     90deg,
     var(--color-green),

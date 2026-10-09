@@ -1,16 +1,16 @@
-# Graph Report - LandingPage  (2026-10-08)
+# Graph Report - LandingPage  (2026-10-09)
 
 ## Corpus Check
-- 90 files · ~64,369 words
+- 90 files · ~65,011 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 422 nodes · 501 edges · 37 communities (34 shown, 3 thin omitted)
-- Extraction labels: 500 EXTRACTED · 1 INFERRED relations. See graph.json for individual evidence.
+- 424 nodes · 503 edges · 38 communities (35 shown, 3 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2f19d013`
+- Built from commit: `32922b1a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,13 +20,13 @@
 - contact.ts
 - fextracode — DESIGN.md
 - scripts
-- 6. Fases
+- PLAN_PROYECTO — Landing personal FerS00
 - analytics.ts
 - Despliegue en Cloudflare Pages
 - projects.test.ts
 - Design System Master File
 - seo.ts
-- Estado de trabajo
+- README.md
 - tsconfig.json
 - og.mjs
 - i18n.test.ts
@@ -34,7 +34,7 @@
 - privacy.en.md
 - privacy.es.md
 - Instrucciones del proyecto
-- [1.0.0] - 2026-10-08
+- [Unreleased]
 - Corrección visual de la landing
 - .prettierrc.json
 - a11y.spec.ts
@@ -43,6 +43,7 @@
 - no-hex-outside-tokens.test.ts
 - playwright.config.ts
 - home.spec.ts
+- Estado de trabajo
 
 ## God Nodes (most connected - your core abstractions)
 1. `Lang` - 14 edges
@@ -50,7 +51,7 @@
 3. `scripts` - 13 edges
 4. `fextracode — DESIGN.md` - 13 edges
 5. `Despliegue en Cloudflare Pages` - 13 edges
-6. `PLAN_PROYECTO — Landing personal FerS00` - 11 edges
+6. `PLAN_PROYECTO — Landing personal FerS00` - 12 edges
 7. `6. Fases` - 11 edges
 8. `onRequestPost()` - 7 edges
 9. `fextracode` - 7 edges
@@ -65,18 +66,18 @@
 ## Import Cycles
 - None detected.
 
-## Communities (37 total, 3 thin omitted)
+## Communities (38 total, 3 thin omitted)
 
 ### Community 0 - "Base.astro"
 Cohesion: 0.06
-Nodes (23): { lang }, symbols, enHref, esHref, { lang }, t, getAlternatePath(), Lang (+15 more)
+Nodes (22): { lang }, symbols, enHref, esHref, { lang }, t, getAlternatePath(), Lang (+14 more)
 
 ### Community 1 - "devDependencies"
 Cohesion: 0.07
 Nodes (27): @astrojs/check, @axe-core/playwright, eslint, @eslint/js, eslint-plugin-astro, globals, devDependencies, @astrojs/check (+19 more)
 
 ### Community 2 - "contact.ts"
-Cohesion: 0.12
+Cohesion: 0.11
 Nodes (17): allowedOrigin(), badMethod(), ContactRequest, Env, isContactRequest(), json(), onRequest(), onRequestPost() (+9 more)
 
 ### Community 3 - "fextracode — DESIGN.md"
@@ -87,13 +88,13 @@ Nodes (15): Accesibilidad, Color, Contenido y tono, Desviaciones, Do / Don't, Es
 Cohesion: 0.08
 Nodes (23): astro, @astrojs/sitemap, dependencies, astro, @astrojs/sitemap, engines, node, name (+15 more)
 
-### Community 5 - "6. Fases"
-Cohesion: 0.09
-Nodes (23): 1. Objetivo, 2. Decisiones tomadas, 3. Estado de las decisiones iniciales, 4. Arquitectura, 5. Pipeline CI/CD, 6. Fases, 7. Riesgos, 8. Entregables de diseño ya disponibles (+15 more)
+### Community 5 - "PLAN_PROYECTO — Landing personal FerS00"
+Cohesion: 0.08
+Nodes (24): 1. Objetivo, 2. Decisiones tomadas, 3. Estado de las decisiones iniciales, 4. Arquitectura, 5. Pipeline CI/CD, 6. Fases, 7. Riesgos, 8. Entregables de diseño ya disponibles (+16 more)
 
 ### Community 6 - "analytics.ts"
-Cohesion: 0.17
-Nodes (16): AnalyticsEventName, AnalyticsWindow, ConsentRecord, ConsentValue, expireGoogleCookies(), filterAnalyticsEvent(), hasAnalytics, knownCommands (+8 more)
+Cohesion: 0.16
+Nodes (17): AnalyticsEventName, AnalyticsWindow, ConsentRecord, ConsentValue, expireGoogleCookies(), filterAnalyticsEvent(), hasAnalytics, hasAnalyticsConfig() (+9 more)
 
 ### Community 7 - "Despliegue en Cloudflare Pages"
 Cohesion: 0.10
@@ -111,9 +112,9 @@ Nodes (16): Additional Forbidden Patterns, Anti-Patterns (Do NOT Use), Buttons, 
 Cohesion: 0.19
 Nodes (12): analyticsConfigured, cspDirectives, cspScriptResources, cspSources, createStructuredData(), localizedAlternates, serializeSitemapItem(), serializeStructuredData() (+4 more)
 
-### Community 11 - "Estado de trabajo"
-Cohesion: 0.06
-Nodes (30): Cierre temporal del proyecto, Entrega publicada, Evidencias de verificación, Git y recuperación, Observaciones conservadas, Reanudación, Archivos relevantes, Autorizaciones pendientes (+22 more)
+### Community 11 - "README.md"
+Cohesion: 0.11
+Nodes (16): Cierre temporal del proyecto, Entrega publicada, Evidencias de verificación, Git y recuperación, Observaciones conservadas, Reanudación, Actualización, Grafos del repositorio (+8 more)
 
 ### Community 12 - "tsconfig.json"
 Cohesion: 0.15
@@ -143,9 +144,9 @@ Nodes (6): Base legal y cómo cambiar de opinión, Cookies y almacenamiento loca
 Cohesion: 0.33
 Nodes (5): Comandos, Flujo de trabajo, Fuentes de verdad, Instrucciones del proyecto, Reglas de producto
 
-### Community 19 - "[1.0.0] - 2026-10-08"
-Cohesion: 0.25
-Nodes (7): [1.0.0] - 2026-10-08, Añadido, Changelog, Corregido, Corregido, Documentación, [Unreleased]
+### Community 19 - "[Unreleased]"
+Cohesion: 0.22
+Nodes (8): [1.0.0] - 2026-10-08, Añadido, Añadido, Changelog, Corregido, Corregido, Documentación, [Unreleased]
 
 ### Community 20 - "Corrección visual de la landing"
 Cohesion: 0.29
@@ -167,25 +168,29 @@ Nodes (4): Cómo se probó, Fase del plan, Lista de comprobación, Resumen
 Cohesion: 0.40
 Nodes (4): faqEn, faqEs, privacyEn, privacyEs
 
+### Community 37 - "Estado de trabajo"
+Cohesion: 0.14
+Nodes (14): Archivos relevantes, Autorizaciones pendientes, Completado y verificado, Decisiones duraderas, En curso, Estado de trabajo, Estado global, Hallazgos, riesgos y bloqueos (+6 more)
+
 ## Knowledge Gaps
-- **235 isolated node(s):** `prettier-plugin-astro`, `singleQuote`, `printWidth`, `overrides`, `Env` (+230 more)
+- **237 isolated node(s):** `prettier-plugin-astro`, `singleQuote`, `printWidth`, `overrides`, `Env` (+232 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PLAN_PROYECTO — Landing personal FerS00` connect `6. Fases` to `Estado de trabajo`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `Despliegue en Cloudflare Pages` connect `Despliegue en Cloudflare Pages` to `Estado de trabajo`?**
+- **Why does `Lang` connect `Base.astro` to `projects.test.ts`, `contact.ts`, `analytics.ts`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `PLAN_PROYECTO — Landing personal FerS00` connect `PLAN_PROYECTO — Landing personal FerS00` to `README.md`?**
+  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+- **Why does `Despliegue en Cloudflare Pages` connect `Despliegue en Cloudflare Pages` to `README.md`?**
   _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **What connects `prettier-plugin-astro`, `singleQuote`, `printWidth` to the rest of the system?**
-  _235 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _237 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Base.astro` be split into smaller, more focused modules?**
-  _Cohesion score 0.06291591046581972 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06219426974143955 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
 - **Should `contact.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.11692307692307692 - nodes in this community are weakly interconnected._
-- **Should `fextracode — DESIGN.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.125 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11396011396011396 - nodes in this community are weakly interconnected._

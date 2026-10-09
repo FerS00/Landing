@@ -1,4 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#050806" />
-  <text x="16" y="24" fill="#3DF58C" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle">f</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="24 24 1206 1206">
+  <style>
+    @media (prefers-reduced-motion: no-preference) {
+      .halo {
+        transform-box: view-box;
+        transform-origin: 437px 467px;
+        animation: signal 2.8s ease-out infinite;
+      }
+    }
+    @keyframes signal {
+      from { opacity: 0.7; transform: scale(1); }
+      to { opacity: 0; transform: scale(2.4); }
+    }
+  </style>
+  <rect x="24" y="24" width="1206" height="1206" rx="260" fill="#050806" />
+  <path d="M322 397 473 251H1021L771 498H529L475 552V594H890L780 703H506V865L322 1036Z" fill="#eaf5ee" />
+  <path d="M960 358H508L452 416 476 440 527 390H960ZM383 450H420V720L383 758Z" fill="#050806" />
+  <circle cx="437" cy="467" r="57" fill="#050806" />
+  <circle class="halo" cx="437" cy="467" r="29" fill="#3df58c" opacity="0" />
+  <circle cx="437" cy="467" r="29" fill="#3df58c" />
 </svg>

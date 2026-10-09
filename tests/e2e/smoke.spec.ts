@@ -2,6 +2,23 @@ import { expect, test } from '@playwright/test';
 
 test('Spanish and English pages expose locale metadata and equivalent routes', async ({ page }) => {
   await page.goto('/');
+  await expect(page.locator('link[rel="icon"][href="/favicon.svg?v=2"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="icon"][href="/favicon.ico?v=2"]')).toHaveCount(1);
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
+  const ico = await page.request.get('/favicon.ico');
+  expect(ico.status()).toBe(200);
+  const favicon = await page.request.get('/favicon.svg');
+  expect(favicon.status()).toBe(200);
+  const appleTouchIcon = await page.request.get('/apple-touch-icon.png');
+  expect(appleTouchIcon.status()).toBe(200);
+  const brand = page.locator('.brand');
+  await expect(brand.locator('.brand-mark')).toBeVisible();
+  await expect(brand.locator('.brand-mark')).toHaveAttribute('aria-hidden', 'true');
+  const initialBrandBox = await brand.boundingBox();
+  await page.waitForTimeout(1500);
+  const settledBrandBox = await brand.boundingBox();
+  expect(settledBrandBox?.width).toBe(initialBrandBox?.width);
+  expect(settledBrandBox?.height).toBe(initialBrandBox?.height);
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
   await expect(page).toHaveTitle('Fernando Morales · fextracode');
   await expect(page.locator('link[hreflang="es"]')).toHaveCount(1);

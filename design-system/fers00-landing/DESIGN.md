@@ -87,6 +87,8 @@ Prueba de aceptación en Playwright: durante 8 s de animación la altura del doc
 
 ## Interacciones
 
+Marca: logo F con pista de circuito y punto verde (favicon y nav, 28px); entrada scale/rotate, punto que se enciende y halo que late cada 2.8s; quieto con movimiento reducido.
+
 | Interacción | Qué hace | Teclado / reducido |
 |---|---|---|
 | Terminal interactiva | Escribe una intro y acepta comandos: `help`, `whoami`, `projects`, `stack`, `contact`, `lang es/en`, `theme`, `matrix`, `clear`. `projects` y `contact` llevan a su sección | Input etiquetado; salida en `aria-live`; con movimiento reducido la intro aparece completa |
