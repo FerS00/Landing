@@ -42,50 +42,77 @@ const fullLayoutSpans = projectColumnSpans(
   </div>
 
   <div class="project-grid" data-project-grid data-layout="original">
-    {projects.map((project, index) => (
-      <a
-        class="project-card"
-        class:list={{ wide: project.data.wide }}
-        href={project.data.url}
-        target="_blank"
-        rel="noopener"
-        data-project-kind={project.data.kind}
-        data-track-project={project.data.name.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')}
-        data-project-wide={String(project.data.wide)}
-        data-project-tech={JSON.stringify(project.data.tech)}
-        data-project-order={project.data.order}
-        data-project-original-span={fullLayoutSpans[index]}
-        style={`--project-span: ${fullLayoutSpans[index]}`}
-      >
-        <div class="card-top">
-          <span class="index">{String(index + 1).padStart(2, '0')}</span>
-          <span class:list={['badge', project.data.kind]}>
-            {project.data.kind === 'pub' ? t('projects.publicBadge') : t('projects.caseBadge')}
+    {projects.map((project, index) =>
+      project.data.url ? (
+        <a
+          class="project-card"
+          class:list={{ wide: project.data.wide }}
+          href={project.data.url}
+          target="_blank"
+          rel="noopener"
+          data-project-kind={project.data.kind}
+          data-track-project={project.data.name.toLowerCase().replace(/[^a-z0-9_-]+/g, '-')}
+          data-project-wide={String(project.data.wide)}
+          data-project-tech={JSON.stringify(project.data.tech)}
+          data-project-order={project.data.order}
+          data-project-original-span={fullLayoutSpans[index]}
+          style={`--project-span: ${fullLayoutSpans[index]}`}
+        >
+          <div class="card-top">
+            <span class="index">{String(index + 1).padStart(2, '0')}</span>
+            <span class:list={['badge', project.data.kind]}>
+              {project.data.kind === 'pub' ? t('projects.publicBadge') : t('projects.caseBadge')}
+            </span>
+          </div>
+          <h3>{project.data.name}</h3>
+          <p class="description">{project.data.description[lang]}</p>
+          <div class="tags">
+            {project.data.tags.map((tag) => (
+              <span data-project-tag={tag}>{tag}</span>
+            ))}
+          </div>
+          <span class="more">
+            {project.data.kind === 'pub' ? t('projects.repository') : t('projects.caseStudy')}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M7 7h10v10" />
+            </svg>
           </span>
-        </div>
-        <h3>{project.data.name}</h3>
-        <p class="description">{project.data.description[lang]}</p>
-        <div class="tags">
-          {project.data.tags.map((tag) => (
-            <span data-project-tag={tag}>{tag}</span>
-          ))}
-        </div>
-        <span class="more">
-          {project.data.kind === 'pub' ? t('projects.repository') : t('projects.caseStudy')}
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            aria-hidden="true"
-          >
-            <path d="M7 17 17 7M7 7h10v10" />
-          </svg>
-        </span>
-      </a>
-    ))}
+        </a>
+      ) : (
+        <article
+          class="project-card"
+          class:list={{ wide: project.data.wide }}
+          data-project-kind={project.data.kind}
+          data-project-wide={String(project.data.wide)}
+          data-project-tech={JSON.stringify(project.data.tech)}
+          data-project-order={project.data.order}
+          data-project-original-span={fullLayoutSpans[index]}
+          style={`--project-span: ${fullLayoutSpans[index]}`}
+        >
+          <div class="card-top">
+            <span class="index">{String(index + 1).padStart(2, '0')}</span>
+            <span class:list={['badge', project.data.kind]}>
+              {project.data.kind === 'pub' ? t('projects.publicBadge') : t('projects.caseBadge')}
+            </span>
+          </div>
+          <h3>{project.data.name}</h3>
+          <p class="description">{project.data.description[lang]}</p>
+          <div class="tags">
+            {project.data.tags.map((tag) => (
+              <span data-project-tag={tag}>{tag}</span>
+            ))}
+          </div>
+        </article>
+      ),
+    )}
   </div>
 </section>
 
