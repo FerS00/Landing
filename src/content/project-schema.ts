@@ -3,7 +3,7 @@ import { z } from 'astro/zod';
 export const projectSchema = z.object({
   order: z.number(),
   name: z.string(),
-  url: z.url(),
+  url: z.url().optional(),
   kind: z.enum(['pub', 'priv']),
   wide: z.boolean(),
   tags: z.array(z.string()),

@@ -11,6 +11,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Corregido
 
+- Proyectos WLQuickGen y HWID-Activation-Core reformulados como casos de estudio sin enlace a binarios, para retirar la marca de Safe Browsing.
+
 - Paridad visual con el prototipo: titular, gradientes, espacios, secciones, tarjetas, órbita y consentimiento (PR #4, publicado en producción el 2026-10-08).
 - Referencias locales de gradientes del sprite SVG.
 - Nombre de presentación reducido a Fernando Morales en contacto y copyright; identificación legal conservada.

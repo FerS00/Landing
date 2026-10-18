@@ -122,9 +122,9 @@ test('project kind filters keep document height stable', async ({ page }) => {
   const initialHeight = await page.evaluate(() => document.documentElement.scrollHeight);
 
   await page.getByRole('button', { name: 'Código público' }).click();
-  await expect(page.locator('[data-project-grid] .project-card:not([hidden])')).toHaveCount(4);
-  await page.getByRole('button', { name: 'Casos de estudio' }).click();
   await expect(page.locator('[data-project-grid] .project-card:not([hidden])')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Casos de estudio' }).click();
+  await expect(page.locator('[data-project-grid] .project-card:not([hidden])')).toHaveCount(4);
   await page.getByRole('button', { name: 'Todos', exact: true }).click();
   await expect(page.locator('[data-project-grid] .project-card:not([hidden])')).toHaveCount(7);
 

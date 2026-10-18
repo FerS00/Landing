@@ -21,9 +21,21 @@ describe('project collection', () => {
   it('validates all seven records with unique order and HTTPS URLs', () => {
     expect(projects).toHaveLength(7);
     expect(new Set(projects.map((project) => project.order)).size).toBe(7);
-    expect(projects.every((project) => project.url.startsWith('https://'))).toBe(true);
-    expect(projects.filter((project) => project.kind === 'pub')).toHaveLength(4);
-    expect(projects.filter((project) => project.kind === 'priv')).toHaveLength(3);
+    expect(
+      projects.every((project) => project.url === undefined || project.url.startsWith('https://')),
+    ).toBe(true);
+    expect(projects.filter((project) => project.kind === 'pub')).toHaveLength(3);
+    expect(projects.filter((project) => project.kind === 'priv')).toHaveLength(4);
+  });
+
+  it('does not expose third-party keygen or WinLicense signals', () => {
+    const forbidden = /keygen|crack|winlicense/i;
+    for (const project of projects) {
+      expect(
+        `${project.name}\n${project.description.es}\n${project.description.en}\n${project.url ?? ''}`,
+      ).not.toMatch(forbidden);
+      expect(project.url).not.toBe('https://github.com/FerS00/WLQuickGen');
+    }
   });
 });
 
@@ -31,8 +43,8 @@ describe('project filtering and column layout', () => {
   const sample: ProjectSummary[] = projects;
 
   it('filters by kind and technology together', () => {
-    expect(filterProjects(sample, { kind: 'pub', tech: null })).toHaveLength(4);
-    expect(filterProjects(sample, { kind: 'priv', tech: null })).toHaveLength(3);
+    expect(filterProjects(sample, { kind: 'pub', tech: null })).toHaveLength(3);
+    expect(filterProjects(sample, { kind: 'priv', tech: null })).toHaveLength(4);
     expect(filterProjects(sample, { kind: 'all', tech: 'Java' })).toHaveLength(2);
     expect(filterProjects(sample, { kind: 'all', tech: 'C++' })).toHaveLength(2);
   });
