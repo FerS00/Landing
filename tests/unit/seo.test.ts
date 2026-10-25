@@ -1,7 +1,12 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { serializeSitemapItem, serializeStructuredData, sitemapI18n } from '../../src/config/seo';
+import {
+  createStructuredData,
+  serializeSitemapItem,
+  serializeStructuredData,
+  sitemapI18n,
+} from '../../src/config/seo';
 
 const root = process.cwd();
 
@@ -46,6 +51,14 @@ describe('SEO configuration', () => {
     expect(data['@graph'].map((item) => item['@type'])).toEqual(['Person', 'WebSite']);
     expect(data['@graph'][0]?.sameAs).toContain('https://github.com/FerS00');
     expect(data['@graph'][1]?.inLanguage).toBe(lang);
+  });
+
+  it.each([
+    ['es', 'Desarrollador backend y full stack'],
+    ['en', 'Backend & Full-Stack Developer'],
+  ] as const)('localizes the %s Person jobTitle', (lang, jobTitle) => {
+    const data = createStructuredData(lang) as { '@graph': { jobTitle?: string }[] };
+    expect(data['@graph'][0]?.jobTitle).toBe(jobTitle);
   });
 
   it('includes the custom static 404 page source', () => {

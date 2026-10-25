@@ -20,7 +20,7 @@ test('Spanish and English pages expose locale metadata and equivalent routes', a
   expect(settledBrandBox?.width).toBe(initialBrandBox?.width);
   expect(settledBrandBox?.height).toBe(initialBrandBox?.height);
   await expect(page.locator('html')).toHaveAttribute('lang', 'es');
-  await expect(page).toHaveTitle('Fernando Morales · fextracode');
+  await expect(page).toHaveTitle('Fernando Morales | Desarrollador backend y full stack');
   await expect(page.locator('link[hreflang="es"]')).toHaveCount(1);
   await expect(page.locator('link[hreflang="en"]')).toHaveCount(1);
   await expect(page.locator('link[hreflang="x-default"]')).toHaveCount(1);
@@ -42,6 +42,7 @@ test('Spanish and English pages expose locale metadata and equivalent routes', a
   await page.getByRole('link', { name: /^EN/ }).click();
   await expect(page).toHaveURL(/\/en\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page).toHaveTitle('Fernando Morales | Backend & Full-Stack Developer');
   await page.getByRole('link', { name: /^ES/ }).click();
   await expect(page).toHaveURL(/\/$/);
 });

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Fernando Morales · fextracode",
-    "description": "Fernando Morales, software developer: Java and Python backends, Angular and React web apps, Windows tools and AI applications."
+    "title": "Fernando Morales | Backend & Full-Stack Developer",
+    "description": "Fernando Morales, Backend & Full-Stack Developer based in Peru: APIs, business applications, integrations, access control and automation. Open to remote roles and freelance projects."
   },
   "skip": "Skip to content",
   "nav": {
@@ -40,7 +40,7 @@
     "eyebrow": "Contact",
     "titleFirst": "Have a project?",
     "titleSecond": "Let's talk.",
-    "intro": "Available for freelance projects and technical collaborations in backend, automation and applied AI.",
+    "intro": "I'm based in Peru and open to remote backend and full-stack roles, freelance projects and technical collaborations.",
     "copy": "Copy",
     "copied": "Copied",
     "copyFailed": "Copy error"
@@ -51,6 +51,7 @@
     "email": "Email",
     "emailPh": "you@example.com",
     "type": "Proposal type",
+    "employment": "Employment opportunity",
     "freelance": "Freelance project",
     "collaboration": "Technical collaboration",
     "message": "Message",
@@ -84,15 +85,16 @@
     "acceptAnalytics": "Accept analytics"
   },
   "hero": {
-    "status": "Open to new projects",
+    "status": "Open to remote roles and freelance projects",
     "helloBefore": "Hi, I'm ",
     "name": "Fernando Morales",
     "helloAfter": ".",
+    "role": "Backend & Full-Stack Developer · Based in Peru",
     "line1": "I build",
     "words": ["backends", "APIs", "web apps", "AI agents", "offline licensing", "Win32 apps"],
-    "lede": "Systems Engineering student and software developer. I work with Java and Python on the backend, Angular and React on the web, and C++ and C# on Windows. My projects revolve around offline licensing, automation and AI applications.",
-    "ctaProjects": "See projects",
-    "ctaContact": "Let's talk"
+    "lede": "Systems Engineering student and software developer. I build APIs, business applications and developer tools with Java, Python and TypeScript. My work focuses on reliable integrations, access control, transactional workflows and practical automation.",
+    "ctaProjects": "Explore selected work",
+    "ctaContact": "Talk about an opportunity"
   },
   "term": {
     "title": "~/fextracode — zsh",
