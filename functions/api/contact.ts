@@ -1,4 +1,18 @@
 import { validateContact } from '../../src/scripts/contact-core';
+import type { ContactType } from '../../src/scripts/contact-core';
+
+const PROPOSAL_LABELS: Record<'es' | 'en', Record<ContactType, string>> = {
+  es: {
+    employment: 'Oportunidad laboral',
+    freelance: 'Proyecto freelance',
+    collaboration: 'Colaboración técnica',
+  },
+  en: {
+    employment: 'Employment opportunity',
+    freelance: 'Freelance project',
+    collaboration: 'Technical collaboration',
+  },
+};
 
 interface Env {
   CONTACT_FROM?: string;
@@ -139,7 +153,8 @@ export async function onRequestPost({ request, env }: PagesContext): Promise<Res
   }
 
   const cleanHeader = (text: string) => text.replace(/[\r\n]/g, '');
-  const proposalType = value.type === 'freelance' ? 'Proyecto freelance' : 'Colaboración técnica';
+  const proposalType =
+    PROPOSAL_LABELS[value.lang === 'en' ? 'en' : 'es'][value.type as ContactType];
   const subject = cleanHeader(`[fextracode] ${proposalType} — ${value.name}`);
   const text = [
     `Nombre: ${value.name}`,

@@ -104,6 +104,36 @@ describe('Pages contact function', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('labels the notification with the localized proposal type', async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(okCaptcha()).mockResolvedValueOnce(okMail());
+    vi.stubGlobal('fetch', fetchMock);
+    const response = await onRequestPost({
+      request: request({ ...validData, type: 'employment', lang: 'en' }),
+      env,
+    });
+    expect(response.status).toBe(200);
+    const emailRequest = JSON.parse(String(fetchMock.mock.calls[1]?.[1]?.body)) as {
+      subject: string;
+      text: string;
+    };
+    expect(emailRequest.subject).toBe('[fextracode] Employment opportunity — Ana');
+    expect(emailRequest.text).toContain('Tipo: Employment opportunity');
+  });
+
+  it('keeps the Spanish label for Spanish submissions', async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(okCaptcha()).mockResolvedValueOnce(okMail());
+    vi.stubGlobal('fetch', fetchMock);
+    const response = await onRequestPost({
+      request: request({ ...validData, type: 'collaboration', lang: 'es' }),
+      env,
+    });
+    expect(response.status).toBe(200);
+    const emailRequest = JSON.parse(String(fetchMock.mock.calls[1]?.[1]?.body)) as {
+      text: string;
+    };
+    expect(emailRequest.text).toContain('Tipo: Colaboración técnica');
+  });
+
   it('rejects a failed Turnstile response', async () => {
     const fetchMock = vi
       .fn()

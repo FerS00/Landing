@@ -16,6 +16,25 @@ describe('validateContact', () => {
     ).toEqual({ email: 'email' });
   });
 
+  it('accepts employment, freelance and collaboration types', () => {
+    for (const type of ['employment', 'freelance', 'collaboration']) {
+      expect(
+        validateContact({ name: 'Ana', email: 'ana@example.com', type, message: 'Hello there!' }),
+      ).toEqual({});
+    }
+  });
+
+  it('rejects unknown proposal types', () => {
+    expect(
+      validateContact({
+        name: 'Ana',
+        email: 'ana@example.com',
+        type: 'consulting',
+        message: 'Hello there!',
+      }),
+    ).toEqual({ type: 'invalid' });
+  });
+
   it('accepts valid values and trims whitespace for validation', () => {
     expect(
       validateContact({

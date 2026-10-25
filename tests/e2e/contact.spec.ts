@@ -73,6 +73,35 @@ for (const response of [
   });
 }
 
+for (const path of ['/', '/en/']) {
+  test(`${path} offers the three proposal types and a mailto link`, async ({ page }) => {
+    await page.goto(path);
+    const values = await page
+      .locator('#contact-type option')
+      .evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
+    expect(values).toEqual(['employment', 'freelance', 'collaboration']);
+    await expect(page.locator('#contact .email-link')).toHaveAttribute(
+      'href',
+      'mailto:moralespenafernando@gmail.com',
+    );
+    await expect(page.locator('[data-copy-email]')).toBeVisible();
+  });
+}
+
+test('hero role and contact mailto work without JavaScript', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/');
+  await expect(page.locator('.hero .role')).toHaveText(
+    'Desarrollador Backend y Full-Stack · Basado en Perú',
+  );
+  await expect(page.locator('#contact .email-link')).toHaveAttribute(
+    'href',
+    'mailto:moralespenafernando@gmail.com',
+  );
+  await context.close();
+});
+
 test('contact section has no serious or critical axe violations', async ({ page }) => {
   await mockTurnstile(page);
   await page.goto('/');

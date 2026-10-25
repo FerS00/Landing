@@ -20,6 +20,7 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
       <strong>{t('hero.name')}</strong>
       {t('hero.helloAfter')}
     </p>
+    <p class="role">{t('hero.role')}</p>
     <h1>
       <span class="line">
         <span class="rise">{t('hero.line1')}</span>
@@ -242,6 +243,13 @@ const words = (lang === 'es' ? es.hero.words : en.hero.words) as string[];
 
   .hello strong {
     color: var(--color-fg);
+  }
+
+  .role {
+    margin-bottom: var(--space-4);
+    color: var(--color-muted-fg);
+    font: 500 0.85rem var(--font-mono);
+    letter-spacing: 0.02em;
   }
 
   h1 {

@@ -39,6 +39,11 @@ export function serializeSitemapItem(item: SitemapEntry): SitemapEntry {
 
 export type SiteLanguage = 'es' | 'en';
 
+const jobTitles: Record<SiteLanguage, string> = {
+  es: 'Desarrollador backend y full stack',
+  en: 'Backend & Full-Stack Developer',
+};
+
 export function createStructuredData(lang: SiteLanguage) {
   return {
     '@context': 'https://schema.org',
@@ -47,7 +52,7 @@ export function createStructuredData(lang: SiteLanguage) {
         '@type': 'Person',
         name: 'Fernando Morales',
         url: 'https://fextracode.com/',
-        jobTitle: 'Software Developer',
+        jobTitle: jobTitles[lang],
         email: 'mailto:moralespenafernando@gmail.com',
         sameAs: [
           'https://github.com/FerS00',
