@@ -19,10 +19,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       <p class="intro">{t('contact.intro')}</p>
       <div class="channels">
         <div class="channel email-channel">
-          <div>
+          <a class="email-link" href="mailto:moralespenafernando@gmail.com">
             <span class="channel-label">Email</span>
             <span class="channel-value">moralespenafernando@gmail.com</span>
-          </div>
+          </a>
           <button class="chip copy-button" type="button" data-copy-email data-track="email_copy">
             {t('contact.copy')}
           </button>
@@ -128,6 +128,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
       <div class="field">
         <label for="contact-type">{t('form.type')}</label>
         <select id="contact-type" name="type">
+          <option value="employment">{t('form.employment')}</option>
           <option value="freelance">{t('form.freelance')}</option>
           <option value="collaboration">{t('form.collaboration')}</option>
         </select>
@@ -493,9 +494,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
     border-color: var(--color-green);
   }
   .email-channel > div,
+  .email-link,
   .channel > span:first-child {
     display: grid;
     min-width: 0;
+  }
+  .email-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  .email-link:hover .channel-value {
+    color: var(--color-green);
   }
   .channel-label {
     color: var(--color-muted-fg);

@@ -1,3 +1,7 @@
+export const CONTACT_TYPES = ['employment', 'freelance', 'collaboration'] as const;
+
+export type ContactType = (typeof CONTACT_TYPES)[number];
+
 export interface ContactData {
   name: string;
   email: string;
@@ -24,7 +28,7 @@ export function validateContact(data: ContactData): ContactErrors {
   if (!email) errors.email = 'required';
   else if (email.length > 254) errors.email = 'length';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'email';
-  if (!['freelance', 'collaboration'].includes(data.type)) errors.type = 'invalid';
+  if (!CONTACT_TYPES.includes(data.type as ContactType)) errors.type = 'invalid';
   if (!message) errors.message = 'required';
   else if (message.length < 10 || message.length > 5000) errors.message = 'length';
   if (data.lang !== undefined && data.lang !== 'es' && data.lang !== 'en') errors.lang = 'invalid';
