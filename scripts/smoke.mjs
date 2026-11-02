@@ -1,4 +1,5 @@
 /* global console, URL, fetch */
+import { readFileSync } from 'node:fs';
 import process from 'node:process';
 import { setTimeout } from 'node:timers/promises';
 
@@ -23,6 +24,15 @@ try {
 const base = parsedBaseUrl.href.endsWith('/') ? parsedBaseUrl.href : `${parsedBaseUrl.href}/`;
 const missingPath = '__fextracode-smoke-route-that-does-not-exist__';
 
+const esTranslations = JSON.parse(
+  readFileSync(new URL('../src/i18n/es.json', import.meta.url), 'utf8'),
+);
+const enTranslations = JSON.parse(
+  readFileSync(new URL('../src/i18n/en.json', import.meta.url), 'utf8'),
+);
+
+const escapeRegex = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 async function verifySite() {
   const request = async (path) => {
     const response = await fetch(new URL(path, base), { redirect: 'follow' });
@@ -34,7 +44,8 @@ async function verifySite() {
     throw new Error(`/ respondió ${homeResponse.status}; se esperaba 200.`);
   if (!/<html\b[^>]*\blang=["']es["']/i.test(home))
     throw new Error('/ no contiene <html lang="es">.');
-  if (!/<title>\s*Fernando Morales · fextracode\s*<\/title>/i.test(home)) {
+  const expectedEsTitle = escapeRegex(esTranslations.meta.title);
+  if (!new RegExp(`<title>\\s*${expectedEsTitle}\\s*<\\/title>`, 'i').test(home)) {
     throw new Error('/ no contiene el título esperado.');
   }
   if (!/<link\b[^>]*\bhreflang=["']en["']/i.test(home))
@@ -47,6 +58,10 @@ async function verifySite() {
     throw new Error(`/en/ respondió ${englishResponse.status}; se esperaba 200.`);
   if (!/<html\b[^>]*\blang=["']en["']/i.test(english))
     throw new Error('/en/ no contiene <html lang="en">.');
+  const expectedEnTitle = escapeRegex(enTranslations.meta.title).replace(/&/g, '(?:&|&amp;)');
+  if (!new RegExp(`<title>\\s*${expectedEnTitle}\\s*<\\/title>`, 'i').test(english)) {
+    throw new Error('/en/ no contiene el título esperado.');
+  }
 
   for (const path of ['/privacidad/', '/en/privacy/']) {
     const { response } = await request(path);
