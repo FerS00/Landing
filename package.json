@@ -20,8 +20,8 @@
     "lhci": "npx --yes @lhci/cli@0.15.1 autorun"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "7.4.2"
+    "@astrojs/sitemap": "3.7.5",
+    "astro": "7.4.12"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",

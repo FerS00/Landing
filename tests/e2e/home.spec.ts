@@ -6,6 +6,39 @@ const locales = [
 ];
 
 for (const locale of locales) {
+  for (const width of [375, 1024, 1440]) {
+    test(`${locale.lang}: contact title words stay on one line at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(locale.path);
+      await page.evaluate(() => document.fonts.ready);
+      const title = page.locator('#contact-title');
+      await title.scrollIntoViewIfNeeded();
+
+      const wordsOnMultipleLines = await title.evaluate((element) => {
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        const failures: string[] = [];
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const text = node.textContent ?? '';
+          const pattern = /\S+/g;
+          let match: RegExpExecArray | null;
+          while ((match = pattern.exec(text)) !== null) {
+            const range = document.createRange();
+            range.setStart(node, match.index);
+            range.setEnd(node, match.index + match[0].length);
+            const tops = [...range.getClientRects()].map((rect) => Math.round(rect.top));
+            if (new Set(tops).size > 1) failures.push(match[0]);
+          }
+        }
+        return failures;
+      });
+
+      expect(wordsOnMultipleLines).toEqual([]);
+    });
+  }
+}
+
+for (const locale of locales) {
   test(`${locale.lang}: document and hero heights stay fixed for eight seconds`, async ({
     page,
   }) => {

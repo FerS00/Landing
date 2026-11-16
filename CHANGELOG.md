@@ -11,6 +11,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Corregido
 
+- Titular de contacto sin palabras partidas en móvil y escritorio; astro actualizado a 7.4.12 por GHSA-mh32-jxcr-mh9f y GHSA-r3h5-4585-7x3w.
 - Proyectos WLQuickGen y HWID-Activation-Core reformulados como casos de estudio sin enlace a binarios, para retirar la marca de Safe Browsing.
 
 - Paridad visual con el prototipo: titular, gradientes, espacios, secciones, tarjetas, órbita y consentimiento (PR #4, publicado en producción el 2026-10-08).
