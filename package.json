@@ -20,23 +20,23 @@
     "lhci": "npx --yes @lhci/cli@0.15.1 autorun"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "7.4.2"
+    "@astrojs/sitemap": "^3.7.5",
+    "astro": "7.4.12"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@axe-core/playwright": "4.14.0",
     "@eslint/js": "10.0.1",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "@types/node": "24.19.1",
-    "eslint": "10.13.0",
+    "eslint": "10.14.0",
     "eslint-plugin-astro": "3.2.1",
-    "globals": "17.13.0",
-    "prettier": "3.9.10",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
     "prettier-plugin-astro": "1.1.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.0",
-    "vitest": "5.0.5"
+    "typescript-eslint": "8.72.2",
+    "vitest": "5.1.0"
   },
   "overrides": {
     "minimatch": "^11.0.4"
